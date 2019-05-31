@@ -1,5 +1,5 @@
 {
-  "name": "angular-evergreen",
+  "name": "ng-evergreen",
   "displayName": "Angular Evergreen",
   "description": "Keep your project's version of Angular and related packages evergreen, see new minor, major and beta/rc version and upgrade your Angular CLI projects with ease.",
   "version": "0.0.1",
