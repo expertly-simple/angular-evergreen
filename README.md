@@ -1,6 +1,6 @@
 ![ng-evergreen-logo](https://user-images.githubusercontent.com/822159/58744159-61fdae80-840c-11e9-82bf-5d884aaad0f4.png)
 
-# Angular Evergreen
+# Angular Evergreen [![CircleCI](https://circleci.com/gh/duluca/angular-evergreen/tree/master.svg?style=svg)](https://circleci.com/gh/duluca/angular-evergreen/tree/master)
 
 Keep your project's version of Angular and related packages evergreen, see new minor, major and beta/rc version and upgrade your Angular CLI projects with ease.
 
