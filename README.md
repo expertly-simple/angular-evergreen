@@ -1,13 +1,12 @@
 ![ng-evergreen-logo](https://user-images.githubusercontent.com/822159/58744159-61fdae80-840c-11e9-82bf-5d884aaad0f4.png)
+
 # Angular Evergreen
 
 Keep your project's version of Angular and related packages evergreen, see new minor, major and beta/rc version and upgrade your Angular CLI projects with ease.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
+...
 
 \!\[feature X\]\(images/feature-x.png\)
 
@@ -15,7 +14,7 @@ For example if there is an image subfolder under your extension project workspac
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+Projects setup with `@angular/cli` package.
 
 ## Extension Settings
 
@@ -30,11 +29,11 @@ This extension contributes the following settings:
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+...
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+...
 
 ### 1.0.0
 
