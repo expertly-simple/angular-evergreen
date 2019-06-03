@@ -2,6 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { getDevDependencies, checkUpdateAngularCli } from './file/package-manager';
+import { isGitClean } from './file/git-manager';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -15,29 +16,39 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('extension.angularEvergreen', () => {
       let options: vscode.MessageOptions = {};
       vscode.window
-        .showInformationMessage('Run Angular Evergreen?', {}, 'Run', 'Cancel')
-        .then(value => {
+        .showInformationMessage(
+          'Angular Evergreen: Run Angular Evergreen?',
+          {},
+          'Run',
+          'Cancel'
+        )
+        .then(async value => {
           if (value !== 'Run') {
             return;
           } else {
-            const terminal = vscode.window.createTerminal(`Angular Evergreen`);
-            terminal.show();
-            terminal.sendText('ng version');
+            let gitClean = await isGitClean();
+            if (gitClean) {
+              vscode.window.showInformationMessage('Angular Evergreen: Git is clean');
+              let angCliVer = await getDevDependencies();
+              let outdated = await checkUpdateAngularCli(angCliVer);
+
+              if (outdated) {
+                vscode.window.showInformationMessage(
+                  'Angular Evergreen: Angular is outdated. Update?',
+                  {},
+                  'Run',
+                  'Cancel'
+                );
+              }
+            } else {
+              vscode.window.showErrorMessage(
+                'Angular Evergreen: Please ensure your branch is clean and up to date with remote'
+              );
+            }
           }
         });
     })
   );
-  let angCliVer = await getDevDependencies();
-  let outdated = await checkUpdateAngularCli(angCliVer);
-
-  if (outdated) {
-    vscode.window.showInformationMessage(
-      'Angular is outdated. Update?',
-      {},
-      'Run',
-      'Cancel'
-    );
-  }
 }
 
 // this method is called when your extension is deactivated
