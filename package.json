@@ -37,6 +37,7 @@
     "vscode": "^1.1.28"
   },
   "dependencies": {
+    "execa": "^1.0.0",
     "latest-version": "^5.1.0"
   }
 }
