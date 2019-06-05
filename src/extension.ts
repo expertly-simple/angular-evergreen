@@ -2,7 +2,10 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { getDevDependencies, checkUpdateAngularCli } from './file/package-manager';
-import { updateNgPacks } from './package/process-manager';
+import { updateNg } from './package/angular-update';
+import { isMainThread } from 'worker_threads';
+import { on } from 'cluster';
+const ONE_HOUR = 3600000;
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -15,19 +18,16 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand('extension.angularEvergreen', () => {
       let options: vscode.MessageOptions = {};
-      /* vscode.window
-        .showInformationMessage('Run Angular Evergreen?', {}, 'Run', 'Cancel')
-        .then(value => {
-          if (value !== 'Run') {
-            return;
-          } else {
-            const terminal = vscode.window.createTerminal(`Angular Evergreen`);
-            terminal.show();
-            terminal.sendText('ng version');
-          }
-        }); */
     })
   );
+
+  await mainFunc();
+
+  // start 24hr reminder...
+  setTimeout(mainFunc, ONE_HOUR * 24);
+}
+
+async function mainFunc() {
   let angCliVer = await getDevDependencies();
   let outdated = await checkUpdateAngularCli(angCliVer);
 
@@ -36,11 +36,10 @@ export async function activate(context: vscode.ExtensionContext) {
       .showInformationMessage('Angular is outdated. Update?', {}, 'Run', 'Cancel')
       .then(data => {
         if (data === 'Run') {
-          updateNgPacks();
+          updateNg();
         }
       });
   }
 }
-
 // this method is called when your extension is deactivated
 export function deactivate() {}
