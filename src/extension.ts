@@ -16,6 +16,9 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // Angular Evergreen
   context.subscriptions.push(
+    // todo: manual commands here.
+
+    // not sure we need the below?
     vscode.commands.registerCommand('extension.angularEvergreen', () => {
       let options: vscode.MessageOptions = {};
     })
