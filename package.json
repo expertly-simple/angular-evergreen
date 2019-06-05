@@ -14,10 +14,15 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
+    "commands": [{
+        "command": "ng-evergreen.angularEvergreen",
+        "title": "Launch Angular Evergreen",
+        "category": "Angular Evergreen"
+      },
       {
-        "command": "extension.angularEvergreen",
-        "title": "Angular Evergreen"
+        "command": "ng-evergreen.checkForUpdates",
+        "title": "Check for Angular Updates",
+        "category": "Angular Evergreen"
       }
     ]
   },

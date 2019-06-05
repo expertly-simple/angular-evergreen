@@ -1,7 +1,9 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
+
 import * as vscode from 'vscode';
-import { getDevDependencies, checkUpdateAngularCli } from './file/package-manager';
+
+import { ANG_CLI, ANG_CORE, checkForUpdate } from './file/package-manager';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -12,32 +14,45 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // Angular Evergreen
   context.subscriptions.push(
-    vscode.commands.registerCommand('extension.angularEvergreen', () => {
-      let options: vscode.MessageOptions = {};
-      vscode.window
-        .showInformationMessage('Run Angular Evergreen?', {}, 'Run', 'Cancel')
-        .then(value => {
-          if (value !== 'Run') {
-            return;
-          } else {
-            const terminal = vscode.window.createTerminal(`Angular Evergreen`);
-            terminal.show();
-            terminal.sendText('ng version');
-          }
-        });
-    })
+    vscode.commands.registerCommand('ng-evergreen.angularEvergreen', runEvergreen),
+    vscode.commands.registerCommand('ng-evergreen.checkForUpdates', checkAngularVersions)
   );
-  let angCliVer = await getDevDependencies();
-  let outdated = await checkUpdateAngularCli(angCliVer);
+}
 
-  if (outdated) {
-    vscode.window.showInformationMessage(
-      'Angular is outdated. Update?',
-      {},
-      'Run',
-      'Cancel'
-    );
+function runEvergreen() {
+  // let options: vscode.MessageOptions = {};
+  vscode.window
+    .showInformationMessage('Run Angular Evergreen?', {}, 'Run', 'Cancel')
+    .then(value => {
+      if (value !== 'Run') {
+        return;
+      } else {
+        checkAngularVersions();
+      }
+    });
+}
+
+async function checkAngularVersions() {
+  let cliOutdated = await checkForUpdate(ANG_CLI);
+  let coreOutdated = await checkForUpdate(ANG_CORE);
+
+  if (cliOutdated || coreOutdated) {
+    vscode.window
+      .showInformationMessage('Angular is outdated. Update?', {}, 'Run', 'Cancel')
+      .then(value => {
+        if (value !== 'Run') {
+          return;
+        } else {
+          doAngularUpdate();
+        }
+      });
   }
+}
+
+function doAngularUpdate() {
+  const terminal = vscode.window.createTerminal(`Angular Evergreen`);
+  terminal.show();
+  terminal.sendText('ng update @angular/cli @angular/core');
 }
 
 // this method is called when your extension is deactivated
