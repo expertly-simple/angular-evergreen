@@ -1,26 +1,44 @@
 import * as vscode from 'vscode';
 
-const fs = require('fs');
-const latestVersion = require('latest-version');
-const workspace = vscode.workspace.workspaceFolders![0];
+import fs = require('fs');
+import latestVersion = require('latest-version');
+
 const ANG_CLI = '@angular/cli';
 
+export function getWorkspace() {
+  if (vscode.workspace) {
+    return vscode.workspace.workspaceFolders &&
+      vscode.workspace.workspaceFolders.length > 0
+      ? vscode.workspace.workspaceFolders[0]
+      : null;
+  }
+
+  return null;
+}
+
 export async function getDevDependencies() {
+  // sanity check that a workspace is loaded
+  const workspace = getWorkspace();
+  if (!workspace) {
+    console.error('No workspace found.');
+    return;
+  }
+
   let packjsonFile = await vscode.workspace.findFiles(
     new vscode.RelativePattern(workspace, 'package.json')
   );
 
-  if (packjsonFile.length <= 0) {
+  if (!packjsonFile || packjsonFile.length <= 0) {
     vscode.window.showErrorMessage('File package.json not found');
   }
 
-  let filedata = fs.readFileSync(packjsonFile[0].path);
+  let filedata = fs.readFileSync(packjsonFile[0].fsPath);
 
   if (!filedata) {
     vscode.window.showErrorMessage('File package.json is empty or corrupt');
   }
 
-  let devDeps = JSON.parse(filedata).devDependencies;
+  let devDeps = JSON.parse(filedata.toString()).devDependencies;
 
   let version = devDeps[ANG_CLI];
 
