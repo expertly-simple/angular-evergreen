@@ -12,14 +12,15 @@ export async function updateNg(next: boolean = false) {
   let updateCMD = next ? updateAll + ' --next' : updateAll;
   const render = (<any>vscode.window).createTerminalRenderer('Angular Evergreen');
   render.terminal.show();
+  render.write('~~~~ Welcome to Angular Evergreen ~~~~ \r\n\n todo: more info here?');
   try {
     const clistdout = await execa.shell(CLI_CHK_CMD, { cwd: workspace.uri.path });
     latest = getVersionsFromStdout(clistdout.stdout, 'latest');
     vnext = getVersionsFromStdout(clistdout.stdout, 'next');
     const ngstdout = await execa.shell(updateCMD, { cwd: workspace.uri.path });
-    render.write(ngstdout.stdout.message);
+    render.write(ngstdout.stdout.message.replace('\n', '\r\n\n'));
   } catch (error) {
-    render.write(error.message);
+    render.write(error.message.replace('\n', '\r\n\n'));
   }
 
   // todo allow user to choose version to update.
