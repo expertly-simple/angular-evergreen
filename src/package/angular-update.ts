@@ -22,6 +22,7 @@ export async function updateNg(next: boolean = false) {
     );
     // todo: prompt just cli update here
     // try updatet
+    render.write('Running Update - Please Wait.');
     const ngstdout = await execa.shell(updateCMD, { cwd: workspace.uri.path });
     render.write(ngstdout.stdout.message.replace(/[\n\r]/g, ' ').replace('   ', ''));
   } catch (error) {
