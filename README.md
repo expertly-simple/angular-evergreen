@@ -1,8 +1,8 @@
-![ng-evergreen-logo](https://user-images.githubusercontent.com/822159/58744159-61fdae80-840c-11e9-82bf-5d884aaad0f4.png)
+# ![](ng-evergreen-logo-32.png) Angular Evergreen [![CircleCI](https://circleci.com/gh/duluca/angular-evergreen.png)](https://circleci.com/gh/duluca/angular-evergreen/tree/master)
 
-# Angular Evergreen [![CircleCI](https://circleci.com/gh/duluca/angular-evergreen.png)](https://circleci.com/gh/duluca/angular-evergreen/tree/master)
+Keep your project's version of Angular and related packages evergreen with periodic update checks and upgrade your Angular CLI projects with ease.
 
-Keep your project's version of Angular and related packages evergreen, see new minor, major and beta/rc version and upgrade your Angular CLI projects with ease.
+![](ng-evergreen-do-update.gif)
 
 ## Features
 
@@ -42,3 +42,10 @@ _Coming soon_
 ### 0.5.0
 
 Initial beta release with git clean check, scheduled and manually triggered basic ng update capability.
+
+## Contributors
+
+* @duluca
+* @kentonbomax
+* @brendoncaulkins
+* @alexhoffman617
