@@ -27,6 +27,11 @@
         "category": "Angular Evergreen"
       },
       {
+        "command": "ng-evergreen.stopAngularEvergreen",
+        "title": "Stop periodic Angular update checks",
+        "category": "Angular Evergreen"
+      },
+      {
         "command": "ng-evergreen.checkForUpdates",
         "title": "Check for Angular Updates",
         "category": "Angular Evergreen"
@@ -43,6 +48,9 @@
     "test": "npm run compile && node ./node_modules/vscode/bin/test"
   },
   "devDependencies": {
+    "@types/cron": "^1.7.1",
+    "@types/execa": "^0.9.0",
+    "@types/get-stream": "^3.0.2",
     "@types/mocha": "^2.2.42",
     "@types/node": "^10.12.21",
     "dev-norms": "^1.7.0",
@@ -55,6 +63,9 @@
     "webpack-cli": "^3.3.2"
   },
   "dependencies": {
+    "cron": "^1.7.1",
+    "execa": "^1.0.0",
+    "get-stream": "^5.1.0",
     "latest-version": "^5.1.0"
   },
   "repository": {
