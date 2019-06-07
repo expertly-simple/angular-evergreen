@@ -4,6 +4,7 @@
   "publisher": "expertly-simple",
   "description": "Keep your project's version of Angular and related packages evergreen, see new minor, major and beta/rc version and upgrade your Angular CLI projects with ease.",
   "icon": "ng-evergreen-logo.png",
+  "keywords": ["angular", "evergreen", "update", "ng", "ng-cli"],
   "galleryBanner": {
     "color": "#2d7254",
     "theme": "dark"
@@ -16,7 +17,7 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "workspaceContains:**/angular.json"
   ],
   "main": "./out/extension.js",
   "contributes": {
