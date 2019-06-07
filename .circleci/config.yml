@@ -28,5 +28,7 @@ jobs:
 
       - run: npm run package
 
+      - run: cp *.vsix vsix
+
       - store_artifacts:
-          path: /home/circleci/repo/ng-evergreen-*.vsix
+          path: vsix
