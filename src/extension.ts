@@ -16,7 +16,7 @@ export function activate(context: vscode.ExtensionContext) {
   )
 
   // run it
-  runEvergreen()
+  vscode.commands.executeCommand('ng-evergreen.angularEvergreen')
 }
 
 const twentyFourHourSchedule = '0 0 */24 * * *'
