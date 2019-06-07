@@ -24,9 +24,9 @@ jobs:
 
       - run: npm run compile
 
-      # - run: npm test
+      - run: npm test
 
-      - run: tar zcf out.tar.gz out
+      - run: npm run package
 
       - store_artifacts:
-          path: out.tar.gz
+          path: /
