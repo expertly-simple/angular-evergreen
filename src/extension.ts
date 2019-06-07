@@ -14,6 +14,9 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('ng-evergreen.stopAngularEvergreen', stopEvergreen),
     vscode.commands.registerCommand('ng-evergreen.checkForUpdates', checkAngularVersions)
   )
+
+  // run it
+  vscode.commands.executeCommand('ng-evergreen.angularEvergreen')
 }
 
 const twentyFourHourSchedule = '0 0 */24 * * *'
