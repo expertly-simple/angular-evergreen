@@ -41,7 +41,7 @@ function runEvergreen() {
     .showInformationMessage(
       'Keep Angular evergreen?',
       {},
-      'Update Periodically',
+      'Check for updates periodically',
       'Cancel'
     )
     .then(async value => {
