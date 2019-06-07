@@ -14,6 +14,9 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('ng-evergreen.stopAngularEvergreen', stopEvergreen),
     vscode.commands.registerCommand('ng-evergreen.checkForUpdates', checkAngularVersions)
   )
+
+  // run it
+  runEvergreen()
 }
 
 const twentyFourHourSchedule = '0 0 */24 * * *'
@@ -38,7 +41,7 @@ function runEvergreen() {
     .showInformationMessage(
       'Keep Angular evergreen?',
       {},
-      'Check for updates periodically',
+      'Update Periodically',
       'Cancel'
     )
     .then(async value => {
