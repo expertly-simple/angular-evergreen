@@ -20,7 +20,8 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [{
+    "commands": [
+      {
         "command": "ng-evergreen.angularEvergreen",
         "title": "Launch Angular Evergreen",
         "category": "Angular Evergreen"
