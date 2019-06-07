@@ -2,7 +2,7 @@
   "name": "ng-evergreen",
   "displayName": "Angular Evergreen",
   "publisher": "expertly-simple",
-  "description": "Keep your project's version of Angular and related packages evergreen, see new minor, major and beta/rc version and upgrade your Angular CLI projects with ease.",
+  "description": "Keep your project's version of Angular and related packages evergreen with periodic update checks and upgrade your Angular CLI projects with ease.",
   "icon": "ng-evergreen-logo.png",
   "keywords": [
     "angular",
@@ -15,7 +15,7 @@
     "color": "#2d7254",
     "theme": "dark"
   },
-  "version": "0.5.2",
+  "version": "0.5.3",
   "engines": {
     "vscode": "^1.34.0"
   },
