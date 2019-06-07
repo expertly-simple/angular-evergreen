@@ -17,9 +17,9 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 const twentyFourHourSchedule = '0 0 */24 * * *'
-const testingInterval = '*/30 * * * * *'
+//const testingInterval = '*/30 * * * * *'
 
-const job = new CronJob(testingInterval, async function() {
+const job = new CronJob(twentyFourHourSchedule, async function() {
   await checkAngularVersions(true)
 })
 
@@ -84,14 +84,19 @@ async function checkAngularVersions(quiet = false) {
 async function doAngularUpdate() {
   let gitClean = await isGitClean()
   if (gitClean) {
-    await ngUpdate()
+    let message = 'Update completed! Project is evergreen 🌲'
+    const status = await ngUpdate()
     // const terminal = vscode.window.createTerminal(`Angular Evergreen 🌲`)
     // terminal.show()
     // terminal.sendText('npm install')
     // terminal.sendText('npx ng update @angular/cli')
     // terminal.sendText('npx ng update @angular/core')
     // terminal.sendText('npx ng update --all')
-    vscode.window.showInformationMessage('Update completed! Project is evergreen 🌲')
+
+    if (!status) {
+      message = "Hmm.. that didn't work. Try executing ng update --all --force"
+    }
+    vscode.window.showInformationMessage(message)
   } else {
     vscode.window.showErrorMessage(
       "Can't update: Ensure git branch is clean & up-to-date"

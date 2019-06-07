@@ -1,18 +1,33 @@
 ![ng-evergreen-logo](https://user-images.githubusercontent.com/822159/58744159-61fdae80-840c-11e9-82bf-5d884aaad0f4.png)
 
-# Angular Evergreen
-
-[[CircleCI]](https://circleci.com/gh/duluca/angular-evergreen/tree/master)
+# Angular Evergreen [![CircleCI](https://circleci.com/gh/duluca/angular-evergreen.png)](https://circleci.com/gh/duluca/angular-evergreen/tree/master)
 
 Keep your project's version of Angular and related packages evergreen, see new minor, major and beta/rc version and upgrade your Angular CLI projects with ease.
 
 ## Features
 
-...
+* Launch Angular Evergreen
+  * Schedules a `Check for Angular Updates` every 24 hours.
+  * Stop command, cancels schedules checks for updates
+* Check for Angular Updates
+  * Manually run to see if there are updates
+  * Checks to see if git branch is clean
+  * Executes `npm install`
+  * Runs `ng update --all`
 
-\!\[feature X\]\(images/feature-x.png\)
+## Upcoming Features
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+* Subscribe to `stable`, `alpha`, `beta`, `rc` update channels
+* Assist users clean git branch before update
+* Help run `--force` when update fails
+* Fix `typescript` version, after a `--force` install
+* Execute `ng build` and `ng test` after upgrade
+* Ability to rollback upgrades
+* Check updates for packages not covered by `ng update` i.e. `@angular/flex-layout`
+* Allow customizing schedule interval
+* Support non-@angular/cli Angular projects
+
+_Have a feature request or submit a PR?_ Submit an issue/PR on GitHub [here](https://github.com/duluca/angular-evergreen/issues).
 
 ## Requirements
 
@@ -20,23 +35,10 @@ Projects setup with `@angular/cli` package.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-...
+_Coming soon_
 
 ## Release Notes
 
-...
+### 0.5.0
 
-### 1.0.0
-
-Initial release of ...
+Initial beta release with git clean check, scheduled and manually triggered basic ng update capability.
