@@ -1,7 +1,8 @@
 import * as vscode from 'vscode'
 
 import fs = require('fs')
-import latestVersion = require('latest-version')
+
+const latestVersion = require('get-latest-version')
 
 export const ANG_CLI = '@angular/cli'
 export const ANG_CORE = '@angular/core'
