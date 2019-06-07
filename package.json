@@ -5,7 +5,7 @@
   "description": "Keep your project's version of Angular and related packages evergreen, see new minor, major and beta/rc version and upgrade your Angular CLI projects with ease.",
   "icon": "ng-evergreen-logo.png",
   "galleryBanner": {
-    "color": "#3C783A",
+    "color": "#2d7254",
     "theme": "dark"
   },
   "version": "0.5.0",
