@@ -28,7 +28,7 @@ jobs:
 
       - run: npm run package
 
-      - run: cp *.vsix vsix
+      - run: cp *.vsix ng-evergreen.vsix
 
       - store_artifacts:
-          path: vsix
+          path: ng-evergreen.vsix
