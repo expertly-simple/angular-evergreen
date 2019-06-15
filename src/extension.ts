@@ -36,7 +36,6 @@ function startJob() {
   const milliseconds = getCheckFrequencyMilliseconds()
   job = setInterval(async () => {
     await checkAngularVersions(true)
-    console.log(`Ping at ${new Date().toLocaleTimeString()}`)
   }, milliseconds)
 }
 
