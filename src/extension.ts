@@ -24,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.commands.executeCommand('ng-evergreen.angularEvergreen')
 }
 
-const job: NodeJS.Timeout | null = null
+let job: NodeJS.Timeout | null = null
 
 function startJob() {
   // if existing job is running, cancel it
@@ -34,7 +34,7 @@ function startJob() {
 
   // start new job
   const milliseconds = getCheckFrequencyMilliseconds()
-  setInterval(async () => {
+  job = setInterval(async () => {
     await checkAngularVersions(true)
     console.log(`Ping at ${new Date().toLocaleTimeString()}`)
   }, milliseconds)
