@@ -27,8 +27,23 @@
   ],
   "main": "./dist/extension",
   "contributes": {
-    "commands": [
-      {
+    "configuration": {
+      "title": "Angular Evergreen",
+      "properties": {
+        "ng-evergreen.checkFrequency": {
+          "description": "How often Angular Evergreen should check for available Angular updates",
+          "type": "string",
+          "enum": [
+            "Every Minute",
+            "Hourly",
+            "Daily",
+            "Weekly",
+            "Bi-Weekly"
+          ]
+        }
+      }
+    },
+    "commands": [{
         "command": "ng-evergreen.angularEvergreen",
         "title": "Launch Angular Evergreen",
         "category": "Angular Evergreen"
@@ -70,7 +85,6 @@
     "webpack-cli": "^3.3.2"
   },
   "dependencies": {
-    "cron": "^1.7.1",
     "execa": "^1.0.0",
     "get-latest-version": "^1.0.1",
     "get-stream": "^5.1.0"

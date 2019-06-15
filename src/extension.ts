@@ -1,8 +1,13 @@
 import * as vscode from 'vscode'
 
 import { ANG_CLI, ANG_CORE, checkForUpdate } from './file/package-manager'
+import {
+  CHECK_FREQUENCY_KEY,
+  getCheckFrequency,
+  getCheckFrequencyMilliseconds,
+} from './common/check-frequency.helpers'
 
-import { CronJob } from 'cron'
+import { CheckFrequency } from './common/enums'
 import { isGitClean } from './file/git-manager'
 import { ngUpdate } from './file/angular-update'
 
@@ -19,17 +24,26 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.commands.executeCommand('ng-evergreen.angularEvergreen')
 }
 
-const twentyFourHourSchedule = '0 0 */24 * * *'
-//const testingInterval = '*/30 * * * * *'
+const job: NodeJS.Timeout | null = null
 
-const job = new CronJob(twentyFourHourSchedule, async function() {
-  await checkAngularVersions(true)
-})
+function startJob() {
+  // if existing job is running, cancel it
+  if (job) {
+    clearInterval(job)
+  }
+
+  // start new job
+  const milliseconds = getCheckFrequencyMilliseconds()
+  setInterval(async () => {
+    await checkAngularVersions(true)
+    console.log(`Ping at ${new Date().toLocaleTimeString()}`)
+  }, milliseconds)
+}
 
 function stopEvergreen() {
   let message = 'No scheduled periodic checks were found. All is good 👍'
-  if (job && job.running) {
-    job.stop()
+  if (job) {
+    clearInterval(job)
     message = 'Cancelled periodic checks 👋'
   }
 
@@ -37,22 +51,43 @@ function stopEvergreen() {
 }
 
 function runEvergreen() {
-  vscode.window
-    .showInformationMessage(
-      'Keep Angular evergreen?',
-      {},
-      'Check for updates periodically',
-      'Cancel'
-    )
-    .then(async value => {
-      if (value === 'Cancel') {
-        return
-      } else {
-        await checkAngularVersions()
-        if (job && !job.running) {
-          job.start()
+  const isFirstRun = !getCheckFrequency() || getCheckFrequency() === ''
+  if (isFirstRun) {
+    vscode.window
+      .showInformationMessage(
+        'Keep Angular evergreen?',
+        {},
+        'Check for updates periodically',
+        'Cancel'
+      )
+      .then(async value => {
+        if (value !== 'Cancel') {
+          await setCheckFrequency()
+          await checkAngularVersions()
+          startJob()
         }
-      }
+      })
+  } else {
+    startJob()
+  }
+}
+
+async function setCheckFrequency() {
+  await vscode.window
+    .showInformationMessage(
+      'How often would you like to check for updates (this can be changed in settings.json)?',
+      {},
+      CheckFrequency.EveryMinute,
+      CheckFrequency.Hourly,
+      CheckFrequency.Daily,
+      CheckFrequency.Weekly,
+      CheckFrequency.BiWeekly
+    )
+    .then(async checkFrequencyValue => {
+      // set user's update frequency preference in settings.json
+      await vscode.workspace
+        .getConfiguration()
+        .update(CHECK_FREQUENCY_KEY, checkFrequencyValue)
     })
 }
 
