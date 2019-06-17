@@ -15,7 +15,7 @@
     "color": "#2d7254",
     "theme": "dark"
   },
-  "version": "0.5.3",
+  "version": "0.6.0",
   "engines": {
     "vscode": "^1.34.0"
   },
@@ -36,6 +36,17 @@
           "enum": [
             "Latest",
             "Next"
+          ]
+        },
+        "ng-evergreen.checkFrequency": {
+          "description": "How often Angular Evergreen should check for available Angular updates",
+          "type": "string",
+          "enum": [
+            "Every Minute",
+            "Hourly",
+            "Daily",
+            "Weekly",
+            "Bi-Weekly"
           ]
         }
       }
@@ -82,7 +93,6 @@
     "webpack-cli": "^3.3.2"
   },
   "dependencies": {
-    "cron": "^1.7.1",
     "execa": "^1.0.0",
     "get-latest-version": "^1.0.1",
     "get-stream": "^5.1.0"
