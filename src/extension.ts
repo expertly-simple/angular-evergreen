@@ -64,6 +64,8 @@ function runEvergreen() {
           await setCheckFrequency()
           await checkAngularVersions()
           startJob()
+        } else {
+          return
         }
       })
   } else {
