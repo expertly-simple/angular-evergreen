@@ -8,14 +8,9 @@ import {
 } from './common/check-frequency.helpers'
 
 import { CheckFrequency, UpgradeVersion } from './common/enums'
-  UPGRADE_VERSION_KEY,
-  getUpgradeVersion,
-  upgradeVersionExists,
-} from './common/upgrade-version.helpers'
-
-import { CronJob } from 'cron'
 import { isGitClean } from './file/git-manager'
 import { ngUpdate } from './file/angular-update'
+import { upgradeVersionExists, getUpgradeVersion } from './common/upgrade-version.helpers'
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')

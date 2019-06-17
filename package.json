@@ -30,6 +30,14 @@
     "configuration": {
       "title": "Angular Evergreen",
       "properties": {
+        "ng-evergreen.upgradeVersion": {
+          "description": "Which version of Angular to upgrade to",
+          "type": "string",
+          "enum": [
+            "Latest",
+            "Next"
+          ]
+        },
         "ng-evergreen.checkFrequency": {
           "description": "How often Angular Evergreen should check for available Angular updates",
           "type": "string",
@@ -39,14 +47,6 @@
             "Daily",
             "Weekly",
             "Bi-Weekly"
-            ]
-        },
-        "ng-evergreen.upgradeVersion": {
-          "description": "Which version of Angular to upgrade to",
-          "type": "string",
-          "enum": [
-            "Latest",
-            "Next"
           ]
         }
       }
