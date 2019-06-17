@@ -27,8 +27,20 @@
   ],
   "main": "./dist/extension",
   "contributes": {
-    "commands": [
-      {
+    "configuration": {
+      "title": "Angular Evergreen",
+      "properties": {
+        "ng-evergreen.upgradeVersion": {
+          "description": "Which version of Angular to upgrade to",
+          "type": "string",
+          "enum": [
+            "Latest",
+            "Next"
+          ]
+        }
+      }
+    },
+    "commands": [{
         "command": "ng-evergreen.angularEvergreen",
         "title": "Launch Angular Evergreen",
         "category": "Angular Evergreen"

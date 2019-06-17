@@ -1,6 +1,10 @@
 import * as execa from 'execa'
-import * as getStream from 'get-stream'
 import * as vscode from 'vscode'
+
+import {
+  storeUpgradeVersion,
+  upgradeVersionExists,
+} from '../common/upgrade-version.helpers'
 
 const CLI_CHK_CMD = 'npm info @angular/cli'
 const NG_ALL_CMD = 'ng update --all'
@@ -9,6 +13,10 @@ const workspace = vscode.workspace.workspaceFolders![0]
 export async function ngUpdate(next: boolean = false): Promise<boolean> {
   let latest = ''
   let vnext = ''
+
+  if (!upgradeVersionExists()) {
+    storeUpgradeVersion(next)
+  }
 
   let updateCMD = next ? NG_ALL_CMD + ' --next' : NG_ALL_CMD
   const render = (<any>vscode.window).createTerminalRenderer('Angular Evergreen 🌲')

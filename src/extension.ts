@@ -1,8 +1,14 @@
 import * as vscode from 'vscode'
 
 import { ANG_CLI, ANG_CORE, checkForUpdate } from './file/package-manager'
+import {
+  UPGRADE_VERSION_KEY,
+  getUpgradeVersion,
+  upgradeVersionExists,
+} from './common/upgrade-version.helpers'
 
 import { CronJob } from 'cron'
+import { UpgradeVersion } from './common/enums'
 import { isGitClean } from './file/git-manager'
 import { ngUpdate } from './file/angular-update'
 
@@ -61,27 +67,32 @@ async function checkAngularVersions(quiet = false) {
   let coreOutdated = await checkForUpdate(ANG_CORE)
 
   if (cliOutdated.needsUpdate || coreOutdated.needsUpdate) {
-    vscode.window
-      .showInformationMessage(
-        `Your version of Angular is outdated.\r\nCurrent version: ${
-          coreOutdated.currentVersion
-        }\r\nLatest version: ${coreOutdated.newVersion}\r\nNext Version: ${
-          coreOutdated.nextVersion
-        }`,
-        { modal: true },
-        'Update to Latest',
-        'Update to vNext(risky)'
-      )
-      .then(async value => {
-        if (!value) {
-          return
-        }
-        if (value && !value.includes('Update')) {
-          return
-        } else {
-          await ngUpdate(value.includes('vNext'))
-        }
-      })
+    if (!upgradeVersionExists()) {
+      vscode.window
+        .showInformationMessage(
+          `Your current version of Angular (${
+            coreOutdated.currentVersion
+          }) is outdated.\r\n\r\nLatest version: ${
+            coreOutdated.newVersion
+          }\r\nNext Version: ${
+            coreOutdated.nextVersion
+          }\r\n\r\nWhich version would you like to update to (this setting can be changed in settings.json)?`,
+          { modal: true },
+          'LATEST (stable)',
+          'NEXT (risky)'
+        )
+        .then(async value => {
+          if (!value || value === '') {
+            return
+          } else {
+            const updateToNext = value.includes('NEXT')
+            await ngUpdate(updateToNext)
+          }
+        })
+    } else {
+      const isUpgradeVersionNext = getUpgradeVersion() === UpgradeVersion.Next
+      await ngUpdate(isUpgradeVersionNext)
+    }
   } else {
     if (!quiet) {
       vscode.window.showInformationMessage('Project is already evergreen 🌲 Good job!')
