@@ -14,7 +14,7 @@ export async function ngUpdate(next: boolean = false): Promise<boolean> {
   let latest = ''
   let vnext = ''
 
-  if (!upgradeVersionExists) {
+  if (!upgradeVersionExists()) {
     storeUpgradeVersion(next)
   }
 

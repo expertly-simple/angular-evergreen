@@ -70,21 +70,19 @@ async function checkAngularVersions(quiet = false) {
     if (!upgradeVersionExists()) {
       vscode.window
         .showInformationMessage(
-          `Your version of Angular is outdated.\r\nCurrent version: ${
+          `Your current version of Angular (${
             coreOutdated.currentVersion
-          }\r\nLatest version: ${coreOutdated.newVersion}\r\nNext Version: ${
+          }) is outdated.\r\n\r\nLatest version: ${
+            coreOutdated.newVersion
+          }\r\nNext Version: ${
             coreOutdated.nextVersion
-          }\r\nWhich version would you like to update to
-          (this setting can be changed in settings.json)?`,
+          }\r\n\r\nWhich version would you like to update to (this setting can be changed in settings.json)?`,
           { modal: true },
           'LATEST (stable)',
           'NEXT (risky)'
         )
         .then(async value => {
-          if (!value) {
-            return
-          }
-          if (value && !value.includes('Update')) {
+          if (!value || value === '') {
             return
           } else {
             const updateToNext = value.includes('NEXT')
