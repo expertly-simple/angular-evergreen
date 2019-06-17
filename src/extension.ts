@@ -101,16 +101,21 @@ async function checkAngularVersions(quiet = false) {
       .showInformationMessage(
         `Your version of Angular is outdated.\r\nCurrent version: ${
           coreOutdated.currentVersion
-        }\r\nNew version: ${coreOutdated.newVersion}`,
+        }\r\nLatest version: ${coreOutdated.newVersion}\r\nNext Version: ${
+          coreOutdated.nextVersion
+        }`,
         { modal: true },
-        'Update Angular',
-        'Not now'
+        'Update to Latest',
+        'Update to vNext(risky)'
       )
       .then(async value => {
-        if (value !== 'Update Angular') {
+        if (!value) {
+          return
+        }
+        if (value && !value.includes('Update')) {
           return
         } else {
-          await doAngularUpdate()
+          await ngUpdate(value.includes('vNext'))
         }
       })
   } else {

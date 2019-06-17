@@ -16,7 +16,7 @@ export async function ngUpdate(next: boolean = false): Promise<boolean> {
   render.write('\x1b[32m 🌲  Welcome to Angular Evergreen 🌲 \r\n\n')
   try {
     await runScript(render, 'npm install')
-    await runScript(render, 'ng update --all')
+    await runScript(render, updateCMD)
 
     // // get latest cli version
     // const clistdout = await execa.shell(CLI_CHK_CMD, { cwd: workspace.uri.path })
@@ -43,13 +43,4 @@ async function runScript(render: any, script: string) {
   const scriptStdout = await execa.shell(script, { cwd: workspace.uri.path })
   render.write(scriptStdout.stdout.replace(/[\n\r]/g, ' ').replace('   ', ''))
   render.write('\r\n')
-}
-
-function getVersionsFromStdout(stdout: string, versionType: string) {
-  const length = 25
-  const sIndex = stdout.indexOf(versionType)
-  const roughStr = stdout.substr(sIndex, length)
-  const colStr = roughStr.substr(roughStr.indexOf(':') + 1, 6)
-
-  return colStr.trim()
 }
