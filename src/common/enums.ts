@@ -13,3 +13,8 @@ export enum CheckFrequencyMilliseconds {
   WeeklySchedule = 604800000,
   BiWeeklySchedule = 1209600000,
 }
+
+export enum UpgradeVersion {
+  Latest = 'Latest',
+  Next = 'Next',
+}

@@ -39,6 +39,14 @@
             "Daily",
             "Weekly",
             "Bi-Weekly"
+            ]
+        },
+        "ng-evergreen.upgradeVersion": {
+          "description": "Which version of Angular to upgrade to",
+          "type": "string",
+          "enum": [
+            "Latest",
+            "Next"
           ]
         }
       }
