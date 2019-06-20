@@ -6,14 +6,10 @@ import {
   upgradeVersionExists,
 } from '../common/upgrade-version.helpers'
 
-const CLI_CHK_CMD = 'npm info @angular/cli'
 const NG_ALL_CMD = 'ng update --all'
 const workspace = vscode.workspace.workspaceFolders![0]
 
 export async function ngUpdate(next: boolean = false): Promise<boolean> {
-  let latest = ''
-  let vnext = ''
-
   if (!upgradeVersionExists()) {
     storeUpgradeVersion(next)
   }
@@ -25,19 +21,6 @@ export async function ngUpdate(next: boolean = false): Promise<boolean> {
   try {
     await runScript(render, 'npm install')
     await runScript(render, updateCMD)
-
-    // // get latest cli version
-    // const clistdout = await execa.shell(CLI_CHK_CMD, { cwd: workspace.uri.path })
-    // latest = getVersionsFromStdout(clistdout.stdout, 'latest')
-    // vnext = getVersionsFromStdout(clistdout.stdout, 'next')
-    // render.write(
-    //   `Available @Angular Cli Version: Latest: ${latest} Next: ${vnext} \r\n\n`
-    // )
-    // // todo: prompt just cli update here
-    // // try updatet
-    // render.write('Running Update - Please Wait.')
-    // const ngstdout = await execa.shell(updateCMD, { cwd: workspace.uri.path })
-    // render.write(ngstdout.stdout.replace(/[\n\r]/g, ' ').replace('   ', ''))
     return true
   } catch (error) {
     let msg = error.message.replace(/[\n\r]/g, ' ').replace('   ', '')

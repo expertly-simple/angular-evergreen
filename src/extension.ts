@@ -6,11 +6,11 @@ import {
   getCheckFrequency,
   getCheckFrequencyMilliseconds,
 } from './common/check-frequency.helpers'
-
 import { CheckFrequency, UpgradeVersion } from './common/enums'
+import { getUpgradeVersion, upgradeVersionExists } from './common/upgrade-version.helpers'
+
 import { isGitClean } from './file/git-manager'
 import { ngUpdate } from './file/angular-update'
-import { upgradeVersionExists, getUpgradeVersion } from './common/upgrade-version.helpers'
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')
@@ -18,7 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand('ng-evergreen.angularEvergreen', runEvergreen),
     vscode.commands.registerCommand('ng-evergreen.stopAngularEvergreen', stopEvergreen),
-    vscode.commands.registerCommand('ng-evergreen.checkForUpdates', checkAngularVersions)
+    vscode.commands.registerCommand('ng-evergreen.checkForUpdates', checkForUpdates)
   )
 
   // run it
@@ -36,7 +36,7 @@ function startJob() {
   // start new job
   const milliseconds = getCheckFrequencyMilliseconds()
   job = setInterval(async () => {
-    await checkAngularVersions(true)
+    await checkForUpdates(true)
   }, milliseconds)
 }
 
@@ -63,7 +63,7 @@ function runEvergreen() {
       .then(async value => {
         if (value !== 'Cancel') {
           await setCheckFrequency()
-          await checkAngularVersions()
+          await checkForUpdates()
           startJob()
         } else {
           return
@@ -93,7 +93,7 @@ async function setCheckFrequency() {
     })
 }
 
-async function checkAngularVersions(quiet = false) {
+async function checkForUpdates(quiet = false) {
   let cliOutdated = await checkForUpdate(ANG_CLI)
   let coreOutdated = await checkForUpdate(ANG_CORE)
 
@@ -116,13 +116,13 @@ async function checkAngularVersions(quiet = false) {
           if (!value || value === '') {
             return
           } else {
-            const updateToNext = value.includes('NEXT')
-            await ngUpdate(updateToNext)
+            const shouldUpdateToNext = value.includes('NEXT')
+            await doAngularUpdate(shouldUpdateToNext)
           }
         })
     } else {
-      const isUpgradeVersionNext = getUpgradeVersion() === UpgradeVersion.Next
-      await ngUpdate(isUpgradeVersionNext)
+      const shouldUpdateToNext = getUpgradeVersion() === UpgradeVersion.Next
+      await doAngularUpdate(shouldUpdateToNext)
     }
   } else {
     if (!quiet) {
@@ -131,25 +131,17 @@ async function checkAngularVersions(quiet = false) {
   }
 }
 
-async function doAngularUpdate() {
+async function doAngularUpdate(shouldUpdateToNext: boolean = false): Promise<void> {
   let gitClean = await isGitClean()
   if (gitClean) {
-    let message = 'Update completed! Project is evergreen 🌲'
-    const status = await ngUpdate()
-    // const terminal = vscode.window.createTerminal(`Angular Evergreen 🌲`)
-    // terminal.show()
-    // terminal.sendText('npm install')
-    // terminal.sendText('npx ng update @angular/cli')
-    // terminal.sendText('npx ng update @angular/core')
-    // terminal.sendText('npx ng update --all')
-
-    if (!status) {
-      message = "Hmm.. that didn't work. Try executing ng update --all --force"
-    }
+    const status = await ngUpdate(shouldUpdateToNext)
+    const message = status
+      ? 'Update completed! Project is Evergreen 🌲'
+      : 'Hmm... That didn\'t work. Try executing "ng update --all --force"'
     vscode.window.showInformationMessage(message)
   } else {
     vscode.window.showErrorMessage(
-      "Can't update: Ensure git branch is clean & up-to-date"
+      "Can't update. Ensure git branch is clean & up-to-date"
     )
   }
 }
