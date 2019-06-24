@@ -6,25 +6,27 @@ import {
   upgradeVersionExists,
 } from '../common/upgrade-version.helpers'
 
-const NG_ALL_CMD = 'ng update --all'
+const NPM_INSTALL_CMD = 'npm install'
+const NG_ALL_LATEST_CMD = 'ng update --all'
+const NG_ALL_NEXT_CMD = NG_ALL_LATEST_CMD + ' --next'
 const workspace = vscode.workspace.workspaceFolders![0]
 
-export async function ngUpdate(next: boolean = false): Promise<boolean> {
+export async function runNgUpdate(shouldUpdateToNext: boolean = false): Promise<boolean> {
   if (!upgradeVersionExists()) {
-    storeUpgradeVersion(next)
+    storeUpgradeVersion(shouldUpdateToNext)
   }
 
-  let updateCMD = next ? NG_ALL_CMD + ' --next' : NG_ALL_CMD
-  const render = (<any>vscode.window).createTerminalRenderer('Angular Evergreen 🌲')
-  render.terminal.show()
-  render.write('\x1b[32m 🌲  Welcome to Angular Evergreen 🌲 \r\n\n')
+  const terminal = (<any>vscode.window).createTerminalRenderer('Angular Evergreen 🌲')
+  terminal.terminal.show()
+  terminal.write('\x1b[32m 🌲  Welcome to Angular Evergreen 🌲 \r\n\n')
+
   try {
-    await runScript(render, 'npm install')
-    await runScript(render, updateCMD)
+    await runScript(terminal, NPM_INSTALL_CMD)
+    await runScript(terminal, shouldUpdateToNext ? NG_ALL_NEXT_CMD : NG_ALL_LATEST_CMD)
     return true
   } catch (error) {
     let msg = error.message.replace(/[\n\r]/g, ' ').replace('   ', '')
-    render.write(msg)
+    terminal.write(msg)
     return false
   }
 }

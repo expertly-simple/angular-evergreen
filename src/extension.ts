@@ -10,7 +10,7 @@ import { CheckFrequency, UpgradeVersion } from './common/enums'
 import { getUpgradeVersion, upgradeVersionExists } from './common/upgrade-version.helpers'
 
 import { isGitClean } from './file/git-manager'
-import { ngUpdate } from './file/angular-update'
+import { runNgUpdate } from './file/angular-update'
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')
@@ -99,15 +99,15 @@ async function checkForUpdates(quiet = false) {
 
   if (cliOutdated.needsUpdate || coreOutdated.needsUpdate) {
     if (!upgradeVersionExists()) {
+      const versionOutdatedMsg = `
+      Your current version of Angular(${coreOutdated.currentVersion}) is outdated.\r\n\r\n
+      Latest version: ${coreOutdated.newVersion}\r\n
+      Next Version: ${coreOutdated.nextVersion}\r\n\r\n
+      Which version would you like to update to (this setting can be changed in settings.json)?`
+
       vscode.window
         .showInformationMessage(
-          `Your current version of Angular (${
-            coreOutdated.currentVersion
-          }) is outdated.\r\n\r\nLatest version: ${
-            coreOutdated.newVersion
-          }\r\nNext Version: ${
-            coreOutdated.nextVersion
-          }\r\n\r\nWhich version would you like to update to (this setting can be changed in settings.json)?`,
+          versionOutdatedMsg,
           { modal: true },
           'LATEST (stable)',
           'NEXT (risky)'
@@ -134,7 +134,7 @@ async function checkForUpdates(quiet = false) {
 async function doAngularUpdate(shouldUpdateToNext: boolean = false): Promise<void> {
   let gitClean = await isGitClean()
   if (gitClean) {
-    const status = await ngUpdate(shouldUpdateToNext)
+    const status = await runNgUpdate(shouldUpdateToNext)
     const message = status
       ? 'Update completed! Project is Evergreen 🌲'
       : 'Hmm... That didn\'t work. Try executing "ng update --all --force"'
