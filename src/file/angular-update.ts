@@ -17,6 +17,7 @@ export enum UpdateArgs {
 
 export async function ngUpdate(args?: UpdateArgs[]): Promise<boolean> {
   // this is an issue because the user may choose latest the first time.
+  // really this should update each time or we need ui to set proper.
   /* if (!upgradeVersionExists()) {
     storeUpgradeVersion(next)
   } */

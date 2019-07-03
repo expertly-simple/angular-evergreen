@@ -100,10 +100,13 @@ async function checkAngularVersions(quiet = false) {
   if (cliOutdated.needsUpdate || coreOutdated.needsUpdate) {
     // this is an issue because this only checks for stored value.
     // when the cli or core is out dated the modal should show.
-    // this would be check for updates not automatic update.
+    // correct me this if is not for automatic update?
     //if (!upgradeVersionExists()) {
     showUpdateModal(coreOutdated)
-    //}
+    /* } else {
+      const isUpgradeVersionNext = getUpgradeVersion() === UpgradeVersion.Next
+      await ngUpdate(isUpgradeVersionNext)
+    } */
   } else {
     if (!quiet) {
       vscode.window.showInformationMessage('Project is already evergreen 🌲 Good job!')
