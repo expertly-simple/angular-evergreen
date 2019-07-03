@@ -1,4 +1,4 @@
-# ![](ng-evergreen-logo-32.png) Angular Evergreen [![CircleCI](https://circleci.com/gh/duluca/angular-evergreen.png)](https://circleci.com/gh/duluca/angular-evergreen/tree/master)
+# ![](ng-evergreen-logo-32.png) Angular Evergreen [![CircleCI](https://circleci.com/gh/expertly-simple/angular-evergreen.png)](https://circleci.com/gh/expertly-simple/angular-evergreen/tree/master)
 
 Keep your project's version of Angular and related packages evergreen with periodic update checks and upgrade your Angular CLI projects with ease.
 
