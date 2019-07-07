@@ -14,8 +14,8 @@ export function getCheckFrequencyMilliseconds(): number {
 
   // return frequency in milliseconds
   switch (checkFrequencyValue) {
-    case CheckFrequency.EveryMinute:
-      return CheckFrequencyMilliseconds.EveryMinuteSchedule
+    case CheckFrequency.OnLoad:
+      return -1
     case CheckFrequency.Hourly:
       return CheckFrequencyMilliseconds.HourlySchedule
     case CheckFrequency.Daily:

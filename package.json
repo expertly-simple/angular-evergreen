@@ -42,7 +42,7 @@
           "description": "How often Angular Evergreen should check for available Angular updates",
           "type": "string",
           "enum": [
-            "Every Minute",
+            "On Load",
             "Hourly",
             "Daily",
             "Weekly",
@@ -51,7 +51,8 @@
         }
       }
     },
-    "commands": [{
+    "commands": [
+      {
         "command": "ng-evergreen.angularEvergreen",
         "title": "Launch Angular Evergreen",
         "category": "Angular Evergreen"

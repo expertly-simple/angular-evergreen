@@ -29,6 +29,8 @@ export function activate(context: vscode.ExtensionContext) {
   const isFirstRun = !getCheckFrequency() || getCheckFrequency() === ''
   if (isFirstRun) {
     vscode.commands.executeCommand('ng-evergreen.angularEvergreen')
+  } else if (getCheckFrequency() === 'On Load') {
+    checkAngularVersions()
   } else {
     startJob()
   }
@@ -60,7 +62,6 @@ function stopEvergreen() {
 }
 
 function runEvergreen() {
-
   vscode.window
     .showInformationMessage(
       'Keep Angular evergreen?',
@@ -72,12 +73,13 @@ function runEvergreen() {
       if (value !== 'Cancel') {
         await setCheckFrequency()
         await checkAngularVersions()
-        startJob()
+        if (getCheckFrequency() !== 'On Load') {
+          startJob()
+        }
       } else {
         return
       }
-  })
-
+    })
 }
 
 async function setCheckFrequency() {
@@ -85,7 +87,7 @@ async function setCheckFrequency() {
     .showInformationMessage(
       'How often would you like to check for updates (this can be changed in settings.json)?',
       {},
-      CheckFrequency.EveryMinute,
+      CheckFrequency.OnLoad,
       CheckFrequency.Hourly,
       CheckFrequency.Daily,
       CheckFrequency.Weekly,
@@ -104,12 +106,7 @@ async function checkAngularVersions(quiet = false) {
   let coreOutdated = await checkForUpdate(ANG_CORE)
 
   if (cliOutdated.needsUpdate || coreOutdated.needsUpdate) {
-    if (!upgradeVersionExists()) {
-      showUpdateModal(coreOutdated)
-    } else {
-      const isUpgradeVersionNext = getUpgradeVersion() === UpgradeVersion.Next
-      await ngUpdate(isUpgradeVersionNext ? [UpdateArgs.next] : [])
-    }
+    showUpdateModal(coreOutdated)
   } else {
     if (!quiet) {
       vscode.window.showInformationMessage('Project is already evergreen 🌲 Good job!')

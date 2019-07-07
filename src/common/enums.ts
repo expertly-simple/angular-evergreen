@@ -1,5 +1,5 @@
 export enum CheckFrequency {
-  EveryMinute = 'Every Minute',
+  OnLoad = 'On Load',
   Hourly = 'Hourly',
   Daily = 'Daily',
   Weekly = 'Weekly',
@@ -7,7 +7,6 @@ export enum CheckFrequency {
 }
 
 export enum CheckFrequencyMilliseconds {
-  EveryMinuteSchedule = 60000,
   HourlySchedule = 3600000,
   DailySchedule = 86400000,
   WeeklySchedule = 604800000,
