@@ -10,7 +10,11 @@ import {
 import { CheckFrequency, UpgradeVersion } from './common/enums'
 import { isGitClean } from './file/git-manager'
 import { ngUpdate, UpdateArgs } from './file/angular-update'
-import { upgradeVersionExists, getUpgradeVersion } from './common/upgrade-version.helpers'
+import {
+  upgradeVersionExists,
+  getUpgradeVersion,
+  storeUpgradeVersion,
+} from './common/upgrade-version.helpers'
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')
@@ -98,15 +102,12 @@ async function checkAngularVersions(quiet = false) {
   let coreOutdated = await checkForUpdate(ANG_CORE)
 
   if (cliOutdated.needsUpdate || coreOutdated.needsUpdate) {
-    // this is an issue because this only checks for stored value.
-    // when the cli or core is out dated the modal should show.
-    // correct me this if is not for automatic update?
-    //if (!upgradeVersionExists()) {
-    showUpdateModal(coreOutdated)
-    /* } else {
+    if (!upgradeVersionExists()) {
+      showUpdateModal(coreOutdated)
+    } else {
       const isUpgradeVersionNext = getUpgradeVersion() === UpgradeVersion.Next
-      await ngUpdate(isUpgradeVersionNext)
-    } */
+      await ngUpdate(isUpgradeVersionNext ? [UpdateArgs.next] : [])
+    }
   } else {
     if (!quiet) {
       vscode.window.showInformationMessage('Project is already evergreen 🌲 Good job!')
@@ -155,7 +156,11 @@ function showUpdateModal(coreOutdated: IVersionStatus) {
       if (!value || value === '') {
         return
       } else {
-        await ngUpdate(value.includes('NEXT') ? [UpdateArgs.next] : [])
+        const isNext = value.includes('NEXT')
+        if (!upgradeVersionExists()) {
+          storeUpgradeVersion(isNext)
+        }
+        await ngUpdate(isNext ? [UpdateArgs.next] : [])
       }
     })
 }
