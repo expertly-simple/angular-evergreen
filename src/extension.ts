@@ -26,7 +26,12 @@ export function activate(context: vscode.ExtensionContext) {
   )
 
   // run it
-  vscode.commands.executeCommand('ng-evergreen.angularEvergreen')
+  const isFirstRun = !getCheckFrequency() || getCheckFrequency() === ''
+  if (isFirstRun) {
+    vscode.commands.executeCommand('ng-evergreen.angularEvergreen')
+  } else {
+    startJob()
+  }
 }
 
 let job: NodeJS.Timeout | null = null
@@ -55,27 +60,24 @@ function stopEvergreen() {
 }
 
 function runEvergreen() {
-  const isFirstRun = !getCheckFrequency() || getCheckFrequency() === ''
-  if (isFirstRun) {
-    vscode.window
-      .showInformationMessage(
-        'Keep Angular evergreen?',
-        {},
-        'Check for updates periodically',
-        'Cancel'
-      )
-      .then(async value => {
-        if (value !== 'Cancel') {
-          await setCheckFrequency()
-          await checkAngularVersions()
-          startJob()
-        } else {
-          return
-        }
-      })
-  } else {
-    startJob()
-  }
+
+  vscode.window
+    .showInformationMessage(
+      'Keep Angular evergreen?',
+      {},
+      'Check for updates periodically',
+      'Cancel'
+    )
+    .then(async value => {
+      if (value !== 'Cancel') {
+        await setCheckFrequency()
+        await checkAngularVersions()
+        startJob()
+      } else {
+        return
+      }
+  })
+
 }
 
 async function setCheckFrequency() {
