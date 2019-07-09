@@ -8,8 +8,7 @@ import {
 } from './common/check-frequency.helpers'
 
 import { CheckFrequency, UpgradeVersion } from './common/enums'
-import { isGitClean } from './file/git-manager'
-import { ngUpdate, UpdateArgs } from './file/angular-update'
+import { tryAngularUpdate, UpdateArgs } from './file/angular-update'
 import {
   upgradeVersionExists,
   getUpgradeVersion,
@@ -108,32 +107,7 @@ async function checkAngularVersions(quiet = false) {
   if (cliOutdated.needsUpdate || coreOutdated.needsUpdate) {
     showUpdateModal(coreOutdated)
   } else {
-    if (!quiet) {
-      vscode.window.showInformationMessage('Project is already evergreen 🌲 Good job!')
-    }
-  }
-}
-
-async function doAngularUpdate() {
-  let gitClean = await isGitClean()
-  if (gitClean) {
-    let message = 'Update completed! Project is evergreen 🌲'
-    const status = await ngUpdate()
-    // const terminal = vscode.window.createTerminal(`Angular Evergreen 🌲`)
-    // terminal.show()
-    // terminal.sendText('npm install')
-    // terminal.sendText('npx ng update @angular/cli')
-    // terminal.sendText('npx ng update @angular/core')
-    // terminal.sendText('npx ng update --all')
-
-    if (!status) {
-      message = "Hmm.. that didn't work. Try executing ng update --all --force"
-    }
-    vscode.window.showInformationMessage(message)
-  } else {
-    vscode.window.showErrorMessage(
-      "Can't update: You should ensure git branch is clean & up-to-date"
-    )
+    vscode.window.showInformationMessage('Project is already evergreen 🌲 Good job!')
   }
 }
 
@@ -159,7 +133,7 @@ function showUpdateModal(coreOutdated: IVersionStatus) {
         if (!upgradeVersionExists()) {
           storeUpgradeVersion(isNext)
         }
-        await ngUpdate(isNext ? [UpdateArgs.next] : [])
+        await tryAngularUpdate(isNext ? [UpdateArgs.next] : [])
       }
     })
 }
