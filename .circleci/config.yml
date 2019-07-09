@@ -22,7 +22,7 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      - run: npm run compile
+      - run: npm run vscode:prepublish
 
       # - run: npm test
 
