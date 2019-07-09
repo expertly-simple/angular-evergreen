@@ -1,13 +1,25 @@
 import * as execa from 'execa'
 import * as vscode from 'vscode'
+import { isGitClean } from './git-manager'
 
-const CLI_CHK_CMD = 'npm info @angular/cli'
 const NG_ALL_CMD = 'ng update --all '
 const workspace = vscode.workspace.workspaceFolders![0]
 
 export enum UpdateArgs {
   next = '--next',
   force = '--force',
+}
+
+export async function tryAngularUpdate(updateArgs: UpdateArgs[]) {
+  let gitClean = await isGitClean()
+  if (gitClean) {
+    let message = 'Update completed! Project is evergreen 🌲'
+    const status = await ngUpdate(updateArgs)
+  } else {
+    vscode.window.showErrorMessage(
+      "Can't update: You should ensure git branch is clean & up-to-date"
+    )
+  }
 }
 
 export async function ngUpdate(args?: UpdateArgs[]): Promise<boolean> {
