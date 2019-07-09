@@ -17,9 +17,8 @@ Keep your project's version of Angular and related packages evergreen with perio
 
 ## Upcoming Features
 
-- Subscribe to `stable`, `alpha`, `beta`, `rc` update channels
+- Subscribe to `latest` or `next` update channels
 - Assist users clean git branch before update
-- Help run `--force` when update fails
 - Fix `typescript` version, after a `--force` install
 - Execute `ng build` and `ng test` after upgrade
 - Ability to rollback upgrades
@@ -35,9 +34,18 @@ Projects setup with `@angular/cli` package.
 
 ## Extension Settings
 
-_Coming soon_
+```
+{
+  "ng-evergreen.checkFrequency": "On Load" | "Hourly" | "Daily" | "Weekly" | "Bi-Weekly"
+}
+```
 
 ## Release Notes
+
+### 0.6.0
+- Check frequency setting to remember your preffered update check frequency
+- No longer nags at every launch
+- Help run `--force` when update fails
 
 ### 0.5.2
 
