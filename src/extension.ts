@@ -1,13 +1,23 @@
 import * as vscode from 'vscode'
 
-import { ANG_CLI, ANG_CORE, checkForUpdate } from './file/package-manager'
+import { ANG_CLI, ANG_CORE, IVersionStatus, checkForUpdate } from './file/package-manager'
 import {
   CHECK_FREQUENCY_KEY,
   getCheckFrequency,
   getCheckFrequencyMilliseconds,
 } from './common/check-frequency.helpers'
-import { CheckFrequency, UpgradeVersion } from './common/enums'
-import { getUpgradeVersion, upgradeVersionExists } from './common/upgrade-version.helpers'
+import { CheckFrequency, UpgradeChannel } from './common/enums'
+import {
+  clearVersionToSkip,
+  getVersionToSkip,
+  storeVersionToSkip,
+  versionToSkipExists,
+} from './common/version-to-skip.helpers'
+import {
+  getUpgradeChannel,
+  storeUpgradeChannel,
+  upgradeChannelExists,
+} from './common/upgrade-channel.helpers'
 
 import { isGitClean } from './file/git-manager'
 import { runNgUpdate } from './file/angular-update'
@@ -63,6 +73,7 @@ function runEvergreen() {
       .then(async value => {
         if (value !== 'Cancel') {
           await setCheckFrequency()
+          await getUpgradeChannelPreference()
           await checkForUpdates()
           startJob()
         } else {
@@ -72,77 +83,141 @@ function runEvergreen() {
   } else {
     startJob()
   }
+
+  async function setCheckFrequency() {
+    await vscode.window
+      .showInformationMessage(
+        'How often would you like to check for updates (this can be changed in settings.json)?',
+        {},
+        CheckFrequency.EveryMinute,
+        CheckFrequency.Hourly,
+        CheckFrequency.Daily,
+        CheckFrequency.Weekly,
+        CheckFrequency.BiWeekly
+      )
+      .then(async checkFrequencyValue => {
+        await vscode.workspace
+          .getConfiguration()
+          .update(CHECK_FREQUENCY_KEY, checkFrequencyValue)
+      })
+  }
 }
 
-async function setCheckFrequency() {
-  await vscode.window
-    .showInformationMessage(
-      'How often would you like to check for updates (this can be changed in settings.json)?',
-      {},
-      CheckFrequency.EveryMinute,
-      CheckFrequency.Hourly,
-      CheckFrequency.Daily,
-      CheckFrequency.Weekly,
-      CheckFrequency.BiWeekly
-    )
-    .then(async checkFrequencyValue => {
-      // set user's update frequency preference in settings.json
-      await vscode.workspace
-        .getConfiguration()
-        .update(CHECK_FREQUENCY_KEY, checkFrequencyValue)
+async function getUpgradeChannelPreference() {
+  const message = `Going forward, would you like to check for Latest releases (stable)
+       or Next releases (risky)? This can be changed in the future in settings.json.`
+  vscode.window
+    .showInformationMessage(message, { modal: true }, 'Latest', 'Next')
+    .then(async value => {
+      if (!value || value === '') {
+        return
+      } else {
+        const shouldUpdateToNext = value.includes('Next')
+        storeUpgradeChannel(shouldUpdateToNext)
+      }
     })
 }
 
 async function checkForUpdates(quiet = false) {
-  let cliOutdated = await checkForUpdate(ANG_CLI)
-  let coreOutdated = await checkForUpdate(ANG_CORE)
+  const cliOutdated = await checkForUpdate(ANG_CLI)
+  const coreOutdated = await checkForUpdate(ANG_CORE)
 
   if (cliOutdated.needsUpdate || coreOutdated.needsUpdate) {
-    if (!upgradeVersionExists()) {
-      const versionOutdatedMsg = `
-      Your current version of Angular(${coreOutdated.currentVersion}) is outdated.\r\n\r\n
-      Latest version: ${coreOutdated.newVersion}\r\n
-      Next Version: ${coreOutdated.nextVersion}\r\n\r\n
-      Which version would you like to update to (this setting can be changed in settings.json)?`
-
-      vscode.window
-        .showInformationMessage(
-          versionOutdatedMsg,
-          { modal: true },
-          'LATEST (stable)',
-          'NEXT (risky)'
-        )
-        .then(async value => {
-          if (!value || value === '') {
-            return
-          } else {
-            const shouldUpdateToNext = value.includes('NEXT')
-            await doAngularUpdate(shouldUpdateToNext)
-          }
-        })
-    } else {
-      const shouldUpdateToNext = getUpgradeVersion() === UpgradeVersion.Next
-      await doAngularUpdate(shouldUpdateToNext)
+    if (!upgradeChannelExists()) {
+      await getUpgradeChannelPreference()
     }
+    const shouldUpdateToNext = getUpgradeChannel() === UpgradeChannel.Next
+    await doAngularUpdate(shouldUpdateToNext)
   } else {
     if (!quiet) {
-      vscode.window.showInformationMessage('Project is already evergreen 🌲 Good job!')
+      vscode.window.showInformationMessage('Project is already Evergreen. 🌲 Good job!')
     }
   }
 }
 
 async function doAngularUpdate(shouldUpdateToNext: boolean = false): Promise<void> {
-  let gitClean = await isGitClean()
-  if (gitClean) {
-    const status = await runNgUpdate(shouldUpdateToNext)
-    const message = status
-      ? 'Update completed! Project is Evergreen 🌲'
-      : 'Hmm... That didn\'t work. Try executing "ng update --all --force"'
-    vscode.window.showInformationMessage(message)
+  const cliOutdated = await checkForUpdate(ANG_CLI)
+  const coreOutdated = await checkForUpdate(ANG_CORE)
+
+  if (versionToSkipExists) {
+    const versionToSkip = getVersionToSkip()
+    if (
+      !shouldSkipVersion(shouldUpdateToNext, versionToSkip, coreOutdated, cliOutdated)
+    ) {
+      await update()
+      return
+    }
   } else {
-    vscode.window.showErrorMessage(
-      "Can't update. Ensure git branch is clean & up-to-date"
-    )
+    const channelText = shouldUpdateToNext ? '"next"' : '"stable"'
+    const newCoreVersion = shouldUpdateToNext
+      ? coreOutdated.nextVersion
+      : coreOutdated.latestVersion
+    const newCliVersion = shouldUpdateToNext
+      ? cliOutdated.nextVersion
+      : cliOutdated.latestVersion
+    const versionOutdatedMsg = `New update available! One or more of your Angular
+     packages are behind the most recent ${channelText} release.
+      \r\nAngular Core: ${coreOutdated.currentVersion} -> ${newCoreVersion}
+      \r\nAngular CLI: ${cliOutdated.currentVersion} -> ${newCliVersion}
+      \r\nWould you like to update?`
+    vscode.window
+      .showInformationMessage(
+        versionOutdatedMsg,
+        { modal: true },
+        'Update now',
+        'Remind me next release'
+      )
+      .then(async value => {
+        if (!value || value === '') {
+          return
+        } else if (value.includes('Remind me')) {
+          storeVersionToSkip(
+            shouldUpdateToNext ? coreOutdated.nextVersion : coreOutdated.currentVersion
+          )
+          return
+        } else {
+          await update()
+          return
+        }
+      })
+  }
+
+  async function update() {
+    let gitClean = await isGitClean()
+    if (gitClean) {
+      const status = await runNgUpdate(shouldUpdateToNext)
+      let message = ''
+      if (status) {
+        message = 'Update completed! Project is Evergreen 🌲'
+        clearVersionToSkip()
+      } else {
+        message = 'Hmm... That didn\'t work. Try executing "ng update --all --force"'
+      }
+      vscode.window.showInformationMessage(message)
+    } else {
+      vscode.window.showErrorMessage(
+        "Can't update. Ensure git branch is clean & up-to-date"
+      )
+    }
+  }
+
+  function shouldSkipVersion(
+    shouldUpdateToNext: boolean,
+    versionToSkip: string | undefined,
+    coreOutdated: IVersionStatus,
+    cliOutdated: IVersionStatus
+  ): boolean {
+    if (shouldUpdateToNext) {
+      return versionToSkip === coreOutdated.nextVersion &&
+        versionToSkip === cliOutdated.nextVersion
+        ? true
+        : false
+    } else {
+      return versionToSkip === coreOutdated.latestVersion &&
+        versionToSkip === cliOutdated.latestVersion
+        ? true
+        : false
+    }
   }
 }
 

@@ -30,8 +30,8 @@
     "configuration": {
       "title": "Angular Evergreen",
       "properties": {
-        "ng-evergreen.upgradeVersion": {
-          "description": "Which version of Angular to upgrade to",
+        "ng-evergreen.upgradeChannel": {
+          "description": "Which version channel (latest or next) of Angular to upgrade to",
           "type": "string",
           "enum": [
             "Latest",
@@ -48,6 +48,10 @@
             "Weekly",
             "Bi-Weekly"
           ]
+        },
+        "ng-evergreen.versionToSkip": {
+          "description": "Which version of Angular to skip updates for",
+          "type": "string"
         }
       }
     },

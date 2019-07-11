@@ -1,9 +1,9 @@
-import * as vscode from 'vscode'
 import * as execa from 'execa'
+import * as vscode from 'vscode'
 
 import fs = require('fs')
 
-const latestVersion = require('get-latest-version')
+const getLatestVersion = require('get-latest-version')
 const workspace = vscode.workspace.workspaceFolders![0]
 
 export const ANG_CLI = '@angular/cli'
@@ -79,20 +79,21 @@ async function getNextVersion(packageName: string) {
 export interface IVersionStatus {
   needsUpdate: boolean
   currentVersion: string
-  newVersion: string
+  latestVersion: string
   nextVersion: string
 }
 
 export async function checkForUpdate(packageName: string): Promise<IVersionStatus> {
   let currentVersion = await getCurrentVersion(packageName)
-  const newVersion = await latestVersion(packageName)
+  const latestVersion = await getLatestVersion(packageName)
   const nextVersion = await getNextVersion(packageName)
   currentVersion = currentVersion.replace('~', '').replace('^', '')
 
   return {
-    needsUpdate: currentVersion[0] < newVersion[0],
+    needsUpdate:
+      currentVersion[0] < latestVersion[0] || currentVersion[0] < nextVersion[0],
     currentVersion: currentVersion,
-    newVersion: newVersion,
+    latestVersion: latestVersion,
     nextVersion: nextVersion,
   }
 }
