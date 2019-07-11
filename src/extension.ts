@@ -46,7 +46,7 @@ function startJob() {
   // start new job
   const milliseconds = getCheckFrequencyMilliseconds()
   job = setInterval(async () => {
-    await checkForUpdates(true)
+    await runEvergreen()
   }, milliseconds)
 }
 
@@ -104,8 +104,7 @@ function runEvergreen() {
 }
 
 async function getUpgradeChannelPreference() {
-  const message = `Going forward, would you like to check for Latest releases (stable)
-       or Next releases (risky)? This can be changed in the future in settings.json.`
+  const message = `Going forward, would you like to check for Latest releases (stable) or Next releases (risky)? This can be changed in the future in settings.json.`
   vscode.window
     .showInformationMessage(message, { modal: true }, 'Latest', 'Next')
     .then(async value => {
@@ -139,7 +138,7 @@ async function doAngularUpdate(shouldUpdateToNext: boolean = false): Promise<voi
   const cliOutdated = await checkForUpdate(ANG_CLI)
   const coreOutdated = await checkForUpdate(ANG_CORE)
 
-  if (versionToSkipExists) {
+  if (versionToSkipExists()) {
     const versionToSkip = getVersionToSkip()
     if (
       !shouldSkipVersion(shouldUpdateToNext, versionToSkip, coreOutdated, cliOutdated)
@@ -155,8 +154,7 @@ async function doAngularUpdate(shouldUpdateToNext: boolean = false): Promise<voi
     const newCliVersion = shouldUpdateToNext
       ? cliOutdated.nextVersion
       : cliOutdated.latestVersion
-    const versionOutdatedMsg = `New update available! One or more of your Angular
-     packages are behind the most recent ${channelText} release.
+    const versionOutdatedMsg = `New update available! One or more of your Angular packages are behind the most recent ${channelText} release.
       \r\nAngular Core: ${coreOutdated.currentVersion} -> ${newCoreVersion}
       \r\nAngular CLI: ${cliOutdated.currentVersion} -> ${newCliVersion}
       \r\nWould you like to update?`
