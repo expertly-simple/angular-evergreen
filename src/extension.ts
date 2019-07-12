@@ -1,6 +1,7 @@
 import * as vscode from 'vscode'
 
 import { ANG_CLI, ANG_CORE, IVersionStatus, checkForUpdate } from './file/package-manager'
+
 import {
   CHECK_FREQUENCY_KEY,
   checkFrequencyExists,
@@ -243,5 +244,15 @@ async function update(shouldUpdateToNext: boolean): Promise<void> {
     vscode.window.showErrorMessage(
       "Can't update. Ensure git branch is clean & up-to-date"
     )
-  }
+    .then(async value => {
+      if (!value || value === '') {
+        return
+      } else {
+        const isNext = value.includes('NEXT')
+        if (!upgradeVersionExists()) {
+          storeUpgradeVersion(isNext)
+        }
+        await tryAngularUpdate(isNext ? [UpdateArgs.next] : [])
+      }
+    })
 }

@@ -1,5 +1,6 @@
 import * as execa from 'execa'
 import * as vscode from 'vscode'
+import { isGitClean } from './git-manager'
 
 const NPM_INSTALL_CMD = 'npm install'
 const NG_ALL_LATEST_CMD = 'ng update --all'
@@ -22,9 +23,47 @@ export async function runNgUpdate(shouldUpdateToNext: boolean = false): Promise<
   }
 }
 
-async function runScript(render: any, script: string) {
+async function runScript(render: any, script: string, format: boolean = true) {
   render.write(`Executing: ${script}\r\n`)
   const scriptStdout = await execa.shell(script, { cwd: workspace.uri.path })
-  render.write(scriptStdout.stdout.replace(/[\n\r]/g, ' ').replace('   ', ''))
+  const renderText = format
+    ? scriptStdout.stdout.replace(/[\n\r]/g, ' ').replace(/\s+/, '')
+    : scriptStdout.stdout
+  render.write(renderText)
   render.write('\r\n')
+}
+
+function checkStringForErrors(inString: string): boolean {
+  return (
+    inString.includes('Error') ||
+    inString.includes('ERROR') ||
+    inString.includes('Fail') ||
+    inString.includes('failed')
+  )
+}
+
+function forceUpdate(render: any, cmd: string) {
+  vscode.window
+    .showErrorMessage(
+      "Can't update: Do you want to try and force the update?",
+      {},
+      'CANCEL',
+      'FORCE (risky)'
+    )
+    .then(async value => {
+      if (!value || value === '') {
+        return
+      } else {
+        if (value.includes('FORCE')) {
+          try {
+            render.write('\r\n\r\nMay the Force be with you! \r\n')
+            await runScript(render, cmd)
+          } catch (error) {
+            let msg = error.message.replace(/[\n\r]/g, ' ').replace(/\s+/, '')
+            render.write(`\r\n ${msg} \r\n 🌲 Force Complete 🌲\r\n`)
+          }
+        }
+        return
+      }
+    })
 }

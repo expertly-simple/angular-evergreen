@@ -42,7 +42,7 @@
           "description": "How often Angular Evergreen should check for available Angular updates",
           "type": "string",
           "enum": [
-            "Every Minute",
+            "On Load",
             "Hourly",
             "Daily",
             "Weekly",
@@ -91,7 +91,7 @@
     "ts-loader": "^6.0.2",
     "tslint": "^5.12.1",
     "typescript": "^3.3.1",
-    "vsce": "^1.62.0",
+    "vsce": "^1.64.0",
     "vscode": "^1.1.28",
     "webpack": "^4.33.0",
     "webpack-cli": "^3.3.2"
