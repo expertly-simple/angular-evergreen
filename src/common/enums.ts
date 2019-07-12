@@ -7,6 +7,7 @@ export enum CheckFrequency {
 }
 
 export enum CheckFrequencyMilliseconds {
+  OnLoadSchedule = -1,
   HourlySchedule = 3600000,
   DailySchedule = 86400000,
   WeeklySchedule = 604800000,

@@ -1,5 +1,7 @@
 import * as execa from 'execa'
 import * as vscode from 'vscode'
+
+import { clearVersionToSkip } from '../common/version-to-skip.helpers'
 import { isGitClean } from './git-manager'
 
 const NPM_INSTALL_CMD = 'npm install'
@@ -7,7 +9,26 @@ const NG_ALL_LATEST_CMD = 'ng update --all'
 const NG_ALL_NEXT_CMD = NG_ALL_LATEST_CMD + ' --next'
 const workspace = vscode.workspace.workspaceFolders![0]
 
-export async function runNgUpdate(shouldUpdateToNext: boolean = false): Promise<boolean> {
+export async function tryUpdate(shouldUpdateToNext: boolean): Promise<void> {
+  const gitClean = await isGitClean()
+  if (gitClean) {
+    const status = await runNgUpdate(shouldUpdateToNext)
+    let message = ''
+    if (status) {
+      message = 'Update completed! Project is Evergreen 🌲'
+      clearVersionToSkip()
+    } else {
+      message = 'Hmm... That didn\'t work. Try executing "ng update --all --force"'
+    }
+    vscode.window.showInformationMessage(message)
+  } else {
+    vscode.window.showErrorMessage(
+      "Can't update. You should ensure your git branch is clean & up-to-date"
+    )
+  }
+}
+
+async function runNgUpdate(shouldUpdateToNext: boolean = false): Promise<boolean> {
   const terminal = (<any>vscode.window).createTerminalRenderer('Angular Evergreen 🌲')
   terminal.terminal.show()
   terminal.write('\x1b[32m 🌲  Welcome to Angular Evergreen 🌲 \r\n\n')
