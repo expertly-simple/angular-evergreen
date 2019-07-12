@@ -28,3 +28,7 @@ export function getCheckFrequencyMilliseconds(): number {
       return CheckFrequencyMilliseconds.DailySchedule
   }
 }
+
+export function checkFrequencyExists(): boolean {
+  return !!getCheckFrequency() && getCheckFrequency() !== ''
+}

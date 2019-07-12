@@ -55,10 +55,9 @@
         }
       }
     },
-    "commands": [
-      {
-        "command": "ng-evergreen.angularEvergreen",
-        "title": "Launch Angular Evergreen",
+    "commands": [{
+        "command": "ng-evergreen.startAngularEvergreen",
+        "title": "Start Angular Evergreen",
         "category": "Angular Evergreen"
       },
       {
