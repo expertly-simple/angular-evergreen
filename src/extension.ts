@@ -205,7 +205,6 @@ async function doAngularUpdate(
     coreOutdated,
     cliOutdated
   )
-
   if (!shouldSkipVersion) {
     await tryUpdate(shouldUpdateToNext)
     return
