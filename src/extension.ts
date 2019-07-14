@@ -180,16 +180,14 @@ async function getVersionToSkipPreference(): Promise<string | undefined> {
   return versionToSkipVal
 }
 
-async function checkForUpdates(quiet = false): Promise<void> {
+async function checkForUpdates(): Promise<void> {
   const coreOutdated = await checkForUpdate(ANG_CORE)
   const cliOutdated = await checkForUpdate(ANG_CLI)
   if (cliOutdated.needsUpdate || coreOutdated.needsUpdate) {
     const shouldUpdateToNext = getUpgradeChannel() === UpgradeChannel.Next
     await doAngularUpdate(coreOutdated, cliOutdated, shouldUpdateToNext)
   } else {
-    if (!quiet) {
-      vscode.window.showInformationMessage('Project is already Evergreen. 🌲 Good job!')
-    }
+    vscode.window.showInformationMessage('Project is already Evergreen. 🌲 Good job!')
   }
 }
 
