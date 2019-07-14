@@ -27,7 +27,7 @@ export async function ngUpdate(args?: UpdateArgs[]): Promise<boolean> {
 
   const renderer = (<any>vscode.window).createTerminalRenderer('Angular Evergreen 🌲')
   renderer.terminal.show()
-  renderer.write('\x1b[32m 🌲Welcome to Angular Evergreen 🌲 \r\n\n')
+  renderer.write('\x1b[32m 🌲 Welcome to Angular Evergreen 🌲 \r\n\n')
 
   try {
     await runScript(renderer, 'npm install')

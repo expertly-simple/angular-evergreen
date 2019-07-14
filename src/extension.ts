@@ -40,10 +40,8 @@ async function startEvergreen(): Promise<void> {
     clearInterval(job)
   }
 
-  const firstRun = !checkFrequencyExists()
   const userWantsToRunEvergreen = await shouldRunEvergreen()
-
-  if (firstRun && !userWantsToRunEvergreen) {
+  if (!userWantsToRunEvergreen) {
     return
   }
 
