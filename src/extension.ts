@@ -165,8 +165,8 @@ async function getVersionToSkipPreference(): Promise<string | undefined> {
   let versionToSkipVal = await vscode.window.showInformationMessage(
     versionOutdatedMsg,
     { modal: true },
-    'Update now',
-    'Remind me next release'
+    'Update Now',
+    'Remind Me Next Release'
   )
 
   if (versionToSkipVal && versionToSkipVal.includes('Remind me')) {
