@@ -52,6 +52,7 @@ async function startEvergreen(): Promise<void> {
     // start new job
     const milliseconds = getCheckFrequencyMilliseconds()
     job = setInterval(async () => {
+      // run every X milliseconds
       await runEvergreen()
     }, milliseconds)
   }
