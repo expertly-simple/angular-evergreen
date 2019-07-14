@@ -8,6 +8,7 @@ import {
   getCheckFrequencyMilliseconds,
 } from './common/check-frequency.helpers'
 import { CheckFrequency, UpgradeChannel } from './common/enums'
+import { UpdateArgs, tryAngularUpdate } from './file/angular-update'
 import {
   getUpgradeChannel,
   storeUpgradeChannel,
@@ -18,8 +19,6 @@ import {
   storeVersionToSkip,
   versionToSkipExists,
 } from './common/version-to-skip.helpers'
-
-import { tryUpdate } from './file/angular-update'
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')
@@ -41,10 +40,11 @@ async function startEvergreen(): Promise<void> {
     clearInterval(job)
   }
 
-  if (!checkFrequencyExists()) {
-    if ((await shouldRunEvergreen()) === false) {
-      return
-    }
+  const firstRun = !checkFrequencyExists()
+  const userWantsToRunEvergreen = await shouldRunEvergreen()
+
+  if (firstRun && !userWantsToRunEvergreen) {
+    return
   }
 
   // initial run
@@ -204,7 +204,7 @@ async function doAngularUpdate(
     cliOutdated
   )
   if (!shouldSkipVersion) {
-    await tryUpdate(shouldUpdateToNext)
+    await tryAngularUpdate(shouldUpdateToNext ? [UpdateArgs.next] : [])
     return
   }
 }

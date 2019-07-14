@@ -1,57 +1,52 @@
 import * as execa from 'execa'
 import * as vscode from 'vscode'
 
-import { clearVersionToSkip } from '../common/version-to-skip.helpers'
 import { isGitClean } from './git-manager'
 
-const NPM_INSTALL_CMD = 'npm install'
-const NG_ALL_LATEST_CMD = 'ng update --all'
-const NG_ALL_NEXT_CMD = NG_ALL_LATEST_CMD + ' --next'
+const NG_ALL_CMD = 'ng update --all '
 const workspace = vscode.workspace.workspaceFolders![0]
 
-export async function tryUpdate(shouldUpdateToNext: boolean): Promise<void> {
-  const gitClean = await isGitClean()
+export enum UpdateArgs {
+  next = '--next',
+  force = '--force',
+}
+
+export async function tryAngularUpdate(updateArgs: UpdateArgs[]) {
+  let gitClean = await isGitClean()
   if (gitClean) {
-    const status = await runNgUpdate(shouldUpdateToNext)
-    let message = ''
-    if (status) {
-      message = 'Update completed! Project is Evergreen 🌲'
-      clearVersionToSkip()
-    } else {
-      message = 'Hmm... That didn\'t work. Try executing "ng update --all --force"'
-    }
-    vscode.window.showInformationMessage(message)
+    await ngUpdate(updateArgs)
   } else {
     vscode.window.showErrorMessage(
-      "Can't update. You should ensure your git branch is clean & up-to-date"
+      "Can't update: You should ensure git branch is clean & up-to-date"
     )
   }
 }
 
-async function runNgUpdate(shouldUpdateToNext: boolean = false): Promise<boolean> {
-  const terminal = (<any>vscode.window).createTerminalRenderer('Angular Evergreen 🌲')
-  terminal.terminal.show()
-  terminal.write('\x1b[32m 🌲  Welcome to Angular Evergreen 🌲 \r\n\n')
+export async function ngUpdate(args?: UpdateArgs[]): Promise<boolean> {
+  let updateCMD = NG_ALL_CMD + (args ? args.join(' ') : '')
+
+  const renderer = (<any>vscode.window).createTerminalRenderer('Angular Evergreen 🌲')
+  renderer.terminal.show()
+  renderer.write('\x1b[32m 🌲Welcome to Angular Evergreen 🌲 \r\n\n')
 
   try {
-    await runScript(terminal, NPM_INSTALL_CMD)
-    await runScript(terminal, shouldUpdateToNext ? NG_ALL_NEXT_CMD : NG_ALL_LATEST_CMD)
+    await runScript(renderer, 'npm install')
+    await runScript(renderer, updateCMD)
+    writeToTerminal(renderer, 'Update completed! Project is Evergreen 🌲')
     return true
   } catch (error) {
-    let msg = error.message.replace(/[\n\r]/g, ' ').replace('   ', '')
-    terminal.write(msg)
+    writeToTerminal(renderer, sanitizeStdOut(error.message))
+    // check if user wants to force
+    forceUpdate(renderer, `${updateCMD} ${UpdateArgs.force}`)
     return false
   }
 }
 
-async function runScript(render: any, script: string, format: boolean = true) {
-  render.write(`Executing: ${script}\r\n`)
+async function runScript(renderer: any, script: string) {
+  writeToTerminal(renderer, `Executing: ${script}`)
   const scriptStdout = await execa.shell(script, { cwd: workspace.uri.path })
-  const renderText = format
-    ? scriptStdout.stdout.replace(/[\n\r]/g, ' ').replace(/\s+/, '')
-    : scriptStdout.stdout
-  render.write(renderText)
-  render.write('\r\n')
+  const rendererText = sanitizeStdOut(scriptStdout.stdout)
+  writeToTerminal(renderer, rendererText)
 }
 
 function checkStringForErrors(inString: string): boolean {
@@ -63,28 +58,32 @@ function checkStringForErrors(inString: string): boolean {
   )
 }
 
-function forceUpdate(render: any, cmd: string) {
+function forceUpdate(renderer: any, cmd: string) {
   vscode.window
     .showErrorMessage(
       "Can't update: Do you want to try and force the update?",
       {},
-      'CANCEL',
-      'FORCE (risky)'
+      'Cancel',
+      'Force (RISKY)'
     )
     .then(async value => {
-      if (!value || value === '') {
-        return
-      } else {
-        if (value.includes('FORCE')) {
-          try {
-            render.write('\r\n\r\nMay the Force be with you! \r\n')
-            await runScript(render, cmd)
-          } catch (error) {
-            let msg = error.message.replace(/[\n\r]/g, ' ').replace(/\s+/, '')
-            render.write(`\r\n ${msg} \r\n 🌲 Force Complete 🌲\r\n`)
-          }
+      if (value && value.includes('Force')) {
+        try {
+          writeToTerminal(renderer, 'May the Force be with you!')
+          await runScript(renderer, cmd)
+          writeToTerminal(renderer, '🌲 Force Complete 🌲')
+        } catch (error) {
+          writeToTerminal(renderer, sanitizeStdOut(error.message))
         }
-        return
       }
+      return
     })
+}
+
+function writeToTerminal(renderer: any, message: string): void {
+  renderer.write(`\r\n ${message} \r\n`)
+}
+
+function sanitizeStdOut(text: any): string {
+  return text.replace(/[\n\r]/g, ' ').replace(/\s+/, '')
 }
