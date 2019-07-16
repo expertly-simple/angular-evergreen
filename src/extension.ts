@@ -132,7 +132,11 @@ async function doAngularUpdate(
     cliOutdated
   )
   if (shouldSkipVersion) {
-    vscode.window.showInformationMessage(`Skipping update for Angular v${versionToSkip}.`)
+    vscode.window.showInformationMessage(
+      `Skipping update for Angular v${versionToSkip} (${
+        shouldUpdateToNext ? UpgradeChannel.Next : UpgradeChannel.Latest
+      }).`
+    )
   } else {
     await tryAngularUpdate(shouldUpdateToNext ? [UpdateArgs.next] : [])
   }
