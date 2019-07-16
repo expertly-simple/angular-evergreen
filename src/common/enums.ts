@@ -18,3 +18,8 @@ export enum UpgradeChannel {
   Latest = 'Latest',
   Next = 'Next',
 }
+
+export enum UpdateArgs {
+  next = '--next',
+  force = '--force',
+}

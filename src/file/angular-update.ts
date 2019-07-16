@@ -1,15 +1,13 @@
 import * as execa from 'execa'
 import * as vscode from 'vscode'
 
+import { sanitizeStdOut, writeToTerminal } from '../common/common.helpers'
+
+import { UpdateArgs } from '../common/enums'
 import { isGitClean } from './git-manager'
 
 const NG_ALL_CMD = 'ng update --all '
 const workspace = vscode.workspace.workspaceFolders![0]
-
-export enum UpdateArgs {
-  next = '--next',
-  force = '--force',
-}
 
 export async function tryAngularUpdate(updateArgs: UpdateArgs[]) {
   let gitClean = await isGitClean()
@@ -17,7 +15,7 @@ export async function tryAngularUpdate(updateArgs: UpdateArgs[]) {
     await ngUpdate(updateArgs)
   } else {
     vscode.window.showErrorMessage(
-      "Can't update: You should ensure git branch is clean & up-to-date"
+      "Can't update: You should ensure git branch is clean & up-to-date."
     )
   }
 }
@@ -49,15 +47,6 @@ async function runScript(renderer: any, script: string) {
   writeToTerminal(renderer, rendererText)
 }
 
-function checkStringForErrors(inString: string): boolean {
-  return (
-    inString.includes('Error') ||
-    inString.includes('ERROR') ||
-    inString.includes('Fail') ||
-    inString.includes('failed')
-  )
-}
-
 function forceUpdate(renderer: any, cmd: string) {
   vscode.window
     .showErrorMessage(
@@ -78,12 +67,4 @@ function forceUpdate(renderer: any, cmd: string) {
       }
       return
     })
-}
-
-function writeToTerminal(renderer: any, message: string): void {
-  renderer.write(`\r\n ${message} \r\n`)
-}
-
-function sanitizeStdOut(text: any): string {
-  return text.replace(/[\n\r]/g, ' ').replace(/\s+/, '')
 }
