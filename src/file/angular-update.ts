@@ -42,7 +42,7 @@ export async function ngUpdate(args?: UpdateArgs[]): Promise<boolean> {
 
 async function runScript(renderer: any, script: string) {
   writeToTerminal(renderer, `Executing: ${script}`)
-  const scriptStdout = await execa.shell(script, { cwd: workspace.uri.path })
+  const scriptStdout = await execa.command(script, { cwd: workspace.uri.path })
   const rendererText = sanitizeStdOut(scriptStdout.stdout)
   writeToTerminal(renderer, rendererText)
 }

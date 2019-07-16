@@ -72,7 +72,7 @@ export async function getCurrentVersion(packageName: string): Promise<string> {
 
 async function getNextVersion(packageName: string) {
   const script = `npm info ${packageName}`
-  const scriptStdout = await execa.shell(script, { cwd: workspace.uri.path })
+  const scriptStdout = await execa.command(script, { cwd: workspace.uri.path })
   return getVersionFromStdout(scriptStdout.stdout, 'next')
 }
 
