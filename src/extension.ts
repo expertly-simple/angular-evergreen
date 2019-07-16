@@ -97,8 +97,7 @@ async function shouldRunEvergreen(): Promise<boolean> {
     'Check for updates periodically',
     'Cancel'
   )
-
-  return !!runEvergreenVal && runEvergreenVal !== '' && runEvergreenVal !== 'Cancel'
+  return !userCancelled(runEvergreenVal)
 }
 
 async function checkForUpdates(): Promise<void> {
