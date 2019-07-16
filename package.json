@@ -67,7 +67,24 @@
         "title": "Check for Angular Updates",
         "category": "Angular Evergreen"
       }
-    ]
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "angular-evergreen",
+          "title": "Agnular Evergreen",
+          "icon": "ng-evergreen-logo-monochromatic.svg"
+        }
+      ]
+    },
+    "views": {
+      "angular-evergreen": [
+        {
+          "id": "angular-evergreen",
+          "name": "Angular Evergreen"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "webpack --mode production",

@@ -84,7 +84,7 @@ function runEvergreen() {
 async function setCheckFrequency() {
   await vscode.window
     .showInformationMessage(
-      'How often would you like to check for updates (this can be changed in settings.json)?',
+      'How often would you like to check for updatess (this can be changed in settings.json)?',
       {},
       CheckFrequency.OnLoad,
       CheckFrequency.Hourly,
