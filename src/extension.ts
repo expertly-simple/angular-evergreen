@@ -20,8 +20,6 @@ import {
   versionToSkipExists,
 } from './common/version-to-skip.helpers'
 
-import { start } from 'repl'
-
 export function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')
 
@@ -82,13 +80,6 @@ async function runEvergreen(): Promise<void> {
   if (!upgradeChannelExists()) {
     const upgradeChannelInput = await getUpgradeChannelPreference()
     if (userCancelled(upgradeChannelInput)) {
-      return
-    }
-  }
-
-  if (!versionToSkipExists()) {
-    const versionToSkipInput = await getVersionToSkipPreference()
-    if (userCancelled(versionToSkipInput)) {
       return
     }
   }
@@ -172,7 +163,7 @@ async function getVersionToSkipPreference(): Promise<string | undefined> {
     'Remind Me Next Release'
   )
 
-  if (versionToSkipVal && versionToSkipVal.includes('Remind me')) {
+  if (versionToSkipVal && versionToSkipVal.includes('Remind Me')) {
     storeVersionToSkip(
       shouldUpdateToNext ? coreOutdated.nextVersion : coreOutdated.latestVersion
     )
@@ -187,7 +178,14 @@ async function checkForUpdates(): Promise<void> {
   const cliOutdated = await checkForUpdate(ANG_CLI)
   if (cliOutdated.needsUpdate || coreOutdated.needsUpdate) {
     const shouldUpdateToNext = getUpgradeChannel() === UpgradeChannel.Next
-    await doAngularUpdate(coreOutdated, cliOutdated, shouldUpdateToNext)
+    if (!versionToSkipExists()) {
+      const shouldUpdate = await getVersionToSkipPreference()
+      if (!!shouldUpdate && shouldUpdate.includes('Update Now')) {
+        await doAngularUpdate(coreOutdated, cliOutdated, shouldUpdateToNext)
+      }
+    } else {
+      await doAngularUpdate(coreOutdated, cliOutdated, shouldUpdateToNext)
+    }
   } else {
     vscode.window.showInformationMessage('Project is already Evergreen. 🌲 Good job!')
   }
@@ -205,9 +203,10 @@ async function doAngularUpdate(
     coreOutdated,
     cliOutdated
   )
-  if (!shouldSkipVersion) {
+  if (shouldSkipVersion) {
+    vscode.window.showInformationMessage(`Skipping update for Angular v${versionToSkip}.`)
+  } else {
     await tryAngularUpdate(shouldUpdateToNext ? [UpdateArgs.next] : [])
-    return
   }
 }
 
