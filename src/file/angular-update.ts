@@ -6,7 +6,8 @@ import { sanitizeStdOut, writeToTerminal } from '../common/common.helpers'
 import { UpdateArgs } from '../common/enums'
 import { isGitClean } from './git-manager'
 
-const NG_ALL_CMD = 'ng update --all '
+const NG_CORE_CMD = 'ng update @angular/cli @angular/core'
+const NG_ALL_CMD = 'ng update --all'
 const workspace = vscode.workspace.workspaceFolders![0]
 
 export async function tryAngularUpdate(updateArgs: UpdateArgs[]) {
@@ -21,7 +22,9 @@ export async function tryAngularUpdate(updateArgs: UpdateArgs[]) {
 }
 
 export async function ngUpdate(args?: UpdateArgs[]): Promise<boolean> {
-  let updateCMD = NG_ALL_CMD + (args ? args.join(' ') : '')
+  const cmdArgs = args ? args.join(' ') : ''
+  let coreCMD = `${NG_CORE_CMD} ${cmdArgs}`
+  let updateCMD = `${NG_ALL_CMD} ${cmdArgs}`
 
   const renderer = (<any>vscode.window).createTerminalRenderer('Angular Evergreen 🌲')
   renderer.terminal.show()
@@ -29,6 +32,7 @@ export async function ngUpdate(args?: UpdateArgs[]): Promise<boolean> {
 
   try {
     await runScript(renderer, 'npm install')
+    await runScript(renderer, coreCMD)
     await runScript(renderer, updateCMD)
     writeToTerminal(renderer, 'Update completed! Project is Evergreen 🌲')
     return true
