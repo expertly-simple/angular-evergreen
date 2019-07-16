@@ -88,7 +88,7 @@ async function runEvergreen(): Promise<void> {
 }
 
 function userCancelled(userInput: string | undefined) {
-  return !userInput || userInput === ''
+  return !userInput || userInput === '' || userInput === 'Cancel'
 }
 
 async function shouldRunEvergreen(): Promise<boolean> {
@@ -128,10 +128,11 @@ async function getUpgradeChannelPreference(): Promise<string | undefined> {
     message,
     {},
     'Latest',
-    'Next'
+    'Next',
+    'Cancel'
   )
 
-  if (upgradeChannelVal && upgradeChannelVal !== '') {
+  if (!!upgradeChannelVal && !userCancelled(upgradeChannelVal)) {
     const shouldUpdateToNext = upgradeChannelVal.includes('Next')
     storeUpgradeChannel(shouldUpdateToNext)
   }
@@ -151,10 +152,12 @@ async function getVersionToSkipPreference(): Promise<string | undefined> {
   const newCliVersion = shouldUpdateToNext
     ? cliOutdated.nextVersion
     : cliOutdated.latestVersion
-  const versionOutdatedMsg = `New update available! One or more of your Angular packages are behind the most recent ${channelText} release.
-      \r\nAngular Core: ${coreOutdated.currentVersion} -> ${newCoreVersion}
-      \r\nAngular CLI: ${cliOutdated.currentVersion} -> ${newCliVersion}
-      \r\nWould you like to update?`
+  const versionOutdatedMsg = `New update available! One or more of your Angular packages are behind the most recent ${channelText} release. Would you like to update?
+      \r\nAngular Core: ${
+        coreOutdated.currentVersion
+      } -> ${newCoreVersion}\r\nAngular CLI: ${
+    cliOutdated.currentVersion
+  } -> ${newCliVersion}`
 
   let versionToSkipVal = await vscode.window.showInformationMessage(
     versionOutdatedMsg,
