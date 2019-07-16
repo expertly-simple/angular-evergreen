@@ -20,42 +20,41 @@ import {
   versionToSkipExists,
 } from './common/version-to-skip.helpers'
 
+import { start } from 'repl'
+
 export function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')
 
   context.subscriptions.push(
-    vscode.commands.registerCommand('ng-evergreen.startAngularEvergreen', startEvergreen),
+    vscode.commands.registerCommand('ng-evergreen.startAngularEvergreen', runEvergreen),
     vscode.commands.registerCommand('ng-evergreen.stopAngularEvergreen', stopEvergreen),
     vscode.commands.registerCommand('ng-evergreen.checkForUpdates', checkForUpdates)
   )
 
-  vscode.commands.executeCommand('ng-evergreen.startAngularEvergreen')
+  const isFirstRun = !checkFrequencyExists()
+  if (isFirstRun) {
+    vscode.commands.executeCommand('ng-evergreen.startAngularEvergreen')
+  } else if (getCheckFrequency() === CheckFrequency.OnLoad) {
+    vscode.commands.executeCommand('ng-evergreen.checkForUpdates')
+  } else {
+    startJob()
+  }
 }
 
 let job: NodeJS.Timeout | null = null
 
-async function startEvergreen(): Promise<void> {
+async function startJob(): Promise<void> {
   // if existing job is running, cancel it
   if (job) {
     clearInterval(job)
   }
 
-  const userWantsToRunEvergreen = await shouldRunEvergreen()
-  if (!userWantsToRunEvergreen) {
-    return
-  }
-
-  // initial run
-  await runEvergreen()
-
-  if (checkFrequencyExists() && getCheckFrequency() !== CheckFrequency.OnLoad) {
-    // start new job
-    const milliseconds = getCheckFrequencyMilliseconds()
-    job = setInterval(async () => {
-      // run every X milliseconds
-      await runEvergreen()
-    }, milliseconds)
-  }
+  // start new job
+  const milliseconds = getCheckFrequencyMilliseconds()
+  job = setInterval(async () => {
+    // run every X milliseconds
+    vscode.commands.executeCommand('ng-evergreen.checkForUpdates')
+  }, milliseconds)
 }
 
 function stopEvergreen(): void {
@@ -69,6 +68,10 @@ function stopEvergreen(): void {
 }
 
 async function runEvergreen(): Promise<void> {
+  if ((await shouldRunEvergreen()) === false) {
+    return
+  }
+
   if (!checkFrequencyExists()) {
     const checkFrequencyInput = await getCheckFrequencyPreference()
     if (userCancelled(checkFrequencyInput)) {
