@@ -1,18 +1,12 @@
 import * as vscode from 'vscode'
 
-export class TaskProvider implements vscode.TreeDataProvider<TreeTask> {
+export class SideMenuTaskProvider implements vscode.TreeDataProvider<TreeTask> {
   constructor(private context: vscode.ExtensionContext) {}
 
   public async getChildren(task?: TreeTask): Promise<TreeTask[]> {
-    let tasks = await vscode.tasks.fetchTasks().then(function(value) {
-      return value
-    })
-
-    let treeTasks: TreeTask[] = []
-
-    treeTasks.push(
+    let treeTasks: TreeTask[] = [
       new TreeTask(
-        '',
+        'Command',
         'Check For Angular Updates',
         vscode.TreeItemCollapsibleState.None,
         {
@@ -20,11 +14,9 @@ export class TaskProvider implements vscode.TreeDataProvider<TreeTask> {
           title: 'Check for Angular Updates',
         },
         this.context.extensionPath + '/resources/ng-evergreen-logo.svg'
-      )
-    )
-    treeTasks.push(
+      ),
       new TreeTask(
-        '',
+        'Link',
         'Visit update.io',
         vscode.TreeItemCollapsibleState.None,
         {
@@ -32,8 +24,9 @@ export class TaskProvider implements vscode.TreeDataProvider<TreeTask> {
           title: 'Visit update.io',
         },
         this.context.extensionPath + '/resources/angular-icon.svg'
-      )
-    )
+      ),
+    ]
+
     return treeTasks
   }
 

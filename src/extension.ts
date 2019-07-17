@@ -14,7 +14,7 @@ import {
   storeUpgradeVersion,
 } from './common/upgrade-version.helpers'
 
-import { TaskProvider } from './nodeDependency'
+import { SideMenuTaskProvider } from './nodeDependency'
 import * as open from 'open'
 
 export function activate(context: vscode.ExtensionContext) {
@@ -28,7 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
       'ng-evergreen.navigateToUpdateIo',
       navigateToUpdateIo
     ),
-    vscode.window.registerTreeDataProvider('evergreen', new TaskProvider(context))
+    vscode.window.registerTreeDataProvider('evergreen', new SideMenuTaskProvider(context))
   )
 
   // run it
@@ -40,10 +40,6 @@ export function activate(context: vscode.ExtensionContext) {
   } else {
     startJob()
   }
-}
-
-async function navigateToUpdateIo() {
-  await open('https://update.angular.io/')
 }
 
 let job: NodeJS.Timeout | null = null
@@ -147,6 +143,10 @@ function showUpdateModal(coreOutdated: IVersionStatus) {
         await tryAngularUpdate(isNext ? [UpdateArgs.next] : [])
       }
     })
+}
+
+async function navigateToUpdateIo() {
+  await open('https://update.angular.io/')
 }
 
 export function deactivate() {

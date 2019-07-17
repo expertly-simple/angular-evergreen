@@ -76,28 +76,21 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "evergreen",
-          "title": "Angular Evergreen",
+          "id": "evergreen-container",
+          "title": "ANGULAR EVERGREEN",
           "icon": "resources/ng-evergreen-logo-monochromatic.svg"
         }
       ]
     },
     "views": {
-      "evergreen": [
+      "evergreen-container": [
         {
           "id": "evergreen",
-          "name": "Evergreen"
+          "name": "COMMANDS"
         }
       ]
     },
     "menus": {
-      "view/title": [
-        {
-          "command": "ng-evergreen.checkForUpdates",
-          "when": "view == evergreen",
-          "group": "navigation"
-        }
-      ],
       "view/item/context": [
         {
           "command": "ng-evergreen.angularEvergreen",
