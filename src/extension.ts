@@ -14,7 +14,7 @@ import {
   storeUpgradeVersion,
 } from './common/upgrade-version.helpers'
 
-import { SideMenuTaskProvider } from './nodeDependency'
+import { SideMenuTaskProvider } from './common/side-menu-task-provider'
 import * as open from 'open'
 
 export function activate(context: vscode.ExtensionContext) {
