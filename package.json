@@ -66,22 +66,43 @@
         "command": "ng-evergreen.checkForUpdates",
         "title": "Check for Angular Updates",
         "category": "Angular Evergreen"
+      },
+      {
+        "command": "ng-evergreen.navigateToUpdateIo",
+        "title": "Visit update.io",
+        "category": "Angular Evergreen"
       }
     ],
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "angular-evergreen",
-          "title": "Agnular Evergreen",
-          "icon": "ng-evergreen-logo-monochromatic.svg"
+          "id": "evergreen",
+          "title": "Angular Evergreen",
+          "icon": "resources/ng-evergreen-logo-monochromatic.svg"
         }
       ]
     },
     "views": {
-      "angular-evergreen": [
+      "evergreen": [
         {
-          "id": "angular-evergreen",
-          "name": "Angular Evergreen"
+          "id": "evergreen",
+          "name": "Evergreen"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "ng-evergreen.checkForUpdates",
+          "when": "view == evergreen",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "ng-evergreen.angularEvergreen",
+          "when": "view == evergreen && viewItem == dependency",
+          "group": "inline"
         }
       ]
     }
@@ -113,7 +134,8 @@
   "dependencies": {
     "execa": "^1.0.0",
     "get-latest-version": "^1.0.1",
-    "get-stream": "^5.1.0"
+    "get-stream": "^5.1.0",
+    "open": "^6.4.0"
   },
   "repository": {
     "type": "git",

@@ -7,13 +7,15 @@ import {
   getCheckFrequencyMilliseconds,
 } from './common/check-frequency.helpers'
 
-import { CheckFrequency, UpgradeVersion } from './common/enums'
+import { CheckFrequency } from './common/enums'
 import { tryAngularUpdate, UpdateArgs } from './file/angular-update'
 import {
   upgradeVersionExists,
-  getUpgradeVersion,
   storeUpgradeVersion,
 } from './common/upgrade-version.helpers'
+
+import { TaskProvider } from './nodeDependency'
+import * as open from 'open'
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')
@@ -21,7 +23,12 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand('ng-evergreen.angularEvergreen', runEvergreen),
     vscode.commands.registerCommand('ng-evergreen.stopAngularEvergreen', stopEvergreen),
-    vscode.commands.registerCommand('ng-evergreen.checkForUpdates', checkAngularVersions)
+    vscode.commands.registerCommand('ng-evergreen.checkForUpdates', checkAngularVersions),
+    vscode.commands.registerCommand(
+      'ng-evergreen.navigateToUpdateIo',
+      navigateToUpdateIo
+    ),
+    vscode.window.registerTreeDataProvider('evergreen', new TaskProvider(context))
   )
 
   // run it
@@ -33,6 +40,10 @@ export function activate(context: vscode.ExtensionContext) {
   } else {
     startJob()
   }
+}
+
+async function navigateToUpdateIo() {
+  await open('https://update.angular.io/')
 }
 
 let job: NodeJS.Timeout | null = null
