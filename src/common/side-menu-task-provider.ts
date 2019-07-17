@@ -1,19 +1,27 @@
 import * as vscode from 'vscode'
+import * as packageManager from '../file/package-manager'
 
 export class SideMenuTaskProvider implements vscode.TreeDataProvider<TreeTask> {
   constructor(private context: vscode.ExtensionContext) {}
 
   public async getChildren(task?: TreeTask): Promise<TreeTask[]> {
+    let currentVersion = await packageManager.checkForUpdate(packageManager.ANG_CORE)
+
+    if (task && task.label && task.label.includes('Angular Version')) {
+      return this.getVersionTree(currentVersion)
+    }
+
     let treeTasks: TreeTask[] = [
       new TreeTask(
-        'Command',
-        'Check For Angular Updates',
-        vscode.TreeItemCollapsibleState.None,
-        {
-          command: 'ng-evergreen.checkForUpdates',
-          title: 'Check for Angular Updates',
-        },
-        this.context.extensionPath + '/resources/ng-evergreen-logo.svg'
+        'Folder',
+        'Current Angular Version: ' + currentVersion.currentVersion,
+        vscode.TreeItemCollapsibleState.Collapsed,
+        undefined,
+        this.context.extensionPath +
+          (currentVersion.needsUpdate
+            ? '/resources/ng-evergreen-logo-red.svg'
+            : '/resources/ng-evergreen-logo.svg'),
+        'evergreen-version'
       ),
       new TreeTask(
         'Link',
@@ -33,6 +41,21 @@ export class SideMenuTaskProvider implements vscode.TreeDataProvider<TreeTask> {
   getTreeItem(task: TreeTask): vscode.TreeItem {
     return task
   }
+
+  private getVersionTree(currentVersion: packageManager.IVersionStatus) {
+    return [
+      new TreeTask(
+        'Folder',
+        'Latest Version: ' + currentVersion.newVersion,
+        vscode.TreeItemCollapsibleState.None
+      ),
+      new TreeTask(
+        'Folder',
+        'Next Version: ' + currentVersion.nextVersion,
+        vscode.TreeItemCollapsibleState.None
+      ),
+    ]
+  }
 }
 
 class TreeTask extends vscode.TreeItem {
@@ -47,11 +70,17 @@ class TreeTask extends vscode.TreeItem {
       | string
       | vscode.Uri
       | { light: string | vscode.Uri; dark: string | vscode.Uri }
-      | vscode.ThemeIcon
+      | vscode.ThemeIcon,
+    contextValue?: string
   ) {
     super(label, collapsibleState)
     this.type = type
     this.command = command
     this.iconPath = iconPath
+    this.contextValue = contextValue
+  }
+
+  getChildren() {
+    return null
   }
 }
