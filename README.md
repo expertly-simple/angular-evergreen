@@ -42,7 +42,16 @@ Projects setup with `@angular/cli` package.
 
 ## Release Notes
 
+### 0.7.0
+
+- Select upgrade channel `Latest` or `Next`
+- Ability to skip a release and be notified on the next release
+- More reliable upgrade check algorithm
+- More reliable upgrade algoritm with git commits, removing uncommited files and more informative force guidance to restore TypeScript state
+- Fixed runtime bug on Windows 10
+
 ### 0.6.0
+
 - Check frequency setting to remember your preffered update check frequency
 - No longer nags at every launch
 - Help run `--force` when update fails
