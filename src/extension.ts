@@ -101,17 +101,17 @@ async function shouldRunEvergreen(): Promise<boolean> {
 }
 
 async function checkForUpdates(): Promise<void> {
-  const coreOutdated = await checkForUpdate(ANG_CORE)
-  const cliOutdated = await checkForUpdate(ANG_CLI)
+  const upgradeChannel = getUpgradeChannel()
+  const coreOutdated = await checkForUpdate(ANG_CORE, upgradeChannel)
+  const cliOutdated = await checkForUpdate(ANG_CLI, upgradeChannel)
   if (cliOutdated.needsUpdate || coreOutdated.needsUpdate) {
-    const shouldUpdateToNext = getUpgradeChannel() === UpgradeChannel.Next
     if (!versionToSkipExists()) {
       const shouldUpdate = await getVersionToSkipPreference()
       if (!!shouldUpdate && shouldUpdate.includes('Update Now')) {
-        await doAngularUpdate(coreOutdated, cliOutdated, shouldUpdateToNext)
+        await doAngularUpdate(coreOutdated, cliOutdated, upgradeChannel)
       }
     } else {
-      await doAngularUpdate(coreOutdated, cliOutdated, shouldUpdateToNext)
+      await doAngularUpdate(coreOutdated, cliOutdated, upgradeChannel)
     }
   } else {
     vscode.window.showInformationMessage('Project is already Evergreen. 🌲 Good job!')
@@ -121,22 +121,20 @@ async function checkForUpdates(): Promise<void> {
 async function doAngularUpdate(
   coreOutdated: IVersionStatus,
   cliOutdated: IVersionStatus,
-  shouldUpdateToNext: boolean = false
+  upgradeChannel: UpgradeChannel
 ): Promise<void> {
   const versionToSkip = getVersionToSkip()
   const shouldSkipVersion = skipVersionCheck(
-    shouldUpdateToNext,
+    upgradeChannel,
     versionToSkip,
     coreOutdated,
     cliOutdated
   )
   if (shouldSkipVersion) {
     vscode.window.showInformationMessage(
-      `Skipping update for Angular v${versionToSkip} (${
-        shouldUpdateToNext ? UpgradeChannel.Next : UpgradeChannel.Latest
-      }).`
+      `Skipping update for Angular v${versionToSkip} (${upgradeChannel}).`
     )
   } else {
-    await tryAngularUpdate(shouldUpdateToNext ? [UpdateArgs.next] : [])
+    await tryAngularUpdate(upgradeChannel)
   }
 }

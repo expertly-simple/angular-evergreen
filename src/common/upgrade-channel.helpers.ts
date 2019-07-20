@@ -5,13 +5,42 @@ import { userCancelled } from './common.helpers'
 
 export const UPGRADE_CHANNEL_KEY = 'ng-evergreen.upgradeChannel'
 
-export function getUpgradeChannel(): string | undefined {
+export function getUpgradeChannel(): UpgradeChannel {
+  let upgradeChannel = UpgradeChannel.Latest
+  const upgradeChannelSetting = getUpgradeChannelSetting()
+  if (
+    typeof upgradeChannelSetting === 'string' &&
+    upgradeChannelSetting.toLowerCase().includes('next')
+  ) {
+    upgradeChannel = UpgradeChannel.Next
+  }
+  return upgradeChannel
+}
+
+function getUpgradeChannelSetting() {
   return vscode.workspace.getConfiguration().get(UPGRADE_CHANNEL_KEY)
 }
 
 export function upgradeChannelExists(): boolean {
-  const upgradeChannel = getUpgradeChannel()
-  return !!upgradeChannel && upgradeChannel !== ''
+  const upgradeChannelSetting = getUpgradeChannelSetting()
+  let knownSettingFound = false
+
+  if (
+    typeof upgradeChannelSetting === 'string' &&
+    UpgradeChannel[toTitleCase(upgradeChannelSetting) as any]
+  ) {
+    knownSettingFound = true
+  }
+
+  return knownSettingFound
+}
+
+function toTitleCase(s: string): string {
+  let sArray = s.toLowerCase().split(' ')
+  for (let i = 0; i < sArray.length; i++) {
+    sArray[i] = sArray[i].charAt(0).toUpperCase() + sArray[i].slice(1)
+  }
+  return sArray.join(' ')
 }
 
 export function storeUpgradeChannel(next: boolean): void {

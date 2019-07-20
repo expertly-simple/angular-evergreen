@@ -1,9 +1,12 @@
 import * as execa from 'execa'
 import * as vscode from 'vscode'
 
+import { sanitizeStdOut, writeToTerminal } from '../common/common.helpers'
+
+import { UpgradeChannel } from '../common/enums'
+
 import fs = require('fs')
 
-const getLatestVersion = require('get-latest-version')
 const workspace = vscode.workspace.workspaceFolders![0]
 
 export const ANG_CLI = '@angular/cli'
@@ -70,10 +73,17 @@ export async function getCurrentVersion(packageName: string): Promise<string> {
   return version
 }
 
-async function getNextVersion(packageName: string) {
-  const script = `npm info ${packageName}`
-  const scriptStdout = await execa.command(script, { cwd: workspace.uri.path })
-  return getVersionFromStdout(scriptStdout.stdout, 'next')
+async function getNpmVersion(packageName: string, distTag = '') {
+  const script = `npm view ${packageName}${distTag} version`
+  let stdout = ''
+  try {
+    const scriptStdout = await execa.command(script, { cwd: workspace.uri.fsPath })
+    stdout = scriptStdout.stdout
+  } catch (error) {
+    throw new Error(error.message)
+  }
+
+  return stdout
 }
 
 export interface IVersionStatus {
@@ -83,18 +93,39 @@ export interface IVersionStatus {
   nextVersion: string
 }
 
-export async function checkForUpdate(packageName: string): Promise<IVersionStatus> {
+export async function checkForUpdate(
+  packageName: string,
+  upgradeChannel: UpgradeChannel
+): Promise<IVersionStatus> {
   let currentVersion = await getCurrentVersion(packageName)
-  const latestVersion = await getLatestVersion(packageName)
-  const nextVersion = await getNextVersion(packageName)
+  const latestVersion = await getNpmVersion(packageName)
+  const nextVersion = await getNpmVersion(packageName, '@next')
   currentVersion = currentVersion.replace('~', '').replace('^', '')
 
   return {
-    needsUpdate:
-      currentVersion[0] < latestVersion[0] || currentVersion[0] < nextVersion[0],
+    needsUpdate: doesItNeedUpdating(
+      currentVersion,
+      latestVersion,
+      nextVersion,
+      upgradeChannel
+    ),
     currentVersion: currentVersion,
     latestVersion: latestVersion,
     nextVersion: nextVersion,
+  }
+}
+
+function doesItNeedUpdating(
+  currentVersion: string,
+  latestVersion: string,
+  nextVersion: string,
+  upgradeChannel: UpgradeChannel
+) {
+  switch (upgradeChannel) {
+    case UpgradeChannel.Latest:
+      return currentVersion !== latestVersion
+    case UpgradeChannel.Next:
+      return currentVersion !== nextVersion
   }
 }
 

@@ -32,8 +32,8 @@ export function clearVersionToSkip(): void {
 export async function shouldUpgradeToNewVersion(): Promise<boolean> {
   const upgradeChannel = getUpgradeChannel()
   const versionToSkip = getVersionToSkip()
-  const ngCoreVersion = await checkForUpdate(ANG_CORE)
-  const ngCliVersion = await checkForUpdate(ANG_CLI)
+  const ngCoreVersion = await checkForUpdate(ANG_CORE, upgradeChannel)
+  const ngCliVersion = await checkForUpdate(ANG_CLI, upgradeChannel)
 
   let shouldUpgrade: boolean
   if (upgradeChannel === UpgradeChannel.Next) {
@@ -50,11 +50,12 @@ export async function shouldUpgradeToNewVersion(): Promise<boolean> {
 }
 
 export async function getVersionToSkipPreference(): Promise<string | undefined> {
-  const cliOutdated = await checkForUpdate(ANG_CLI)
-  const coreOutdated = await checkForUpdate(ANG_CORE)
-  const shouldUpdateToNext = getUpgradeChannel() === UpgradeChannel.Next
+  const upgradeChannel = getUpgradeChannel()
+  const cliOutdated = await checkForUpdate(ANG_CLI, upgradeChannel)
+  const coreOutdated = await checkForUpdate(ANG_CORE, upgradeChannel)
+  const shouldUpdateToNext = upgradeChannel === UpgradeChannel.Next
 
-  const channelText = shouldUpdateToNext ? '"next"' : '"stable"'
+  const channelText = shouldUpdateToNext ? '"next"' : '"latest"'
   const newCoreVersion = getNewVersionFromStatus(shouldUpdateToNext, coreOutdated)
   const newCliVersion = getNewVersionFromStatus(shouldUpdateToNext, cliOutdated)
 
@@ -106,20 +107,21 @@ async function showUpdateModal(
 }
 
 export function skipVersionCheck(
-  shouldUpdateToNext: boolean,
+  upgradeChannel: UpgradeChannel,
   versionToSkip: string | undefined,
   coreOutdated: IVersionStatus,
   cliOutdated: IVersionStatus
 ): boolean {
-  if (shouldUpdateToNext) {
-    return versionToSkip === coreOutdated.nextVersion &&
-      versionToSkip === cliOutdated.nextVersion
-      ? true
-      : false
-  } else {
-    return versionToSkip === coreOutdated.latestVersion &&
-      versionToSkip === cliOutdated.latestVersion
-      ? true
-      : false
+  switch (upgradeChannel) {
+    case UpgradeChannel.Next:
+      return versionToSkip === coreOutdated.nextVersion &&
+        versionToSkip === cliOutdated.nextVersion
+        ? true
+        : false
+    case UpgradeChannel.Latest:
+      return versionToSkip === coreOutdated.latestVersion &&
+        versionToSkip === cliOutdated.latestVersion
+        ? true
+        : false
   }
 }
