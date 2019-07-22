@@ -14,17 +14,17 @@ Keep your project's version of Angular and related packages evergreen with perio
   - Checks to see if git branch is clean
   - Executes `npm install`
   - Runs `ng update --all`
+- Subscribe to `latest` or `next` update channels
 
 ## Upcoming Features
 
-- Subscribe to `latest` or `next` update channels
-- Assist users clean git branch before update
-- Fix `typescript` version, after a `--force` install
+- Fix `typescript` version, after a `--force` install (textual guidance in 0.7)
 - Execute `ng build` and `ng test` after upgrade
-- Ability to rollback upgrades
+- Ability to rollback upgrades (partial rollback in 0.7)
 - Check for updates to packages not covered by `ng update` i.e. `@angular/flex-layout`
 - Allow customizing schedule interval
 - Support non-@angular/cli Angular projects
+- Assist users clean git branch before update
 
 _Have a feature request or submit a PR?_ Submit an issue/PR on GitHub [here](https://github.com/duluca/angular-evergreen/issues).
 
@@ -36,13 +36,23 @@ Projects setup with `@angular/cli` package.
 
 ```
 {
-  "ng-evergreen.checkFrequency": "On Load" | "Hourly" | "Daily" | "Weekly" | "Bi-Weekly"
+  "ng-evergreen.checkFrequency": "On Load" | "Hourly" | "Daily" | "Weekly" | "Bi-Weekly",
+  "ng-evergreen.upgradeChannel": "Latest" | "Next"
 }
 ```
 
 ## Release Notes
 
+### 0.7.0
+
+- Select upgrade channel `Latest` or `Next`
+- Ability to skip a release and be notified on the next release
+- More reliable upgrade check algorithm
+- More reliable upgrade algoritm with git commits, removing uncommited files and more informative force guidance to restore TypeScript state
+- Fixed runtime bug on Windows 10
+
 ### 0.6.0
+
 - Check frequency setting to remember your preffered update check frequency
 - No longer nags at every launch
 - Help run `--force` when update fails
