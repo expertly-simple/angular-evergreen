@@ -97,7 +97,12 @@
     "menus": {
       "view/item/context": [
         {
-          "command": "ng-evergreen.angularEvergreen",
+          "command": "ng-evergreen.startAngularEvergreen",
+          "when": "view == evergreen && viewItem == dependency",
+          "group": "inline"
+        },
+        {
+          "command": "ng-evergreen.navigateToUpdateIo",
           "when": "view == evergreen && viewItem == dependency",
           "group": "inline"
         }

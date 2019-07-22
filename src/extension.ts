@@ -33,7 +33,11 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('ng-evergreen.startAngularEvergreen', runEvergreen),
     vscode.commands.registerCommand('ng-evergreen.stopAngularEvergreen', stopEvergreen),
     vscode.commands.registerCommand('ng-evergreen.checkForUpdates', checkForUpdates),
-    vscode.commands.registerCommand('ng-evergreen.navigateToUpdateIo', navigateToUpdateIo)
+    vscode.commands.registerCommand(
+      'ng-evergreen.navigateToUpdateIo',
+      navigateToUpdateIo
+    ),
+    vscode.window.registerTreeDataProvider('evergreen', new SideMenuTaskProvider(context))
   )
 
   const isFirstRun = !checkFrequencyExists()
@@ -141,4 +145,8 @@ async function doAngularUpdate(
   } else {
     await tryAngularUpdate(upgradeChannel)
   }
+}
+
+async function navigateToUpdateIo() {
+  await open('https://update.angular.io/')
 }
