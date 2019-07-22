@@ -28,3 +28,27 @@ export function getCheckFrequencyMilliseconds(): number {
       return CheckFrequencyMilliseconds.DailySchedule
   }
 }
+
+export function checkFrequencyExists(): boolean {
+  return !!getCheckFrequency() && getCheckFrequency() !== ''
+}
+
+export async function getCheckFrequencyPreference(): Promise<string | undefined> {
+  const checkFrequencyVal = await vscode.window.showInformationMessage(
+    'How often would you like to check for updates (this can be changed in settings.json)?',
+    {},
+    CheckFrequency.OnLoad,
+    CheckFrequency.Hourly,
+    CheckFrequency.Daily,
+    CheckFrequency.Weekly,
+    CheckFrequency.BiWeekly
+  )
+
+  if (checkFrequencyVal && checkFrequencyVal !== '') {
+    await vscode.workspace
+      .getConfiguration()
+      .update(CHECK_FREQUENCY_KEY, checkFrequencyVal)
+  }
+
+  return checkFrequencyVal
+}

@@ -1,35 +1,42 @@
 import * as vscode from 'vscode'
 
-import { ANG_CLI, ANG_CORE, checkForUpdate, IVersionStatus } from './file/package-manager'
+import { ANG_CLI, ANG_CORE, IVersionStatus, checkForUpdate } from './file/package-manager'
+import { CheckFrequency, UpdateArgs, UpgradeChannel } from './common/enums'
 import {
-  CHECK_FREQUENCY_KEY,
+  checkFrequencyExists,
   getCheckFrequency,
   getCheckFrequencyMilliseconds,
+  getCheckFrequencyPreference,
 } from './common/check-frequency.helpers'
-
-import { CheckFrequency, UpgradeVersion } from './common/enums'
-import { tryAngularUpdate, UpdateArgs } from './file/angular-update'
 import {
-  upgradeVersionExists,
-  getUpgradeVersion,
-  storeUpgradeVersion,
-} from './common/upgrade-version.helpers'
+  getUpgradeChannel,
+  getUpgradeChannelPreference,
+  upgradeChannelExists,
+} from './common/upgrade-channel.helpers'
+import {
+  getVersionToSkip,
+  getVersionToSkipPreference,
+  skipVersionCheck,
+  versionToSkipExists,
+} from './common/version-to-skip.helpers'
+
+import { tryAngularUpdate } from './file/angular-update'
+import { userCancelled } from './common/common.helpers'
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')
 
   context.subscriptions.push(
-    vscode.commands.registerCommand('ng-evergreen.angularEvergreen', runEvergreen),
+    vscode.commands.registerCommand('ng-evergreen.startAngularEvergreen', runEvergreen),
     vscode.commands.registerCommand('ng-evergreen.stopAngularEvergreen', stopEvergreen),
-    vscode.commands.registerCommand('ng-evergreen.checkForUpdates', checkAngularVersions)
+    vscode.commands.registerCommand('ng-evergreen.checkForUpdates', checkForUpdates)
   )
 
-  // run it
-  const isFirstRun = !getCheckFrequency() || getCheckFrequency() === ''
+  const isFirstRun = !checkFrequencyExists()
   if (isFirstRun) {
-    vscode.commands.executeCommand('ng-evergreen.angularEvergreen')
-  } else if (getCheckFrequency() === 'On Load') {
-    checkAngularVersions()
+    vscode.commands.executeCommand('ng-evergreen.startAngularEvergreen')
+  } else if (getCheckFrequency() === CheckFrequency.OnLoad) {
+    vscode.commands.executeCommand('ng-evergreen.checkForUpdates')
   } else {
     startJob()
   }
@@ -37,7 +44,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 let job: NodeJS.Timeout | null = null
 
-function startJob() {
+async function startJob(): Promise<void> {
   // if existing job is running, cancel it
   if (job) {
     clearInterval(job)
@@ -46,11 +53,12 @@ function startJob() {
   // start new job
   const milliseconds = getCheckFrequencyMilliseconds()
   job = setInterval(async () => {
-    await checkAngularVersions(true)
+    // run every X milliseconds
+    vscode.commands.executeCommand('ng-evergreen.checkForUpdates')
   }, milliseconds)
 }
 
-function stopEvergreen() {
+function stopEvergreen(): void {
   let message = 'No scheduled periodic checks were found. All is good 👍'
   if (job) {
     clearInterval(job)
@@ -60,85 +68,74 @@ function stopEvergreen() {
   vscode.window.showInformationMessage(message)
 }
 
-function runEvergreen() {
-  vscode.window
-    .showInformationMessage(
-      'Keep Angular evergreen?',
-      {},
-      'Check for updates periodically',
-      'Cancel'
-    )
-    .then(async value => {
-      if (value !== 'Cancel') {
-        await setCheckFrequency()
-        await checkAngularVersions()
-        if (getCheckFrequency() !== 'On Load') {
-          startJob()
-        }
-      } else {
-        return
-      }
-    })
+async function runEvergreen(): Promise<void> {
+  if ((await shouldRunEvergreen()) === false) {
+    return
+  }
+
+
+  if (!checkFrequencyExists()) {
+    const checkFrequencyInput = await getCheckFrequencyPreference()
+    if (userCancelled(checkFrequencyInput)) {
+      return
+    }
+  }
+
+  if (!upgradeChannelExists()) {
+    const upgradeChannelInput = await getUpgradeChannelPreference()
+    if (userCancelled(upgradeChannelInput)) {
+      return
+    }
+  }
+
+  await checkForUpdates()
 }
 
-async function setCheckFrequency() {
-  await vscode.window
-    .showInformationMessage(
-      'How often would you like to check for updatess (this can be changed in settings.json)?',
-      {},
-      CheckFrequency.OnLoad,
-      CheckFrequency.Hourly,
-      CheckFrequency.Daily,
-      CheckFrequency.Weekly,
-      CheckFrequency.BiWeekly
-    )
-    .then(async checkFrequencyValue => {
-      // set user's update frequency preference in settings.json
-      await vscode.workspace
-        .getConfiguration()
-        .update(CHECK_FREQUENCY_KEY, checkFrequencyValue)
-    })
+async function shouldRunEvergreen(): Promise<boolean> {
+  const runEvergreenVal = await vscode.window.showInformationMessage(
+    'Keep Angular evergreen?',
+    {},
+    'Check for updates periodically',
+    'Cancel'
+  )
+  return !userCancelled(runEvergreenVal)
 }
 
-async function checkAngularVersions(quiet = false) {
-  let cliOutdated = await checkForUpdate(ANG_CLI)
-  let coreOutdated = await checkForUpdate(ANG_CORE)
-
+async function checkForUpdates(): Promise<void> {
+  const upgradeChannel = getUpgradeChannel()
+  const coreOutdated = await checkForUpdate(ANG_CORE, upgradeChannel)
+  const cliOutdated = await checkForUpdate(ANG_CLI, upgradeChannel)
   if (cliOutdated.needsUpdate || coreOutdated.needsUpdate) {
-    showUpdateModal(coreOutdated)
+    if (!versionToSkipExists()) {
+      const shouldUpdate = await getVersionToSkipPreference()
+      if (!!shouldUpdate && shouldUpdate.includes('Update Now')) {
+        await doAngularUpdate(coreOutdated, cliOutdated, upgradeChannel)
+      }
+    } else {
+      await doAngularUpdate(coreOutdated, cliOutdated, upgradeChannel)
+    }
   } else {
-    vscode.window.showInformationMessage('Project is already evergreen 🌲 Good job!')
+    vscode.window.showInformationMessage('Project is already Evergreen. 🌲 Good job!')
   }
 }
 
-function showUpdateModal(coreOutdated: IVersionStatus) {
-  vscode.window
-    .showInformationMessage(
-      `Your current version of Angular (${
-        coreOutdated.currentVersion
-      }) is outdated.\r\n\r\nLatest version: ${
-        coreOutdated.newVersion
-      }\r\nNext Version: ${
-        coreOutdated.nextVersion
-      }\r\n\r\nWhich version would you like to update to (this setting can be changed in settings.json)?`,
-      { modal: true },
-      'LATEST (stable)',
-      'NEXT (risky)'
+async function doAngularUpdate(
+  coreOutdated: IVersionStatus,
+  cliOutdated: IVersionStatus,
+  upgradeChannel: UpgradeChannel
+): Promise<void> {
+  const versionToSkip = getVersionToSkip()
+  const shouldSkipVersion = skipVersionCheck(
+    upgradeChannel,
+    versionToSkip,
+    coreOutdated,
+    cliOutdated
+  )
+  if (shouldSkipVersion) {
+    vscode.window.showInformationMessage(
+      `Skipping update for Angular v${versionToSkip} (${upgradeChannel}).`
     )
-    .then(async value => {
-      if (!value || value === '') {
-        return
-      } else {
-        const isNext = value.includes('NEXT')
-        if (!upgradeVersionExists()) {
-          storeUpgradeVersion(isNext)
-        }
-        await tryAngularUpdate(isNext ? [UpdateArgs.next] : [])
-      }
-    })
-}
-
-export function deactivate() {
-  console.log('Angular Evergreen is deactive.')
-  stopEvergreen()
+  } else {
+    await tryAngularUpdate(upgradeChannel)
+  }
 }
