@@ -7,13 +7,19 @@ export enum CheckFrequency {
 }
 
 export enum CheckFrequencyMilliseconds {
+  OnLoadSchedule = -1,
   HourlySchedule = 3600000,
   DailySchedule = 86400000,
   WeeklySchedule = 604800000,
   BiWeeklySchedule = 1209600000,
 }
 
-export enum UpgradeVersion {
+export enum UpgradeChannel {
   Latest = 'Latest',
   Next = 'Next',
+}
+
+export enum UpdateArgs {
+  next = '--next',
+  force = '--force',
 }

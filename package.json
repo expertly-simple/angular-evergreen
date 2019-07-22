@@ -15,7 +15,7 @@
     "color": "#2d7254",
     "theme": "dark"
   },
-  "version": "0.6.0",
+  "version": "0.7.0",
   "engines": {
     "vscode": "^1.34.0"
   },
@@ -30,8 +30,8 @@
     "configuration": {
       "title": "Angular Evergreen",
       "properties": {
-        "ng-evergreen.upgradeVersion": {
-          "description": "Which version of Angular to upgrade to",
+        "ng-evergreen.upgradeChannel": {
+          "description": "Which version channel (latest or next) of Angular to upgrade to",
           "type": "string",
           "enum": [
             "Latest",
@@ -48,13 +48,17 @@
             "Weekly",
             "Bi-Weekly"
           ]
+        },
+        "ng-evergreen.versionToSkip": {
+          "description": "Which version of Angular to skip updates for",
+          "type": "string"
         }
       }
     },
     "commands": [
       {
-        "command": "ng-evergreen.angularEvergreen",
-        "title": "Launch Angular Evergreen",
+        "command": "ng-evergreen.startAngularEvergreen",
+        "title": "Start Angular Evergreen",
         "category": "Angular Evergreen"
       },
       {
@@ -113,19 +117,19 @@
     "@types/cron": "^1.7.1",
     "@types/execa": "^0.9.0",
     "@types/get-stream": "^3.0.2",
-    "@types/mocha": "^2.2.42",
-    "@types/node": "^10.12.21",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.6.4",
     "dev-norms": "^1.7.0",
-    "ts-loader": "^6.0.2",
-    "tslint": "^5.12.1",
-    "typescript": "^3.3.1",
-    "vsce": "^1.64.0",
-    "vscode": "^1.1.28",
-    "webpack": "^4.33.0",
-    "webpack-cli": "^3.3.2"
+    "ts-loader": "^6.0.4",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3",
+    "vsce": "^1.65.0",
+    "vscode": "^1.1.35",
+    "webpack": "^4.35.3",
+    "webpack-cli": "^3.3.6"
   },
   "dependencies": {
-    "execa": "^1.0.0",
+    "execa": "^2.0.3",
     "get-latest-version": "^1.0.1",
     "get-stream": "^5.1.0",
     "open": "^6.4.0"
