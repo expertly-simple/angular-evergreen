@@ -1,8 +1,6 @@
 import * as execa from 'execa'
 import * as vscode from 'vscode'
 
-import { sanitizeStdOut, writeToTerminal } from '../common/common.helpers'
-
 import { UpgradeChannel } from '../common/enums'
 
 import fs = require('fs')

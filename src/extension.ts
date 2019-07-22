@@ -1,7 +1,7 @@
 import * as vscode from 'vscode'
 
 import { ANG_CLI, ANG_CORE, IVersionStatus, checkForUpdate } from './file/package-manager'
-import { CheckFrequency, UpdateArgs, UpgradeChannel } from './common/enums'
+import { CheckFrequency, UpgradeChannel } from './common/enums'
 import {
   checkFrequencyExists,
   getCheckFrequency,
