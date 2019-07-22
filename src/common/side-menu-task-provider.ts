@@ -1,11 +1,15 @@
 import * as vscode from 'vscode'
 import * as packageManager from '../file/package-manager'
+import { getUpgradeChannel } from './upgrade-channel.helpers'
 
 export class SideMenuTaskProvider implements vscode.TreeDataProvider<TreeTask> {
   constructor(private context: vscode.ExtensionContext) {}
 
   public async getChildren(task?: TreeTask): Promise<TreeTask[]> {
-    let currentVersion = await packageManager.checkForUpdate(packageManager.ANG_CORE)
+    let currentVersion = await packageManager.checkForUpdate(
+      packageManager.ANG_CORE,
+      getUpgradeChannel()
+    )
 
     if (task && task.label && task.label.includes('Angular Version')) {
       return this.getVersionTree(currentVersion)
@@ -46,7 +50,7 @@ export class SideMenuTaskProvider implements vscode.TreeDataProvider<TreeTask> {
     return [
       new TreeTask(
         'Folder',
-        'Latest Version: ' + currentVersion.newVersion,
+        'Latest Version: ' + currentVersion.latestVersion,
         vscode.TreeItemCollapsibleState.None
       ),
       new TreeTask(
