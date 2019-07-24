@@ -2,6 +2,7 @@ import * as vscode from 'vscode'
 import * as packageManager from '../file/package-manager'
 import { getUpgradeChannel } from './upgrade-channel.helpers'
 
+
 export class SideMenuTaskProvider implements vscode.TreeDataProvider<TreeTask> {
   constructor(private context: vscode.ExtensionContext) {}
 
@@ -60,6 +61,7 @@ export class SideMenuTaskProvider implements vscode.TreeDataProvider<TreeTask> {
       ),
     ]
   }
+
 }
 
 class TreeTask extends vscode.TreeItem {
@@ -76,6 +78,7 @@ class TreeTask extends vscode.TreeItem {
       | { light: string | vscode.Uri; dark: string | vscode.Uri }
       | vscode.ThemeIcon,
     contextValue?: string
+
   ) {
     super(label, collapsibleState)
     this.type = type
@@ -86,5 +89,6 @@ class TreeTask extends vscode.TreeItem {
 
   getChildren() {
     return null
+
   }
 }
