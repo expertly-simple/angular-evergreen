@@ -23,13 +23,21 @@ import {
 import { tryAngularUpdate } from './file/angular-update'
 import { userCancelled } from './common/common.helpers'
 
+import { SideMenuTaskProvider } from './common/side-menu-task-provider'
+import * as open from 'open'
+
 export function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')
 
   context.subscriptions.push(
     vscode.commands.registerCommand('ng-evergreen.startAngularEvergreen', runEvergreen),
     vscode.commands.registerCommand('ng-evergreen.stopAngularEvergreen', stopEvergreen),
-    vscode.commands.registerCommand('ng-evergreen.checkForUpdates', checkForUpdates)
+    vscode.commands.registerCommand('ng-evergreen.checkForUpdates', checkForUpdates),
+    vscode.commands.registerCommand(
+      'ng-evergreen.navigateToUpdateIo',
+      navigateToUpdateIo
+    ),
+    vscode.window.registerTreeDataProvider('evergreen', new SideMenuTaskProvider(context))
   )
 
   const isFirstRun = !checkFrequencyExists()
@@ -138,4 +146,8 @@ async function doAngularUpdate(
   } else {
     await tryAngularUpdate(upgradeChannel)
   }
+}
+
+async function navigateToUpdateIo() {
+  await open('https://update.angular.io/')
 }
