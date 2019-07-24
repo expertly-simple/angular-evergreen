@@ -1,5 +1,6 @@
-import * as vscode from 'vscode'
 import * as packageManager from '../file/package-manager'
+import * as vscode from 'vscode'
+
 import { getUpgradeChannel } from './upgrade-channel.helpers'
 
 export class SideMenuTaskProvider implements vscode.TreeDataProvider<TreeTask> {
@@ -29,11 +30,21 @@ export class SideMenuTaskProvider implements vscode.TreeDataProvider<TreeTask> {
       ),
       new TreeTask(
         'Link',
-        'Visit update.io',
+        'Visit update.angular.io',
         vscode.TreeItemCollapsibleState.None,
         {
           command: 'ng-evergreen.navigateToUpdateIo',
-          title: 'Visit update.io',
+          title: 'Visit update.angular.io',
+        },
+        this.context.extensionPath + '/resources/angular-icon.svg'
+      ),
+      new TreeTask(
+        'Link',
+        'Visit blog.angular.io',
+        vscode.TreeItemCollapsibleState.None,
+        {
+          command: 'ng-evergreen.navigateToBlogIo',
+          title: 'Visit blog.angular.io',
         },
         this.context.extensionPath + '/resources/angular-icon.svg'
       ),

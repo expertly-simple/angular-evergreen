@@ -74,7 +74,12 @@
       },
       {
         "command": "ng-evergreen.navigateToUpdateIo",
-        "title": "Visit update.io",
+        "title": "Visit update.angular.io",
+        "category": "Angular Evergreen"
+      },
+      {
+        "command": "ng-evergreen.navigateToBlogIo",
+        "title": "Visit blog.angular.io",
         "category": "Angular Evergreen"
       }
     ],
@@ -82,7 +87,7 @@
       "activitybar": [
         {
           "id": "evergreen-container",
-          "title": "ANGULAR EVERGREEN",
+          "title": "Angular Evergreen",
           "icon": "resources/ng-evergreen-logo-monochromatic.svg"
         }
       ]
@@ -100,6 +105,16 @@
         {
           "command": "ng-evergreen.checkForUpdates",
           "when": "view == evergreen && viewItem == evergreen-version",
+          "group": "inline"
+        },
+        {
+          "command": "ng-evergreen.startAngularEvergreen",
+          "when": "view == evergreen && viewItem == dependency",
+          "group": "inline"
+        },
+        {
+          "command": "ng-evergreen.navigateToUpdateIo",
+          "when": "view == evergreen && viewItem == dependency",
           "group": "inline"
         }
       ]
