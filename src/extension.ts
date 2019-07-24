@@ -1,3 +1,4 @@
+import * as open from 'open'
 import * as vscode from 'vscode'
 
 import { ANG_CLI, ANG_CORE, IVersionStatus, checkForUpdate } from './file/package-manager'
@@ -20,11 +21,9 @@ import {
   versionToSkipExists,
 } from './common/version-to-skip.helpers'
 
+import { SideMenuTaskProvider } from './common/side-menu-task-provider'
 import { tryAngularUpdate } from './file/angular-update'
 import { userCancelled } from './common/common.helpers'
-
-import { SideMenuTaskProvider } from './common/side-menu-task-provider'
-import * as open from 'open'
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')
@@ -37,6 +36,7 @@ export function activate(context: vscode.ExtensionContext) {
       'ng-evergreen.navigateToUpdateIo',
       navigateToUpdateIo
     ),
+    vscode.commands.registerCommand('ng-evergreen.navigateToBlogIo', navigateToBlogIo),
     vscode.window.registerTreeDataProvider('evergreen', new SideMenuTaskProvider(context))
   )
 
@@ -80,7 +80,6 @@ async function runEvergreen(): Promise<void> {
   if ((await shouldRunEvergreen()) === false) {
     return
   }
-
 
   if (!checkFrequencyExists()) {
     const checkFrequencyInput = await getCheckFrequencyPreference()
@@ -150,4 +149,8 @@ async function doAngularUpdate(
 
 async function navigateToUpdateIo() {
   await open('https://update.angular.io/')
+}
+
+async function navigateToBlogIo() {
+  await open('https://blog.angular.io/')
 }
