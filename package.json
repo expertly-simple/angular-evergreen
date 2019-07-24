@@ -81,7 +81,7 @@
       "activitybar": [
         {
           "id": "evergreen-container",
-          "title": "ANGULAR EVERGREEN",
+          "title": "Angular Evergreen",
           "icon": "resources/ng-evergreen-logo-monochromatic.svg"
         }
       ]
