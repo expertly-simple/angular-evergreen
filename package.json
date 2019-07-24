@@ -81,7 +81,7 @@
     "package": "vsce package",
     "postinstall": "node ./node_modules/vscode/bin/install",
     "test": "npm run compile && node ./node_modules/vscode/bin/test",
-    "test:unit": "jasmine-ts \"/spec/*.spec.ts\""
+    "test:unit": "jasmine-ts \"/spec/**/common/*.spec.ts\""
   },
   "devDependencies": {
     "@types/cron": "^1.7.1",
