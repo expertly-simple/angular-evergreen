@@ -73,6 +73,7 @@ async function runEvergreen(): Promise<void> {
     return
   }
 
+
   if (!checkFrequencyExists()) {
     const checkFrequencyInput = await getCheckFrequencyPreference()
     if (userCancelled(checkFrequencyInput)) {
