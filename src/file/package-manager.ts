@@ -2,6 +2,7 @@ import * as execa from 'execa'
 import * as vscode from 'vscode'
 import * as fs from 'fs'
 import { WorkspaceManager } from '../common/workspace-manager'
+
 import { UpgradeChannel } from '../common/enums'
 
 export interface IVersionStatus {
