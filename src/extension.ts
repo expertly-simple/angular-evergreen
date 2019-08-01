@@ -1,29 +1,25 @@
 import * as vscode from 'vscode'
-
-import { ANG_CLI, ANG_CORE, IVersionStatus, checkForUpdate } from './file/package-manager'
-import { CheckFrequency, UpdateArgs, UpgradeChannel } from './common/enums'
+import { Util } from '../src/common/util'
+import { PackageManager } from './file/package-manager'
+import { CheckFrequency, UpgradeChannel } from './common/enums'
 import {
   checkFrequencyExists,
   getCheckFrequency,
-  getCheckFrequencyMilliseconds,
   getCheckFrequencyPreference,
-} from './common/check-frequency.helpers'
+} from './helpers/check-frequency.helpers'
 import {
   getUpgradeChannel,
   getUpgradeChannelPreference,
   upgradeChannelExists,
-} from './common/upgrade-channel.helpers'
+} from './helpers/upgrade-channel.helpers'
 import {
   getVersionToSkip,
   getVersionToSkipPreference,
   skipVersionCheck,
   versionToSkipExists,
-} from './common/version-to-skip.helpers'
+} from './helpers/version-to-skip.helpers'
 
-import { tryAngularUpdate } from './file/angular-update'
-import { userCancelled } from './common/common.helpers'
-
-import { SideMenuTaskProvider } from './common/side-menu-task-provider'
+import { SideMenuTaskProvider } from './ui/side-menu-task-provider'
 import * as open from 'open'
 
 export function activate(context: vscode.ExtensionContext) {
@@ -31,7 +27,6 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand('ng-evergreen.startAngularEvergreen', runEvergreen),
-    vscode.commands.registerCommand('ng-evergreen.stopAngularEvergreen', stopEvergreen),
     vscode.commands.registerCommand('ng-evergreen.checkForUpdates', checkForUpdates),
     vscode.commands.registerCommand(
       'ng-evergreen.navigateToUpdateIo',
@@ -43,37 +38,10 @@ export function activate(context: vscode.ExtensionContext) {
   const isFirstRun = !checkFrequencyExists()
   if (isFirstRun) {
     vscode.commands.executeCommand('ng-evergreen.startAngularEvergreen')
-  } else if (getCheckFrequency() === CheckFrequency.OnLoad) {
+  } else if (getCheckFrequency() !== CheckFrequency.OnLoad &&
+            ) {
     vscode.commands.executeCommand('ng-evergreen.checkForUpdates')
-  } else {
-    startJob()
   }
-}
-
-let job: NodeJS.Timeout | null = null
-
-async function startJob(): Promise<void> {
-  // if existing job is running, cancel it
-  if (job) {
-    clearInterval(job)
-  }
-
-  // start new job
-  const milliseconds = getCheckFrequencyMilliseconds()
-  job = setInterval(async () => {
-    // run every X milliseconds
-    vscode.commands.executeCommand('ng-evergreen.checkForUpdates')
-  }, milliseconds)
-}
-
-function stopEvergreen(): void {
-  let message = 'No scheduled periodic checks were found. All is good 👍'
-  if (job) {
-    clearInterval(job)
-    message = 'Cancelled periodic checks 👋'
-  }
-
-  vscode.window.showInformationMessage(message)
 }
 
 async function runEvergreen(): Promise<void> {
@@ -84,16 +52,10 @@ async function runEvergreen(): Promise<void> {
 
   if (!checkFrequencyExists()) {
     const checkFrequencyInput = await getCheckFrequencyPreference()
-    if (userCancelled(checkFrequencyInput)) {
-      return
-    }
   }
 
   if (!upgradeChannelExists()) {
     const upgradeChannelInput = await getUpgradeChannelPreference()
-    if (userCancelled(upgradeChannelInput)) {
-      return
-    }
   }
 
   await checkForUpdates()
@@ -106,7 +68,7 @@ async function shouldRunEvergreen(): Promise<boolean> {
     'Check for updates periodically',
     'Cancel'
   )
-  return !userCancelled(runEvergreenVal)
+  return !Util.userCancelled(runEvergreenVal)
 }
 
 async function checkForUpdates(): Promise<void> {
