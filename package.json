@@ -69,11 +69,17 @@
       {
         "command": "ng-evergreen.checkForUpdates",
         "title": "Check for Angular Updates",
-        "category": "Angular Evergreen"
+        "category": "Angular Evergreen",
+        "icon": "resources/run.svg"
       },
       {
         "command": "ng-evergreen.navigateToUpdateIo",
-        "title": "Visit update.io",
+        "title": "Visit update.angular.io",
+        "category": "Angular Evergreen"
+      },
+      {
+        "command": "ng-evergreen.navigateToBlogIo",
+        "title": "Visit blog.angular.io",
         "category": "Angular Evergreen"
       }
     ],
@@ -96,6 +102,11 @@
     },
     "menus": {
       "view/item/context": [
+        {
+          "command": "ng-evergreen.checkForUpdates",
+          "when": "view == evergreen && viewItem == evergreen-version",
+          "group": "inline"
+        },
         {
           "command": "ng-evergreen.startAngularEvergreen",
           "when": "view == evergreen && viewItem == dependency",
