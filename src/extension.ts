@@ -26,6 +26,7 @@ var packageManager: PackageManager
 var cmd: CMD
 var versionSkipper: VersionSkipper
 const NOW_DATE = new Date()
+var isFirstRun: boolean
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')
@@ -49,7 +50,7 @@ export function activate(context: vscode.ExtensionContext) {
     )
   )
 
-  const isFirstRun = !workspaceManager.getUpdateFrequency()
+  isFirstRun = !workspaceManager.getUpdateFrequency()
   if (isFirstRun) {
     vscode.commands.executeCommand('ng-evergreen.startAngularEvergreen')
   } else if (
@@ -65,6 +66,13 @@ export function activate(context: vscode.ExtensionContext) {
 async function runEvergreen(): Promise<void> {
   if ((await shouldRunEvergreen()) === false) {
     return
+  }
+
+  if (isFirstRun) {
+    const checkFrequencyInput = await getCheckFrequencyPreference()
+    if (Util.userCancelled(checkFrequencyInput)) {
+      return
+    }
   }
 
   if (!upgradeChannelExists()) {
@@ -128,6 +136,21 @@ async function doAngularUpdate(
   } else {
     await angularUpdater.tryAngularUpdate(upgradeChannel)
   }
+}
+
+export async function getCheckFrequencyPreference(): Promise<string | undefined> {
+  const checkFrequencyVal = await vscode.window.showInformationMessage(
+    'How often would you like to check for updates (this can be changed in settings.json)?',
+    {},
+    CheckFrequency.OnLoad,
+    CheckFrequency.Daily
+  )
+
+  if (checkFrequencyVal && checkFrequencyVal !== '') {
+    workspaceManager.setUpdateFrequency(checkFrequencyVal)
+  }
+
+  return checkFrequencyVal
 }
 
 async function navigateToUpdateIo() {

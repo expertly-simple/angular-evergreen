@@ -13,6 +13,10 @@ export class WorkspaceManager {
     return this._vscode.workspace.getConfiguration().get(CHECK_FREQUENCY_KEY)
   }
 
+  setUpdateFrequency(value: string) {
+    this._vscode.workspace.getConfiguration().update(CHECK_FREQUENCY_KEY, value)
+  }
+
   getWorkspace() {
     if (this._vscode.workspace) {
       const folders = this._vscode.workspace.workspaceFolders
