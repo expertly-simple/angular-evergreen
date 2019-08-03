@@ -2,16 +2,21 @@ import { CMD } from '../commands/cmd'
 
 import { UpdateArgs, UpgradeChannel, UpdateCommands } from '../common/enums'
 import { isGitClean } from './git-manager'
+import { read } from 'fs'
 
 export class AngularUpdater {
   readonly _vscode: any
   readonly _workspace: string
   readonly _cmd: CMD
+  readonly _renderer: any
 
   constructor(vscode: any, cmd: CMD) {
     this._cmd = cmd
     this._vscode = vscode
     this._workspace = vscode.workspace.workspaceFolders![0]
+    this._renderer = (<any>this._vscode.window).createTerminalRenderer(
+      'Angular Evergreen 🌲'
+    )
   }
 
   async tryAngularUpdate(upgradeChannel: UpgradeChannel) {
@@ -30,26 +35,26 @@ export class AngularUpdater {
     let coreCMD = `${UpdateCommands.ngCoreCmd} ${cmdArgs}`
     let updateCMD = `${UpdateCommands.ngAllCmd} ${cmdArgs}`
 
-    const renderer = (<any>this._vscode.window).createTerminalRenderer(
-      'Angular Evergreen 🌲'
-    )
-    renderer.terminal.show()
-    renderer.write('\x1b[32m 🌲  Welcome to Angular Evergreen 🌲 \r\n\n')
+    this._renderer.terminal.show()
+    this._renderer.write('\x1b[32m 🌲  Welcome to Angular Evergreen 🌲 \r\n\n')
 
     try {
-      await this._cmd.runScript(renderer, 'npm install')
-      await this._cmd.runScript(renderer, coreCMD)
-      await this._cmd.runScript(renderer, 'git commit -a -m "Updated Angular CLI & Core"')
-      await this._cmd.runScript(renderer, updateCMD)
+      await this._cmd.runScript(this._renderer, 'npm install')
+      await this._cmd.runScript(this._renderer, coreCMD)
+      await this._cmd.runScript(
+        this._renderer,
+        'git commit -a -m "Updated Angular CLI & Core"'
+      )
+      await this._cmd.runScript(this._renderer, updateCMD)
       this._cmd.writeToTerminal(
-        renderer,
+        this._renderer,
         'Update completed! Project is Evergreen 🌲 Be sure to run your tests and build for prod!'
       )
       return true
     } catch (error) {
-      this._cmd.writeToTerminal(renderer, this._cmd.sanitizeStdOut(error.message))
+      this._cmd.writeToTerminal(this._renderer, this._cmd.sanitizeStdOut(error.message))
       // check if user wants to force
-      this.forceUpdate(renderer, `${updateCMD} ${UpdateArgs.force}`)
+      this.forceUpdate(this._renderer, `${updateCMD} ${UpdateArgs.force}`)
       return false
     }
   }
