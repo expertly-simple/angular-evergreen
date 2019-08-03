@@ -45,12 +45,14 @@ export function activate(context: vscode.ExtensionContext) {
   )
 
   const isFirstRun = !workspaceManager.getUpdateFrequency()
-  if (isFirstRun || workspaceManager.getUpdateFrequency() === CheckFrequency.OnLoad) {
+  if (isFirstRun) {
     vscode.commands.executeCommand('ng-evergreen.startAngularEvergreen')
   } else if (
     workspaceManager.getUpdateFrequency() !== CheckFrequency.OnLoad &&
     workspaceManager.getLastUpdateCheckDate() < NOW_DATE
   ) {
+    vscode.commands.executeCommand('ng-evergreen.checkForUpdates')
+  } else if (workspaceManager.getUpdateFrequency() === CheckFrequency.OnLoad) {
     vscode.commands.executeCommand('ng-evergreen.checkForUpdates')
   }
 }
