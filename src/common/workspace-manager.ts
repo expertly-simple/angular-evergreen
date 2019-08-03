@@ -1,4 +1,5 @@
 const CHECK_FREQUENCY_KEY: string = 'ng-evergreen.checkFrequency'
+const VERSION_TO_SKIP_KEY = 'ng-evergreen.versionToSkip'
 const LASTUPDATE_KEY = 'lastUpdate'
 export class WorkspaceManager {
   readonly _vscode: any
@@ -27,5 +28,17 @@ export class WorkspaceManager {
 
   getLastUpdateCheckDate(): Date {
     return this._context.workspaceState.get(LASTUPDATE_KEY)
+  }
+
+  getVersionToSkip(): string | undefined {
+    return this._vscode.workspace.getConfiguration().get(VERSION_TO_SKIP_KEY)
+  }
+
+  storeVersionToSkip(versionToSkip: string): void {
+    this._vscode.workspace.getConfiguration().update(VERSION_TO_SKIP_KEY, versionToSkip)
+  }
+
+  clearVersionToSkip(): void {
+    this._vscode.workspace.getConfiguration().update(VERSION_TO_SKIP_KEY, undefined)
   }
 }

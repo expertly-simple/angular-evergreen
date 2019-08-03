@@ -13,11 +13,13 @@ import * as open from 'open'
 import { AngularUpdater } from './file/angular-update'
 import { WorkspaceManager } from './common/workspace-manager'
 import { CMD } from './commands/cmd'
+import { VersionSkipper } from './helpers/version-to-skip.helpers'
 
 var workspaceManager: WorkspaceManager
 var angularUpdater: AngularUpdater
 var packageManager: PackageManager
 var cmd: CMD
+var versionSkipper: VersionSkipper
 const NOW_DATE = new Date()
 
 export function activate(context: vscode.ExtensionContext) {
@@ -26,8 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
   angularUpdater = new AngularUpdater(vscode, cmd)
   workspaceManager = new WorkspaceManager(vscode, context)
   packageManager = new PackageManager(vscode, workspaceManager)
-
-  context.workspaceState.update
+  versionSkipper = new VersionSkipper(packageManager, workspaceManager)
 
   context.subscriptions.push(
     vscode.commands.registerCommand('ng-evergreen.startAngularEvergreen', runEvergreen),
@@ -37,7 +38,10 @@ export function activate(context: vscode.ExtensionContext) {
       navigateToUpdateIo
     ),
     vscode.commands.registerCommand('ng-evergreen.navigateToBlogIo', navigateToBlogIo),
-    vscode.window.registerTreeDataProvider('evergreen', new SideMenuTaskProvider(context))
+    vscode.window.registerTreeDataProvider(
+      'evergreen',
+      new SideMenuTaskProvider(context, packageManager)
+    )
   )
 
   const isFirstRun = !workspaceManager.getUpdateFrequency()
@@ -85,8 +89,8 @@ async function checkForUpdates(): Promise<void> {
     upgradeChannel
   )
   if (cliOutdated.needsUpdate || coreOutdated.needsUpdate) {
-    if (!versionToSkipExists()) {
-      const shouldUpdate = await getVersionToSkipPreference()
+    if (!versionSkipper.versionToSkipExists()) {
+      const shouldUpdate = await versionSkipper.getVersionToSkipPreference()
       if (!!shouldUpdate && shouldUpdate.includes('Update Now')) {
         await doAngularUpdate(coreOutdated, cliOutdated, upgradeChannel)
       }
@@ -103,8 +107,8 @@ async function doAngularUpdate(
   cliOutdated: IVersionStatus,
   upgradeChannel: UpgradeChannel
 ): Promise<void> {
-  const versionToSkip = getVersionToSkip()
-  const shouldSkipVersion = skipVersionCheck(
+  const versionToSkip = workspaceManager.getVersionToSkip()
+  const shouldSkipVersion = versionSkipper.skipVersionCheck(
     upgradeChannel,
     versionToSkip,
     coreOutdated,
