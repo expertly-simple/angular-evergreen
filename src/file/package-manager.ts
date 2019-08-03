@@ -12,8 +12,6 @@ export interface IVersionStatus {
   nextVersion: string
 }
 
-const ANG_CLI = '@angular/cli'
-const ANG_CORE = '@angular/core'
 export class PackageManager {
   readonly _workspacePath: any
   readonly _workspaceManager: WorkspaceManager

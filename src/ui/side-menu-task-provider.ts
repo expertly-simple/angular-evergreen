@@ -2,7 +2,7 @@ import * as packageManager from '../file/package-manager'
 import * as vscode from 'vscode'
 
 import { getUpgradeChannel } from '../helpers/upgrade-channel.helpers'
-import { UpdateCommands } from '../common/enums'
+import { PackagesToCheck } from '../common/enums'
 import { read } from 'fs'
 import { PackageManager } from '../file/package-manager'
 
@@ -17,7 +17,7 @@ export class SideMenuTaskProvider implements vscode.TreeDataProvider<TreeTask> {
 
   public async getChildren(task?: TreeTask): Promise<TreeTask[]> {
     let currentVersion = await this._packageManager.checkForUpdate(
-      UpdateCommands.ngAllCmd,
+      PackagesToCheck.cli,
       getUpgradeChannel()
     )
 

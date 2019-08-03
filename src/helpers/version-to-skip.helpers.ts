@@ -1,7 +1,7 @@
 import * as vscode from 'vscode'
 
 import { PackageManager, IVersionStatus } from '../file/package-manager'
-import { UpgradeChannel, UpdateCommands } from '../common/enums'
+import { UpgradeChannel, UpdateCommands, PackagesToCheck } from '../common/enums'
 import { getUpgradeChannel } from './upgrade-channel.helpers'
 import { WorkspaceManager } from '../common/workspace-manager'
 import { read } from 'fs'
@@ -24,11 +24,11 @@ export class VersionSkipper {
     const upgradeChannel = getUpgradeChannel()
     const versionToSkip = this._workspaceManager.getVersionToSkip()
     const ngCoreVersion = await this._packageManager.checkForUpdate(
-      UpdateCommands.ngCoreCmd,
+      PackagesToCheck.core,
       upgradeChannel
     )
     const ngCliVersion = await this._packageManager.checkForUpdate(
-      UpdateCommands.ngAllCmd,
+      PackagesToCheck.cli,
       upgradeChannel
     )
 
@@ -49,20 +49,20 @@ export class VersionSkipper {
   async getVersionToSkipPreference(): Promise<string | undefined> {
     const upgradeChannel = getUpgradeChannel()
     const cliOutdated = await this._packageManager.checkForUpdate(
-      UpdateCommands.ngCoreCmd,
+      PackagesToCheck.core,
       upgradeChannel
     )
     const coreOutdated = await this._packageManager.checkForUpdate(
-      UpdateCommands.ngAllCmd,
+      PackagesToCheck.cli,
       upgradeChannel
     )
     // we sure do call the next two lines a lot seems like a problem.
     const ngCoreVersion = await this._packageManager.checkForUpdate(
-      UpdateCommands.ngCoreCmd,
+      PackagesToCheck.core,
       upgradeChannel
     )
     const ngCliVersion = await this._packageManager.checkForUpdate(
-      UpdateCommands.ngAllCmd,
+      PackagesToCheck.cli,
       upgradeChannel
     )
     const shouldUpdateToNext = upgradeChannel === UpgradeChannel.Next

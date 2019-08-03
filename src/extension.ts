@@ -1,7 +1,12 @@
 import * as vscode from 'vscode'
 import { Util } from '../src/common/util'
 import { PackageManager, IVersionStatus } from './file/package-manager'
-import { CheckFrequency, UpgradeChannel, UpdateCommands } from './common/enums'
+import {
+  CheckFrequency,
+  UpgradeChannel,
+  UpdateCommands,
+  PackagesToCheck,
+} from './common/enums'
 import {
   getUpgradeChannel,
   getUpgradeChannelPreference,
@@ -83,11 +88,11 @@ async function shouldRunEvergreen(): Promise<boolean> {
 async function checkForUpdates(): Promise<void> {
   const upgradeChannel = getUpgradeChannel()
   const coreOutdated = await packageManager.checkForUpdate(
-    UpdateCommands.ngCoreCmd,
+    PackagesToCheck.core,
     upgradeChannel
   )
   const cliOutdated = await packageManager.checkForUpdate(
-    UpdateCommands.ngAllCmd,
+    PackagesToCheck.cli,
     upgradeChannel
   )
   if (cliOutdated.needsUpdate || coreOutdated.needsUpdate) {

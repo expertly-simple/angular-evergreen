@@ -10,6 +10,7 @@ export class AngularUpdater {
 
   constructor(vscode: any, cmd: CMD) {
     this._cmd = cmd
+    this._vscode = vscode
     this._workspace = vscode.workspace.workspaceFolders![0]
   }
 
