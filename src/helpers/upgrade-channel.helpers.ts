@@ -1,5 +1,6 @@
 import * as vscode from 'vscode'
 import { UpgradeChannel } from '../common/enums'
+import { Util } from '../common/util'
 
 export const UPGRADE_CHANNEL_KEY = 'ng-evergreen.upgradeChannel'
 
@@ -56,7 +57,7 @@ export async function getUpgradeChannelPreference(): Promise<string | undefined>
     'Cancel'
   )
 
-  if (!!upgradeChannelVal && !userCancelled(upgradeChannelVal)) {
+  if (!!upgradeChannelVal && !Util.userCancelled(upgradeChannelVal)) {
     const shouldUpdateToNext = upgradeChannelVal.includes('Next')
     storeUpgradeChannel(shouldUpdateToNext)
   }

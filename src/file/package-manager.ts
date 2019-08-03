@@ -20,10 +20,10 @@ export class PackageManager {
   readonly _workspace: string
   readonly _vscode: any
 
-  constructor(vscode: any) {
+  constructor(vscode: any, workspaceManager: WorkspaceManager) {
     this._workspace = vscode.workspace.workspaceFolders![0]
     this._vscode = vscode
-    this._workspaceManager = new WorkspaceManager(this._vscode)
+    this._workspaceManager = workspaceManager
     this._workspacePath = this._workspaceManager.getWorkspace()
   }
 
@@ -91,5 +91,41 @@ export class PackageManager {
     }
 
     return stdout
+  }
+
+  async checkForUpdate(
+    packageName: string,
+    upgradeChannel: UpgradeChannel
+  ): Promise<IVersionStatus> {
+    let currentVersion = await this.getCurrentVersion(packageName)
+    const latestVersion = await this.getNpmVersion(packageName)
+    const nextVersion = await this.getNpmVersion(packageName, '@next')
+    currentVersion = currentVersion.replace('~', '').replace('^', '')
+
+    return {
+      needsUpdate: this.doesItNeedUpdating(
+        currentVersion,
+        latestVersion,
+        nextVersion,
+        upgradeChannel
+      ),
+      currentVersion: currentVersion,
+      latestVersion: latestVersion,
+      nextVersion: nextVersion,
+    }
+  }
+
+  doesItNeedUpdating(
+    currentVersion: string,
+    latestVersion: string,
+    nextVersion: string,
+    upgradeChannel: UpgradeChannel
+  ) {
+    switch (upgradeChannel) {
+      case UpgradeChannel.Latest:
+        return currentVersion !== latestVersion
+      case UpgradeChannel.Next:
+        return currentVersion !== nextVersion
+    }
   }
 }

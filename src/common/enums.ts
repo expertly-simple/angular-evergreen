@@ -8,6 +8,11 @@ export enum UpgradeChannel {
   Next = 'Next',
 }
 
+export enum UpdateCommands {
+  ngCoreCmd = 'npx ng update @angular/cli @angular/core',
+  ngAllCmd = 'npx ng update --all',
+}
+
 export enum UpdateArgs {
   next = '--next',
   force = '--force',

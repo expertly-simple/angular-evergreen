@@ -1,11 +1,9 @@
 import { CMD } from '../commands/cmd'
 
-import { UpdateArgs, UpgradeChannel } from '../common/enums'
+import { UpdateArgs, UpgradeChannel, UpdateCommands } from '../common/enums'
 import { isGitClean } from './git-manager'
 
 export class AngularUpdater {
-  readonly NG_CORE_CMD = 'npx ng update @angular/cli @angular/core'
-  readonly NG_ALL_CMD = 'npx ng update --all'
   readonly _vscode: any
   readonly _workspace: string
   readonly _cmd: CMD
@@ -28,8 +26,8 @@ export class AngularUpdater {
 
   async ngUpdate(upgradeChannel: UpgradeChannel): Promise<boolean> {
     const cmdArgs = upgradeChannel === UpgradeChannel.Next ? UpdateArgs.next : ''
-    let coreCMD = `${this.NG_CORE_CMD} ${cmdArgs}`
-    let updateCMD = `${this.NG_ALL_CMD} ${cmdArgs}`
+    let coreCMD = `${UpdateCommands.ngCoreCmd} ${cmdArgs}`
+    let updateCMD = `${UpdateCommands.ngAllCmd} ${cmdArgs}`
 
     const renderer = (<any>this._vscode.window).createTerminalRenderer(
       'Angular Evergreen 🌲'
