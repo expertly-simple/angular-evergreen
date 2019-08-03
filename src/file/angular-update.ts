@@ -39,13 +39,13 @@ export class AngularUpdater {
     this._renderer.write('\x1b[32m 🌲  Welcome to Angular Evergreen 🌲 \r\n\n')
 
     try {
-      await this._cmd.runScript(this._renderer, 'npm install')
-      await this._cmd.runScript(this._renderer, coreCMD)
+      await this._cmd.runScript(UpdateCommands.npmInstall, this._renderer)
+      await this._cmd.runScript(coreCMD, this._renderer)
       await this._cmd.runScript(
-        this._renderer,
-        'git commit -a -m "Updated Angular CLI & Core"'
+        'git commit -a -m "Updated Angular CLI & Core"',
+        this._renderer
       )
-      await this._cmd.runScript(this._renderer, updateCMD)
+      await this._cmd.runScript(updateCMD, this._renderer)
       this._cmd.writeToTerminal(
         this._renderer,
         'Update completed! Project is Evergreen 🌲 Be sure to run your tests and build for prod!'
@@ -63,8 +63,8 @@ export class AngularUpdater {
     const gitCmd = 'git reset --hard'
     try {
       this._cmd.writeToTerminal(renderer, 'Undoing changes...')
-      await this._cmd.runScript(renderer, gitCmd)
-      await this._cmd.runScript(renderer, 'npm install')
+      await this._cmd.runScript(gitCmd, this._renderer)
+      await this._cmd.runScript(UpdateCommands.npmInstall, this._renderer)
       this._cmd.writeToTerminal(renderer, 'Changes have been rolled back.')
     } catch (error) {
       this._cmd.writeToTerminal(renderer, this._cmd.sanitizeStdOut(error.message))
@@ -84,7 +84,7 @@ export class AngularUpdater {
         if (value && value.includes('Force')) {
           try {
             this._cmd.writeToTerminal(renderer, 'May the Force be with you!')
-            await this._cmd.runScript(renderer, updateCmd)
+            await this._cmd.runScript(updateCmd, this._renderer)
             this._cmd.writeToTerminal(
               renderer,
               '🌲  Force Complete 🌲\r\n You will likely have to manually rollback your version of Typescript.\r\nCheck version here https://github.com/angular/angular/blob/master/package.json (or find branch if on next).'

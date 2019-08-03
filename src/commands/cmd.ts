@@ -3,7 +3,7 @@ import * as execa from 'execa'
 export class CMD {
   constructor() {}
 
-  async runScript(script: string, cwd?: string, renderer?: any) {
+  async runScript(script: string, renderer?: any, cwd?: string) {
     this.writeToTerminal(renderer, `Executing: ${script}`)
     const scriptStdout = await execa.command(script, {
       cwd: cwd,
