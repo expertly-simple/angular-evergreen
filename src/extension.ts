@@ -19,6 +19,8 @@ import { AngularUpdater } from './file/angular-update'
 import { WorkspaceManager } from './common/workspace-manager'
 import { CMD } from './commands/cmd'
 import { VersionSkipper } from './helpers/version-to-skip.helpers'
+import { CheckFrequencyHelper } from './helpers/check-frequency.helpers'
+import { WorkspaceConfiguration } from '../.vscode-test/vscode-1.36.0/Visual Studio Code.app/Contents/Resources/app/out/vs/vscode'
 
 var workspaceManager: WorkspaceManager
 var angularUpdater: AngularUpdater
@@ -27,6 +29,7 @@ var cmd: CMD
 var versionSkipper: VersionSkipper
 const NOW_DATE = new Date()
 var isFirstRun: boolean
+var checkFrequencyHelper: CheckFrequencyHelper
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')
@@ -55,7 +58,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.executeCommand('ng-evergreen.startAngularEvergreen')
   } else if (
     workspaceManager.getUpdateFrequency() !== CheckFrequency.OnLoad &&
-    workspaceManager.getLastUpdateCheckDate() < NOW_DATE
+    checkFrequencyHelper.checkFrequencyBeforeUpdate()
   ) {
     vscode.commands.executeCommand('ng-evergreen.checkForUpdates')
   } else if (workspaceManager.getUpdateFrequency() === CheckFrequency.OnLoad) {
@@ -69,7 +72,7 @@ async function runEvergreen(): Promise<void> {
   }
 
   if (isFirstRun) {
-    const checkFrequencyInput = await getCheckFrequencyPreference()
+    const checkFrequencyInput = await checkFrequencyHelper.getCheckFrequencyPreference()
     if (Util.userCancelled(checkFrequencyInput)) {
       return
     }
@@ -136,21 +139,6 @@ async function doAngularUpdate(
   } else {
     await angularUpdater.tryAngularUpdate(upgradeChannel)
   }
-}
-
-export async function getCheckFrequencyPreference(): Promise<string | undefined> {
-  const checkFrequencyVal = await vscode.window.showInformationMessage(
-    'How often would you like to check for updates (this can be changed in settings.json)?',
-    {},
-    CheckFrequency.OnLoad,
-    CheckFrequency.Daily
-  )
-
-  if (checkFrequencyVal && checkFrequencyVal !== '') {
-    workspaceManager.setUpdateFrequency(checkFrequencyVal)
-  }
-
-  return checkFrequencyVal
 }
 
 async function navigateToUpdateIo() {

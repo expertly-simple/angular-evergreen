@@ -1,30 +1,41 @@
-import * as vscode from 'vscode'
-
 import { CheckFrequency } from '../common/enums'
+import { WorkspaceManager } from '../common/workspace-manager'
+import { read } from 'fs'
 
 export const CHECK_FREQUENCY_KEY = 'ng-evergreen.checkFrequency'
 
-export function getCheckFrequency(): string | undefined {
-  return vscode.workspace.getConfiguration().get(CHECK_FREQUENCY_KEY)
-}
-
-export function checkFrequencyExists(): boolean {
-  return !!getCheckFrequency() && getCheckFrequency() !== ''
-}
-
-export async function getCheckFrequencyPreference(): Promise<string | undefined> {
-  const checkFrequencyVal = await vscode.window.showInformationMessage(
-    'How often would you like to check for updates (this can be changed in settings.json)?',
-    {},
-    CheckFrequency.OnLoad,
-    CheckFrequency.Daily
-  )
-
-  if (checkFrequencyVal && checkFrequencyVal !== '') {
-    await vscode.workspace
-      .getConfiguration()
-      .update(CHECK_FREQUENCY_KEY, checkFrequencyVal)
+export class CheckFrequencyHelper {
+  readonly _updateFrequncey?: string
+  constructor(private _vscode: any, private _workspaceManager: WorkspaceManager) {
+    this._updateFrequncey = this._workspaceManager.getUpdateFrequency()
   }
 
-  return checkFrequencyVal
+  checkFrequencyExists(): boolean {
+    return !!this._updateFrequncey && this._updateFrequncey !== ''
+  }
+
+  checkFrequencyBeforeUpdate(): boolean {
+    var d = new Date()
+    return (
+      this._workspaceManager.getLastUpdateCheckDate() <
+      new Date(d.setDate(d.getDate() - 1))
+    )
+  }
+
+  async getCheckFrequencyPreference(): Promise<string | undefined> {
+    const checkFrequencyVal = await this._vscode.window.showInformationMessage(
+      'How often would you like to check for updates (this can be changed in settings.json)?',
+      {},
+      CheckFrequency.OnLoad,
+      CheckFrequency.Daily
+    )
+
+    if (checkFrequencyVal && checkFrequencyVal !== '') {
+      await this._vscode.workspace
+        .getConfiguration()
+        .update(CHECK_FREQUENCY_KEY, checkFrequencyVal)
+    }
+
+    return checkFrequencyVal
+  }
 }
