@@ -20,7 +20,6 @@ import { WorkspaceManager } from './common/workspace-manager'
 import { CMD } from './commands/cmd'
 import { VersionSkipper } from './helpers/version-to-skip.helpers'
 import { CheckFrequencyHelper } from './helpers/check-frequency.helpers'
-import { WorkspaceConfiguration } from '../.vscode-test/vscode-1.36.0/Visual Studio Code.app/Contents/Resources/app/out/vs/vscode'
 
 var workspaceManager: WorkspaceManager
 var angularUpdater: AngularUpdater
