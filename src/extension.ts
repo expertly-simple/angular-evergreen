@@ -37,6 +37,7 @@ export function activate(context: vscode.ExtensionContext) {
   workspaceManager = new WorkspaceManager(vscode, context)
   packageManager = new PackageManager(vscode, workspaceManager)
   versionSkipper = new VersionSkipper(packageManager, workspaceManager)
+  checkFrequencyHelper = new CheckFrequencyHelper(vscode, workspaceManager)
 
   context.subscriptions.push(
     vscode.commands.registerCommand('ng-evergreen.startAngularEvergreen', runEvergreen),

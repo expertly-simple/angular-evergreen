@@ -16,10 +16,14 @@ export class CheckFrequencyHelper {
 
   checkFrequencyBeforeUpdate(): boolean {
     var d = new Date()
-    return (
-      this._workspaceManager.getLastUpdateCheckDate() <
-      new Date(d.setDate(d.getDate() - 1))
-    )
+
+    if (!this._workspaceManager.getLastUpdateCheckDate()) {
+      return false
+    }
+      return (
+        this._workspaceManager.getLastUpdateCheckDate() <
+        new Date(d.setDate(d.getDate() - 1))
+      )
   }
 
   async getCheckFrequencyPreference(): Promise<string | undefined> {
