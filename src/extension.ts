@@ -55,11 +55,12 @@ export function activate(context: vscode.ExtensionContext) {
   isFirstRun = !workspaceManager.getUpdateFrequency()
   if (isFirstRun) {
     vscode.commands.executeCommand('ng-evergreen.startAngularEvergreen')
-  } else if (
-    workspaceManager.getUpdateFrequency() !== CheckFrequency.OnLoad &&
-    checkFrequencyHelper.checkFrequencyBeforeUpdate()
-  ) {
-    vscode.commands.executeCommand('ng-evergreen.checkForUpdates')
+  } else if (workspaceManager.getUpdateFrequency() !== CheckFrequency.OnLoad) {
+    // update existing peeps to Daily.
+    workspaceManager.setUpdateFrequency('Daily')
+    if (checkFrequencyHelper.checkFrequencyBeforeUpdate()) {
+      vscode.commands.executeCommand('ng-evergreen.checkForUpdates')
+    }
   } else if (workspaceManager.getUpdateFrequency() === CheckFrequency.OnLoad) {
     vscode.commands.executeCommand('ng-evergreen.checkForUpdates')
   }
