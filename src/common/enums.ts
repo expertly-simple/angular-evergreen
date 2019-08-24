@@ -1,22 +1,22 @@
 export enum CheckFrequency {
   OnLoad = 'On Load',
-  Hourly = 'Hourly',
   Daily = 'Daily',
-  Weekly = 'Weekly',
-  BiWeekly = 'Bi-Weekly',
-}
-
-export enum CheckFrequencyMilliseconds {
-  OnLoadSchedule = -1,
-  HourlySchedule = 3600000,
-  DailySchedule = 86400000,
-  WeeklySchedule = 604800000,
-  BiWeeklySchedule = 1209600000,
 }
 
 export enum UpgradeChannel {
   Latest = 'Latest',
   Next = 'Next',
+}
+
+export enum PackagesToCheck {
+  cli = '@angular/cli',
+  core = '@angular/core',
+}
+
+export enum UpdateCommands {
+  npmInstall = 'npm install',
+  ngCoreCmd = 'npx ng update @angular/cli @angular/core',
+  ngAllCmd = 'npx ng update --all',
 }
 
 export enum UpdateArgs {
