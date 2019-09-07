@@ -14,7 +14,7 @@ export class AngularUpdater {
     this._cmd = cmd
     this._vscode = vscode
     this._workspace = vscode.workspace.workspaceFolders![0]
-    this._renderer = (<any>this._vscode.window).createTerminalRenderer(
+    this._renderer = (<any>this._vscode.window).createTerminal(
       'Angular Evergreen 🌲'
     )
   }
