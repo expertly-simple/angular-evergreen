@@ -1,19 +1,19 @@
 import * as execa from 'execa'
+import { TerminalManager } from '../common/terminal-manager'
 
 export class CMD {
-  constructor() {}
+  readonly _terminalManager: TerminalManager
+  constructor(terminalManager: TerminalManager) {
+    this._terminalManager = terminalManager
+  }
 
-  async runScript(script: string, renderer?: any, cwd?: string) {
-    this.writeToTerminal(renderer, `Executing: ${script}`)
+  async runScript(script: string, terminal?: any, cwd?: string) {
+    this._terminalManager.writeToTerminal(terminal, `Executing: ${script}`)
     const scriptStdout = await execa.command(script, {
       cwd: cwd,
       windowsVerbatimArguments: true,
     })
     return scriptStdout.stdout
-  }
-
-  writeToTerminal(renderer: any, message: string): void {
-    renderer.write(`\r\n ${message} \r\n`)
   }
 
   sanitizeStdOut(text: any): string {

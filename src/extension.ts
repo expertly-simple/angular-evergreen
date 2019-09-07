@@ -20,6 +20,7 @@ import { WorkspaceManager } from './common/workspace-manager'
 import { CMD } from './commands/cmd'
 import { VersionSkipper } from './helpers/version-to-skip.helpers'
 import { CheckFrequencyHelper } from './helpers/check-frequency.helpers'
+import { TerminalManager } from './common/terminal-manager'
 
 var workspaceManager: WorkspaceManager
 var angularUpdater: AngularUpdater
@@ -29,11 +30,13 @@ var versionSkipper: VersionSkipper
 const NOW_DATE = new Date()
 var isFirstRun: boolean
 var checkFrequencyHelper: CheckFrequencyHelper
+var terminalMgr: TerminalManager
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')
-  cmd = new CMD()
-  angularUpdater = new AngularUpdater(vscode, cmd)
+  terminalMgr = new TerminalManager()
+  cmd = new CMD(terminalMgr)
+  angularUpdater = new AngularUpdater(vscode, cmd, terminalMgr)
   workspaceManager = new WorkspaceManager(vscode, context)
   packageManager = new PackageManager(vscode, workspaceManager)
   versionSkipper = new VersionSkipper(packageManager, workspaceManager)
