@@ -80,7 +80,7 @@ export class AngularUpdater {
   forceUpdate(terminal: any, updateCmd: string) {
     this._vscode.window
       .showErrorMessage(
-        "Can't update: Do you want to try and force the update?",
+        "Can't update: Force the update?",
         {},
         'Cancel',
         'Cancel and Remove Uncommitted Files',

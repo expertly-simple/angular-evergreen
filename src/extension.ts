@@ -34,7 +34,7 @@ var terminalMgr: TerminalManager
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')
-  terminalMgr = new TerminalManager()
+  terminalMgr = new TerminalManager(context)
   cmd = new CMD(terminalMgr)
   angularUpdater = new AngularUpdater(vscode, cmd, terminalMgr)
   workspaceManager = new WorkspaceManager(vscode, context)
