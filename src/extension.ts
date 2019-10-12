@@ -13,13 +13,15 @@ import {
   upgradeChannelExists,
 } from './helpers/upgrade-channel.helpers'
 
-import { VersionMenuTask } from './ui/version-menu-task';
+import { VersionMenuTask } from './ui/version-menu-task'
 import * as open from 'open'
 import { AngularUpdater } from './file/angular-update'
 import { WorkspaceManager } from './common/workspace-manager'
 import { CMD } from './commands/cmd'
 import { VersionSkipper } from './helpers/version-to-skip.helpers'
 import { CheckFrequencyHelper } from './helpers/check-frequency.helpers'
+import { UpdateMenuTask } from './ui/update-menu-task'
+import { HelpMenuTask } from './ui/help-menu-task'
 
 var workspaceManager: WorkspaceManager
 var angularUpdater: AngularUpdater
@@ -50,15 +52,9 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.window.registerTreeDataProvider(
       'versions',
       new VersionMenuTask(context, packageManager)
-    )
-    vscode.window.registerTreeDataProvider(
-      'update',
-      new VersionMenuTask(context, undefined)
-    )
-    vscode.window.registerTreeDataProvider(
-      'help',
-      new VersionMenuTask(context, packageManager)
-    )
+    ),
+    vscode.window.registerTreeDataProvider('update', new UpdateMenuTask(context)),
+    vscode.window.registerTreeDataProvider('help', new HelpMenuTask(context))
   )
 
   isFirstRun = !workspaceManager.getUpdateFrequency()

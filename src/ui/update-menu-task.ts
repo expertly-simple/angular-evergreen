@@ -16,7 +16,10 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
         'Link',
         'How to Update',
         vscode.TreeItemCollapsibleState.None,
-        undefined,
+        {
+          command: 'ng-evergreen.navigateToUpdateIo',
+          title: 'Visit update.angular.io',
+        },
         this.context.extensionPath + '/resources/angular-icon.svg'
       ),
       new TreeTask(
