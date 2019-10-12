@@ -13,7 +13,7 @@ import {
   upgradeChannelExists,
 } from './helpers/upgrade-channel.helpers'
 
-import { SideMenuTaskProvider } from './ui/side-menu-task-provider'
+import { VersionMenuTask } from './ui/version-menu-task';
 import * as open from 'open'
 import { AngularUpdater } from './file/angular-update'
 import { WorkspaceManager } from './common/workspace-manager'
@@ -49,7 +49,15 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('ng-evergreen.navigateToBlogIo', navigateToBlogIo),
     vscode.window.registerTreeDataProvider(
       'versions',
-      new SideMenuTaskProvider(context, packageManager)
+      new VersionMenuTask(context, packageManager)
+    )
+    vscode.window.registerTreeDataProvider(
+      'update',
+      new VersionMenuTask(context, undefined)
+    )
+    vscode.window.registerTreeDataProvider(
+      'help',
+      new VersionMenuTask(context, packageManager)
     )
   )
 

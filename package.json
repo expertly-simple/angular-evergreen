@@ -116,12 +116,12 @@
         },
         {
           "command": "ng-evergreen.startAngularEvergreen",
-          "when": "view == versions && viewItem == dependency",
+          "when": "view == update && viewItem == dependency",
           "group": "inline"
         },
         {
           "command": "ng-evergreen.navigateToUpdateIo",
-          "when": "view == helpCmds && viewItem == dependency",
+          "when": "view == update && viewItem == dependency",
           "group": "inline"
         }
       ]

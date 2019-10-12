@@ -7,7 +7,7 @@ import { read } from 'fs'
 import { PackageManager } from '../file/package-manager'
 import { TreeTask } from '../types/tree-task'
 
-export class SideMenuTaskProvider implements vscode.TreeDataProvider<TreeTask> {
+export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {
   readonly _packageManager: PackageManager
   constructor(
     private context: vscode.ExtensionContext,
