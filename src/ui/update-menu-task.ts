@@ -13,6 +13,14 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
   public async getChildren(task?: TreeTask): Promise<TreeTask[]> {
     let treeTasks: TreeTask[] = [
       new TreeTask(
+        'Folder',
+        'Using Angular Cli?: ',
+        vscode.TreeItemCollapsibleState.Expanded,
+        undefined,
+        this.context.extensionPath + '/resources/angular-icon.svg',
+        'evergreen-version'
+      ),
+      new TreeTask(
         'Link',
         'How to Update',
         vscode.TreeItemCollapsibleState.None,
