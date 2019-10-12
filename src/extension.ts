@@ -48,7 +48,7 @@ export function activate(context: vscode.ExtensionContext) {
     ),
     vscode.commands.registerCommand('ng-evergreen.navigateToBlogIo', navigateToBlogIo),
     vscode.window.registerTreeDataProvider(
-      'evergreen',
+      'versions',
       new SideMenuTaskProvider(context, packageManager)
     )
   )

@@ -5,6 +5,7 @@ import { getUpgradeChannel } from '../helpers/upgrade-channel.helpers'
 import { PackagesToCheck } from '../common/enums'
 import { read } from 'fs'
 import { PackageManager } from '../file/package-manager'
+import { TreeTask } from '../types/tree-task'
 
 export class SideMenuTaskProvider implements vscode.TreeDataProvider<TreeTask> {
   readonly _packageManager: PackageManager
@@ -29,7 +30,7 @@ export class SideMenuTaskProvider implements vscode.TreeDataProvider<TreeTask> {
       new TreeTask(
         'Folder',
         'Current Angular Version: ' + currentVersion.currentVersion,
-        vscode.TreeItemCollapsibleState.Collapsed,
+        vscode.TreeItemCollapsibleState.Expanded,
         undefined,
         this.context.extensionPath +
           (currentVersion.needsUpdate
@@ -38,13 +39,10 @@ export class SideMenuTaskProvider implements vscode.TreeDataProvider<TreeTask> {
         'evergreen-version'
       ),
       new TreeTask(
-        'Link',
-        'Visit update.angular.io',
+        'Folder',
+        'How to Update',
         vscode.TreeItemCollapsibleState.None,
-        {
-          command: 'ng-evergreen.navigateToUpdateIo',
-          title: 'Visit update.angular.io',
-        },
+        undefined,
         this.context.extensionPath + '/resources/angular-icon.svg'
       ),
       new TreeTask(
@@ -79,32 +77,5 @@ export class SideMenuTaskProvider implements vscode.TreeDataProvider<TreeTask> {
         vscode.TreeItemCollapsibleState.None
       ),
     ]
-  }
-}
-
-class TreeTask extends vscode.TreeItem {
-  type: string
-
-  constructor(
-    type: string,
-    label: string,
-    collapsibleState: vscode.TreeItemCollapsibleState,
-    command?: vscode.Command,
-    iconPath?:
-      | string
-      | vscode.Uri
-      | { light: string | vscode.Uri; dark: string | vscode.Uri }
-      | vscode.ThemeIcon,
-    contextValue?: string
-  ) {
-    super(label, collapsibleState)
-    this.type = type
-    this.command = command
-    this.iconPath = iconPath
-    this.contextValue = contextValue
-  }
-
-  getChildren() {
-    return null
   }
 }
