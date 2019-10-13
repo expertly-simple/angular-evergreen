@@ -38,23 +38,6 @@ export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {
             : '/resources/ng-evergreen-logo.svg'),
         'evergreen-version'
       ),
-      new TreeTask(
-        'Folder',
-        'How to Update',
-        vscode.TreeItemCollapsibleState.None,
-        undefined,
-        this.context.extensionPath + '/resources/angular-icon.svg'
-      ),
-      new TreeTask(
-        'Link',
-        'Visit blog.angular.io',
-        vscode.TreeItemCollapsibleState.None,
-        {
-          command: 'ng-evergreen.navigateToBlogIo',
-          title: 'Visit blog.angular.io',
-        },
-        this.context.extensionPath + '/resources/angular-icon.svg'
-      ),
     ]
 
     return treeTasks

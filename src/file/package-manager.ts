@@ -25,7 +25,6 @@ export class PackageManager {
     this._vscode = vscode
     this._workspaceManager = workspaceManager
     this._workspacePath = this._workspaceManager.getWorkspace()
-    this.getDependencies()
   }
 
   async getPackageJsonFile() {
@@ -57,7 +56,8 @@ export class PackageManager {
     this._pkgDevDepencies = pkgData.devDependencies
   }
 
-  async getCurrentVersion(packageName: string): Promise<string> {
+  async getCurrentVersion(packageName: string) {
+    if (!this._pkgDependencies) { await this.getDependencies() }
     // Most @angular packages live in dependencies, so check there first.
     let version = this._pkgDependencies[packageName]
 

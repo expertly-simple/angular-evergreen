@@ -13,14 +13,6 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
   public async getChildren(task?: TreeTask): Promise<TreeTask[]> {
     let treeTasks: TreeTask[] = [
       new TreeTask(
-        'Folder',
-        'Using Angular Cli?: ',
-        vscode.TreeItemCollapsibleState.Expanded,
-        undefined,
-        this.context.extensionPath + '/resources/angular-icon.svg',
-        'evergreen-version'
-      ),
-      new TreeTask(
         'Link',
         'How to Update',
         vscode.TreeItemCollapsibleState.None,
@@ -31,14 +23,12 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
         this.context.extensionPath + '/resources/angular-icon.svg'
       ),
       new TreeTask(
-        'Link',
-        'Visit blog.angular.io',
-        vscode.TreeItemCollapsibleState.None,
-        {
-          command: 'ng-evergreen.navigateToBlogIo',
-          title: 'Visit blog.angular.io',
-        },
-        this.context.extensionPath + '/resources/angular-icon.svg'
+        'Folder',
+        'Using Angular Cli?: ',
+        vscode.TreeItemCollapsibleState.Expanded,
+        undefined,
+        this.context.extensionPath + '/resources/angular-icon.svg',
+        'update-cli'
       ),
     ]
 

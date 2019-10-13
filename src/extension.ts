@@ -34,13 +34,14 @@ var checkFrequencyHelper: CheckFrequencyHelper
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')
-  cmd = new CMD()
-  angularUpdater = new AngularUpdater(vscode, cmd)
   workspaceManager = new WorkspaceManager(vscode, context)
   packageManager = new PackageManager(vscode, workspaceManager)
+  cmd = new CMD()
+  angularUpdater = new AngularUpdater(vscode, cmd)
   versionSkipper = new VersionSkipper(packageManager, workspaceManager)
   checkFrequencyHelper = new CheckFrequencyHelper(vscode, workspaceManager)
 
+  // load commands
   context.subscriptions.push(
     vscode.commands.registerCommand('ng-evergreen.startAngularEvergreen', runEvergreen),
     vscode.commands.registerCommand('ng-evergreen.checkForUpdates', checkForUpdates),
@@ -49,6 +50,7 @@ export function activate(context: vscode.ExtensionContext) {
       navigateToUpdateIo
     ),
     vscode.commands.registerCommand('ng-evergreen.navigateToBlogIo', navigateToBlogIo),
+
     vscode.window.registerTreeDataProvider(
       'versions',
       new VersionMenuTask(context, packageManager)
