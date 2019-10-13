@@ -15,31 +15,37 @@ import {
 
 import { VersionMenuTask } from './ui/version-menu-task'
 import * as open from 'open'
-import { AngularUpdater } from './file/angular-update'
+import { AngularUpdate } from './file/angular-update'
 import { WorkspaceManager } from './common/workspace-manager'
 import { CMD } from './commands/cmd'
 import { VersionSkipper } from './helpers/version-to-skip.helpers'
 import { CheckFrequencyHelper } from './helpers/check-frequency.helpers'
 import { UpdateMenuTask } from './ui/update-menu-task'
 import { HelpMenuTask } from './ui/help-menu-task'
+import { TerminalManager } from './commands/terminal-manager'
+import { AngularUpdater } from './commands/angular-updater'
 
 var workspaceManager: WorkspaceManager
-var angularUpdater: AngularUpdater
+var angularUpdate: AngularUpdate
 var packageManager: PackageManager
 var cmd: CMD
 var versionSkipper: VersionSkipper
 const NOW_DATE = new Date()
 var isFirstRun: boolean
 var checkFrequencyHelper: CheckFrequencyHelper
+var terminalManager: TerminalManager
+var angularUpdater: AngularUpdater
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')
   workspaceManager = new WorkspaceManager(vscode, context)
   packageManager = new PackageManager(vscode, workspaceManager)
   cmd = new CMD()
-  angularUpdater = new AngularUpdater(vscode, cmd)
+  angularUpdate = new AngularUpdate(vscode, cmd)
   versionSkipper = new VersionSkipper(packageManager, workspaceManager)
   checkFrequencyHelper = new CheckFrequencyHelper(vscode, workspaceManager)
+  terminalManager = new TerminalManager(vscode)
+  angularUpdater = new AngularUpdater(terminalManager)
 
   // load commands
   context.subscriptions.push(
@@ -50,7 +56,8 @@ export function activate(context: vscode.ExtensionContext) {
       navigateToUpdateIo
     ),
     vscode.commands.registerCommand('ng-evergreen.navigateToBlogIo', navigateToBlogIo),
-
+    vscode.commands.registerCommand('ng-evergreen.updateCli', callCliUpdate),
+    vscode.commands.registerCommand('ng-evergreen.updateCore', callCoreUpdate),
     vscode.window.registerTreeDataProvider(
       'versions',
       new VersionMenuTask(context, packageManager)
@@ -59,7 +66,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.window.registerTreeDataProvider('help', new HelpMenuTask(context))
   )
 
-  isFirstRun = !workspaceManager.getUpdateFrequency()
+  /* isFirstRun = !workspaceManager.getUpdateFrequency()
   if (isFirstRun) {
     vscode.commands.executeCommand('ng-evergreen.startAngularEvergreen')
   } else if (workspaceManager.getUpdateFrequency() !== CheckFrequency.OnLoad) {
@@ -70,7 +77,7 @@ export function activate(context: vscode.ExtensionContext) {
     }
   } else if (workspaceManager.getUpdateFrequency() === CheckFrequency.OnLoad) {
     vscode.commands.executeCommand('ng-evergreen.checkForUpdates')
-  }
+  } */
 }
 
 async function runEvergreen(): Promise<void> {
@@ -144,8 +151,16 @@ async function doAngularUpdate(
       `Skipping update for Angular v${versionToSkip} (${upgradeChannel}).`
     )
   } else {
-    await angularUpdater.tryAngularUpdate(upgradeChannel)
+    await angularUpdate.tryAngularUpdate(upgradeChannel)
   }
+}
+
+async function callCliUpdate() {
+  await angularUpdater.update(UpdateCommands.ngCliUpdate)
+}
+
+async function callCoreUpdate() {
+  await angularUpdater.update(UpdateCommands.ngCoreCmd)
 }
 
 async function navigateToUpdateIo() {

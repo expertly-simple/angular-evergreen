@@ -11,6 +11,10 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
   constructor(private context: vscode.ExtensionContext) {}
 
   public async getChildren(task?: TreeTask): Promise<TreeTask[]> {
+    if (task && task.label && task.label.includes('Using Angular Cli')) {
+      return this.getUpdateTree()
+    }
+
     let treeTasks: TreeTask[] = [
       new TreeTask(
         'Link',
@@ -25,7 +29,7 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
       new TreeTask(
         'Folder',
         'Using Angular Cli?: ',
-        vscode.TreeItemCollapsibleState.Expanded,
+        vscode.TreeItemCollapsibleState.Collapsed,
         undefined,
         this.context.extensionPath + '/resources/angular-icon.svg',
         'update-cli'
@@ -39,17 +43,27 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
     return task
   }
 
-  private getVersionTree(currentVersion: packageManager.IVersionStatus) {
+  private getUpdateTree() {
     return [
       new TreeTask(
-        'Folder',
-        'Latest Version: ' + currentVersion.latestVersion,
-        vscode.TreeItemCollapsibleState.None
+        'Link',
+        'Update Angluar Cli',
+        vscode.TreeItemCollapsibleState.None,
+        {
+          command: 'ng-evergreen.updateCli',
+          title: 'Update Angular Cli',
+        },
+        this.context.extensionPath + '/resources/run.svg'
       ),
       new TreeTask(
-        'Folder',
-        'Next Version: ' + currentVersion.nextVersion,
-        vscode.TreeItemCollapsibleState.None
+        'Link',
+        'Update Angular Core',
+        vscode.TreeItemCollapsibleState.None,
+        {
+          command: 'ng-evergreen.updateCore',
+          title: 'Update Angular Core',
+        },
+        this.context.extensionPath + '/resources/run.svg'
       ),
     ]
   }
