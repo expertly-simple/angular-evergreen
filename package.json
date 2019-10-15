@@ -94,6 +94,11 @@
         "command": "ng-evergreen.updateCore",
         "title": "Update Angular Core?",
         "category": "Angular Evergreen Update"
+      },
+      {
+        "command": "ng-evergreen.updateAll",
+        "title": "Update All Angular Packages?",
+        "category": "Angular Evergreen Update"
       }
     ],
     "viewsContainers": {

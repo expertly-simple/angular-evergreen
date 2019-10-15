@@ -1,10 +1,10 @@
-import * as packageManager from '../file/package-manager'
+import * as packageManager from '../updaters/package-manager'
 import * as vscode from 'vscode'
 
 import { getUpgradeChannel } from '../helpers/upgrade-channel.helpers'
 import { PackagesToCheck } from '../common/enums'
 import { read } from 'fs'
-import { PackageManager } from '../file/package-manager'
+import { PackageManager } from '../updaters/package-manager'
 import { TreeTask } from '../types/tree-task'
 
 export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
@@ -61,6 +61,16 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
         vscode.TreeItemCollapsibleState.None,
         {
           command: 'ng-evergreen.updateCore',
+          title: 'Update Angular Core',
+        },
+        this.context.extensionPath + '/resources/run.svg'
+      ),
+      new TreeTask(
+        'Link',
+        'Update All Angular Packages',
+        vscode.TreeItemCollapsibleState.None,
+        {
+          command: 'ng-evergreen.updateAll',
           title: 'Update Angular Core',
         },
         this.context.extensionPath + '/resources/run.svg'

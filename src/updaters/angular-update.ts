@@ -33,7 +33,7 @@ export class AngularUpdate {
 
   async ngUpdate(upgradeChannel: UpgradeChannel): Promise<boolean> {
     const cmdArgs = upgradeChannel === UpgradeChannel.Next ? UpdateArgs.next : ''
-    let coreCMD = `${UpdateCommands.ngCoreCmd} ${cmdArgs}`
+    let coreCMD = `${UpdateCommands.ngCoreCliUpdate} ${cmdArgs}`
     let updateCMD = `${UpdateCommands.ngAllCmd} ${cmdArgs}`
 
     this._renderer.terminal.show()

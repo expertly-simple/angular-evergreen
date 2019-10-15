@@ -1,10 +1,10 @@
-import * as packageManager from '../file/package-manager'
+import * as packageManager from '../updaters/package-manager'
 import * as vscode from 'vscode'
 
 import { getUpgradeChannel } from '../helpers/upgrade-channel.helpers'
 import { PackagesToCheck } from '../common/enums'
 import { read } from 'fs'
-import { PackageManager } from '../file/package-manager'
+import { PackageManager } from '../updaters/package-manager'
 import { TreeTask } from '../types/tree-task'
 
 export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {

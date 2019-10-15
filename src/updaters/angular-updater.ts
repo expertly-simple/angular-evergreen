@@ -1,4 +1,4 @@
-import { TerminalManager } from './terminal-manager'
+import { TerminalManager } from '../commands/terminal-manager'
 import { UpdateCommands } from '../common/enums'
 export class AngularUpdater {
   readonly _terminalMgr: TerminalManager
