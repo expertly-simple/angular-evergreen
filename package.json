@@ -86,13 +86,8 @@
         "category": "Angular Evergreen Help"
       },
       {
-        "command": "ng-evergreen.updateCli",
-        "title": "Update Angular Cli?",
-        "category": "Angular Evergreen Update"
-      },
-      {
-        "command": "ng-evergreen.updateCore",
-        "title": "Update Angular Core?",
+        "command": "ng-evergreen.updateAngular",
+        "title": "Update Angular?",
         "category": "Angular Evergreen Update"
       },
       {

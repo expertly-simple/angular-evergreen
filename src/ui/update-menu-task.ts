@@ -47,27 +47,17 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
     return [
       new TreeTask(
         'Link',
-        'Update Angluar Cli',
+        'Update Angluar',
         vscode.TreeItemCollapsibleState.None,
         {
-          command: 'ng-evergreen.updateCli',
+          command: 'ng-evergreen.updateAngular',
           title: 'Update Angular Cli',
         },
         this.context.extensionPath + '/resources/run.svg'
       ),
       new TreeTask(
         'Link',
-        'Update Angular Core',
-        vscode.TreeItemCollapsibleState.None,
-        {
-          command: 'ng-evergreen.updateCore',
-          title: 'Update Angular Core',
-        },
-        this.context.extensionPath + '/resources/run.svg'
-      ),
-      new TreeTask(
-        'Link',
-        'Update All Angular Packages',
+        'Update Angular -all',
         vscode.TreeItemCollapsibleState.None,
         {
           command: 'ng-evergreen.updateAll',

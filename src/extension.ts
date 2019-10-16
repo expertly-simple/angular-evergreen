@@ -56,8 +56,7 @@ export function activate(context: vscode.ExtensionContext) {
       navigateToUpdateIo
     ),
     vscode.commands.registerCommand('ng-evergreen.navigateToBlogIo', navigateToBlogIo),
-    vscode.commands.registerCommand('ng-evergreen.updateCli', callCliUpdate),
-    vscode.commands.registerCommand('ng-evergreen.updateCore', callCoreUpdate),
+    vscode.commands.registerCommand('ng-evergreen.updateAngular', callUpdateAngular),
     vscode.commands.registerCommand('ng-evergreen.updateAll', callAngularAll),
     vscode.window.registerTreeDataProvider(
       'versions',
@@ -156,12 +155,8 @@ async function doAngularUpdate(
   }
 }
 
-async function callCliUpdate() {
-  await angularUpdater.update(UpdateCommands.ngCliUpdate)
-}
-
-async function callCoreUpdate() {
-  await angularUpdater.update(UpdateCommands.ngCoreUpdate)
+async function callUpdateAngular() {
+  await angularUpdater.update(UpdateCommands.ngCoreCliUpdate)
 }
 
 async function callAngularAll() {

@@ -16,7 +16,6 @@ export enum PackagesToCheck {
 export enum UpdateCommands {
   npmInstall = 'npm install',
   ngCliUpdate = 'npx ng update @angular/cli',
-  ngCoreUpdate = 'npx ng update @angular/core',
   ngCoreCliUpdate = 'npx ng update @angular/cli @angular/core',
   ngAllCmd = 'npx ng update --all',
 }
