@@ -1,12 +1,7 @@
 import * as open from 'open'
 import * as vscode from 'vscode'
 
-import {
-  CheckFrequency,
-  PackagesToCheck,
-  UpdateCommands,
-  UpgradeChannel,
-} from './common/enums'
+import { CheckFrequency, PackagesToCheck, UpgradeChannel } from './common/enums'
 import { IVersionStatus, PackageManager } from './file/package-manager'
 import {
   getUpgradeChannel,
@@ -123,11 +118,11 @@ async function checkForUpdates(): Promise<void> {
 
   if (versionResults.cli.needsUpdate || versionResults.core.needsUpdate) {
     if (!versionSkipper.versionToSkipExists()) {
-      const shouldUpdate = await versionSkipper.getVersionToSkipPreference(
+      const shouldUpdate = await versionSkipper.updateNowQuestion(
         versionResults.core,
         versionResults.cli
       )
-      if (!!shouldUpdate && shouldUpdate.includes('Update Now')) {
+      if (shouldUpdate) {
         await doAngularUpdate(versionResults.core, versionResults.cli, upgradeChannel)
       }
     } else {

@@ -1,9 +1,11 @@
 import * as execa from 'execa'
 
+import { Terminal } from 'vscode'
+
 export class CMD {
   constructor() {}
 
-  async runScript(script: string, renderer?: any, cwd?: string) {
+  async runScript(script: string, renderer: Terminal, cwd?: string) {
     this.writeToTerminal(renderer, `Executing: ${script}`)
     const scriptStdout = await execa.command(script, {
       cwd: cwd,
@@ -12,8 +14,8 @@ export class CMD {
     return scriptStdout.stdout
   }
 
-  writeToTerminal(renderer: any, message: string): void {
-    renderer.write(`\r\n ${message} \r\n`)
+  writeToTerminal(renderer: Terminal, message: string): void {
+    renderer.sendText(`\r\n ${message} \r\n`)
   }
 
   sanitizeStdOut(text: any): string {

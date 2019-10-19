@@ -47,10 +47,10 @@ export class VersionSkipper {
     return new Promise(() => shouldUpgrade)
   }
 
-  async getVersionToSkipPreference(
+  async updateNowQuestion(
     coreStatus: IVersionStatus,
     cliStatus: IVersionStatus
-  ): Promise<string | undefined> {
+  ): Promise<boolean> {
     const upgradeChannel = getUpgradeChannel()
     const shouldUpdateToNext = upgradeChannel === UpgradeChannel.Next
 
@@ -70,29 +70,34 @@ export class VersionSkipper {
       this._workspaceManager.storeVersionToSkip(
         shouldUpdateToNext ? coreStatus.nextVersion : coreStatus.latestVersion
       )
-      versionToSkipVal = ''
+      return false
     }
 
-    return versionToSkipVal
+    return !!versionToSkipVal
   }
 
   getNewVersionFromStatus(shouldUpdateToNext: boolean, versionStatus: IVersionStatus) {
     return shouldUpdateToNext ? versionStatus.nextVersion : versionStatus.latestVersion
   }
 
-  async showUpdateModal(
+  showUpdateModal(
     channelText: string,
     coreOutdated: IVersionStatus,
     newCoreVersion: string,
     cliOutdated: IVersionStatus,
     newCliVersion: string
-  ) {
-    const versionOutdatedMsg = `New update available! One or more of your Angular packages are behind the most recent ${channelText} release. Would you like to update?
-      \r\nAngular Core: ${coreOutdated.currentVersion} -> ${newCoreVersion}\r\nAngular CLI: ${cliOutdated.currentVersion} -> ${newCliVersion}`
+  ): Thenable<string | undefined> {
+    let message = `New ${channelText} release available! Update the following packages now?`
+    if (coreOutdated.needsUpdate) {
+      message += ` @angular/core: ${coreOutdated.currentVersion} -> ${newCoreVersion}`
+      message += cliOutdated.needsUpdate ? ', ' : ''
+    }
+    if (cliOutdated.needsUpdate) {
+      message += ` @angular/cli: ${cliOutdated.currentVersion} -> ${newCliVersion}`
+    }
 
-    return await vscode.window.showInformationMessage(
-      versionOutdatedMsg,
-      { modal: true },
+    return vscode.window.showInformationMessage(
+      message,
       'Update Now',
       'Remind Me Next Release'
     )

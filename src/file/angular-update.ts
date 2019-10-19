@@ -1,19 +1,20 @@
-import { CMD } from '../commands/cmd'
+import { UpdateArgs, UpdateCommands, UpgradeChannel } from '../common/enums'
 
-import { UpdateArgs, UpgradeChannel, UpdateCommands } from '../common/enums'
+import { CMD } from '../commands/cmd'
+import { Terminal } from 'vscode'
 import { onCleanGitBranch } from './git-manager'
 
 export class AngularUpdater {
   readonly _vscode: any
   readonly _workspace: string
   readonly _cmd: CMD
-  readonly _renderer: any
+  readonly _renderer: Terminal
 
   constructor(vscode: any, cmd: CMD) {
     this._cmd = cmd
     this._vscode = vscode
     this._workspace = vscode.workspace.workspaceFolders![0]
-    this._renderer = (<any>this._vscode.window).createTerminal('Angular Evergreen 🌲')
+    this._renderer = this._vscode.window.createTerminal('Angular Evergreen 🌲')
   }
 
   async tryAngularUpdate(upgradeChannel: UpgradeChannel) {
@@ -31,8 +32,9 @@ export class AngularUpdater {
     let coreCMD = `${UpdateCommands.ngCoreCmd} ${cmdArgs}`
     let updateCMD = `${UpdateCommands.ngAllCmd} ${cmdArgs}`
 
-    this._renderer.terminal.show()
-    this._renderer.write('\x1b[32m 🌲  Welcome to Angular Evergreen 🌲 \r\n\n')
+    this._renderer.show()
+    // this._renderer.sendText('\x1b[32m 🌲  Welcome to Angular Evergreen 🌲 \r\n\n')
+    this._renderer.sendText('🌲  Welcome to Angular Evergreen 🌲 \r\n\n')
 
     try {
       await this._cmd.runScript(UpdateCommands.npmInstall, this._renderer)
