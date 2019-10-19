@@ -1,25 +1,26 @@
+import * as open from 'open'
 import * as vscode from 'vscode'
-import { Util } from '../src/common/util'
-import { PackageManager, IVersionStatus } from './file/package-manager'
+
 import {
   CheckFrequency,
-  UpgradeChannel,
-  UpdateCommands,
   PackagesToCheck,
+  UpdateCommands,
+  UpgradeChannel,
 } from './common/enums'
+import { IVersionStatus, PackageManager } from './file/package-manager'
 import {
   getUpgradeChannel,
   getUpgradeChannelPreference,
   upgradeChannelExists,
 } from './helpers/upgrade-channel.helpers'
 
-import { SideMenuTaskProvider } from './ui/side-menu-task-provider'
-import * as open from 'open'
 import { AngularUpdater } from './file/angular-update'
-import { WorkspaceManager } from './common/workspace-manager'
 import { CMD } from './commands/cmd'
-import { VersionSkipper } from './helpers/version-to-skip.helpers'
 import { CheckFrequencyHelper } from './helpers/check-frequency.helpers'
+import { SideMenuTaskProvider } from './ui/side-menu-task-provider'
+import { Util } from '../src/common/util'
+import { VersionSkipper } from './helpers/version-to-skip.helpers'
+import { WorkspaceManager } from './common/workspace-manager'
 
 var workspaceManager: WorkspaceManager
 var angularUpdater: AngularUpdater
@@ -99,22 +100,38 @@ async function shouldRunEvergreen(): Promise<boolean> {
 
 async function checkForUpdates(): Promise<void> {
   const upgradeChannel = getUpgradeChannel()
-  const coreOutdated = await packageManager.checkForUpdate(
-    PackagesToCheck.core,
-    upgradeChannel
+  const versionResults = await vscode.window.withProgress(
+    {
+      location: vscode.ProgressLocation.Notification,
+      title: 'Checking for the latest Angular version...',
+      cancellable: true,
+    },
+    async (progress, token) => {
+      progress.report({ increment: 0 })
+      const coreOutdated = await packageManager.checkForUpdate(
+        PackagesToCheck.core,
+        upgradeChannel
+      )
+      progress.report({ increment: 50 })
+      const cliOutdated = await packageManager.checkForUpdate(
+        PackagesToCheck.cli,
+        upgradeChannel
+      )
+      return Promise.resolve({ core: coreOutdated, cli: cliOutdated })
+    }
   )
-  const cliOutdated = await packageManager.checkForUpdate(
-    PackagesToCheck.cli,
-    upgradeChannel
-  )
-  if (cliOutdated.needsUpdate || coreOutdated.needsUpdate) {
+
+  if (versionResults.cli.needsUpdate || versionResults.core.needsUpdate) {
     if (!versionSkipper.versionToSkipExists()) {
-      const shouldUpdate = await versionSkipper.getVersionToSkipPreference()
+      const shouldUpdate = await versionSkipper.getVersionToSkipPreference(
+        versionResults.core,
+        versionResults.cli
+      )
       if (!!shouldUpdate && shouldUpdate.includes('Update Now')) {
-        await doAngularUpdate(coreOutdated, cliOutdated, upgradeChannel)
+        await doAngularUpdate(versionResults.core, versionResults.cli, upgradeChannel)
       }
     } else {
-      await doAngularUpdate(coreOutdated, cliOutdated, upgradeChannel)
+      await doAngularUpdate(versionResults.core, versionResults.cli, upgradeChannel)
     }
   } else {
     vscode.window.showInformationMessage('Project is already Evergreen. 🌲 Good job!')

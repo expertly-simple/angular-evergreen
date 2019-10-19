@@ -1,8 +1,7 @@
 import { CMD } from '../commands/cmd'
 
 import { UpdateArgs, UpgradeChannel, UpdateCommands } from '../common/enums'
-import { isGitClean } from './git-manager'
-import { read } from 'fs'
+import { onCleanGitBranch } from './git-manager'
 
 export class AngularUpdater {
   readonly _vscode: any
@@ -14,14 +13,11 @@ export class AngularUpdater {
     this._cmd = cmd
     this._vscode = vscode
     this._workspace = vscode.workspace.workspaceFolders![0]
-    this._renderer = (<any>this._vscode.window).createTerminal(
-      'Angular Evergreen 🌲'
-    )
+    this._renderer = (<any>this._vscode.window).createTerminal('Angular Evergreen 🌲')
   }
 
   async tryAngularUpdate(upgradeChannel: UpgradeChannel) {
-    let gitClean = await isGitClean()
-    if (gitClean) {
+    if (onCleanGitBranch()) {
       await this.ngUpdate(upgradeChannel)
     } else {
       this._vscode.window.showErrorMessage(

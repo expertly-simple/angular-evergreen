@@ -1,9 +1,10 @@
 import * as vscode from 'vscode'
 
-import { PackageManager, IVersionStatus } from '../file/package-manager'
-import { UpgradeChannel, UpdateCommands, PackagesToCheck } from '../common/enums'
-import { getUpgradeChannel } from './upgrade-channel.helpers'
+import { IVersionStatus, PackageManager } from '../file/package-manager'
+import { PackagesToCheck, UpdateCommands, UpgradeChannel } from '../common/enums'
+
 import { WorkspaceManager } from '../common/workspace-manager'
+import { getUpgradeChannel } from './upgrade-channel.helpers'
 import { read } from 'fs'
 
 export class VersionSkipper {
@@ -46,42 +47,28 @@ export class VersionSkipper {
     return new Promise(() => shouldUpgrade)
   }
 
-  async getVersionToSkipPreference(): Promise<string | undefined> {
+  async getVersionToSkipPreference(
+    coreStatus: IVersionStatus,
+    cliStatus: IVersionStatus
+  ): Promise<string | undefined> {
     const upgradeChannel = getUpgradeChannel()
-    const cliOutdated = await this._packageManager.checkForUpdate(
-      PackagesToCheck.core,
-      upgradeChannel
-    )
-    const coreOutdated = await this._packageManager.checkForUpdate(
-      PackagesToCheck.cli,
-      upgradeChannel
-    )
-    // we sure do call the next two lines a lot seems like a problem.
-    const ngCoreVersion = await this._packageManager.checkForUpdate(
-      PackagesToCheck.core,
-      upgradeChannel
-    )
-    const ngCliVersion = await this._packageManager.checkForUpdate(
-      PackagesToCheck.cli,
-      upgradeChannel
-    )
     const shouldUpdateToNext = upgradeChannel === UpgradeChannel.Next
 
     const channelText = shouldUpdateToNext ? '"next"' : '"latest"'
-    const newCoreVersion = this.getNewVersionFromStatus(shouldUpdateToNext, coreOutdated)
-    const newCliVersion = this.getNewVersionFromStatus(shouldUpdateToNext, cliOutdated)
+    const newCoreVersion = this.getNewVersionFromStatus(shouldUpdateToNext, coreStatus)
+    const newCliVersion = this.getNewVersionFromStatus(shouldUpdateToNext, cliStatus)
 
     let versionToSkipVal = await this.showUpdateModal(
       channelText,
-      coreOutdated,
+      coreStatus,
       newCoreVersion,
-      cliOutdated,
+      cliStatus,
       newCliVersion
     )
 
     if (versionToSkipVal && versionToSkipVal.includes('Remind Me')) {
       this._workspaceManager.storeVersionToSkip(
-        shouldUpdateToNext ? coreOutdated.nextVersion : coreOutdated.latestVersion
+        shouldUpdateToNext ? coreStatus.nextVersion : coreStatus.latestVersion
       )
       versionToSkipVal = ''
     }
@@ -101,11 +88,7 @@ export class VersionSkipper {
     newCliVersion: string
   ) {
     const versionOutdatedMsg = `New update available! One or more of your Angular packages are behind the most recent ${channelText} release. Would you like to update?
-      \r\nAngular Core: ${
-        coreOutdated.currentVersion
-      } -> ${newCoreVersion}\r\nAngular CLI: ${
-      cliOutdated.currentVersion
-    } -> ${newCliVersion}`
+      \r\nAngular Core: ${coreOutdated.currentVersion} -> ${newCoreVersion}\r\nAngular CLI: ${cliOutdated.currentVersion} -> ${newCliVersion}`
 
     return await vscode.window.showInformationMessage(
       versionOutdatedMsg,
