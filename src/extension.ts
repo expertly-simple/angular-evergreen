@@ -58,6 +58,10 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('ng-evergreen.navigateToBlogIo', navigateToBlogIo),
     vscode.commands.registerCommand('ng-evergreen.updateAngular', callUpdateAngular),
     vscode.commands.registerCommand('ng-evergreen.updateAll', callAngularAll),
+    vscode.commands.registerCommand(
+      'ng-evergreen.navigateToConsultingForm',
+      navigateToRequestForm
+    ),
     vscode.window.registerTreeDataProvider(
       'versions',
       new VersionMenuTask(context, packageManager)
@@ -165,6 +169,10 @@ async function callAngularAll() {
 
 async function navigateToUpdateIo() {
   await open('https://update.angular.io/')
+}
+
+async function navigateToRequestForm() {
+  await open('https://expertlysimple.io/ghost/#/editor/page/5da68cc7af83bf0001648eb8')
 }
 
 async function navigateToBlogIo() {

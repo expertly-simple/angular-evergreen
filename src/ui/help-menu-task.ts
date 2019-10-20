@@ -20,6 +20,16 @@ export class HelpMenuTask implements vscode.TreeDataProvider<TreeTask> {
         },
         this.context.extensionPath + '/resources/angular-icon.svg'
       ),
+      new TreeTask(
+        'Link',
+        'Request Consulting',
+        vscode.TreeItemCollapsibleState.None,
+        {
+          command: 'ng-evergreen.navigateToConsultingForm',
+          title: 'Request Consulting',
+        },
+        this.context.extensionPath + '/resources/angular-icon.svg'
+      )
     ]
 
     return treeTasks
