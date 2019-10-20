@@ -1,21 +1,23 @@
 import * as execa from 'execa'
 
-import { Terminal } from 'vscode'
+import { OutputChannel } from 'vscode'
 
 export class CMD {
   constructor() {}
 
-  async runScript(script: string, renderer: Terminal, cwd?: string) {
-    this.writeToTerminal(renderer, `Executing: ${script}`)
+  async runScript(script: string, renderer: OutputChannel, cwd?: string) {
+    this.writeToOutputChannel(renderer, `Executing: ${script}`)
     const scriptStdout = await execa.command(script, {
       cwd: cwd,
       windowsVerbatimArguments: true,
     })
+    this.writeToOutputChannel(renderer, scriptStdout.stdout)
     return scriptStdout.stdout
   }
 
-  writeToTerminal(renderer: Terminal, message: string): void {
-    renderer.sendText(`\r\n ${message} \r\n`)
+  writeToOutputChannel(renderer: OutputChannel, message: string): void {
+    renderer.appendLine('')
+    renderer.appendLine(`${message}`)
   }
 
   sanitizeStdOut(text: any): string {
