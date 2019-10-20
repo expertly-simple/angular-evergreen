@@ -145,7 +145,6 @@
     "test-compile": "tsc -p ./",
     "package": "vsce package",
     "test": "npm run test-compile && node ./out/test/runTest.js",
-    "test:unit": "jasmine-ts \"specs/**/*.spec.ts\""
   },
   "devDependencies": {
     "@types/cron": "^1.7.1",
