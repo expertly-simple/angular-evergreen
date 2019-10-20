@@ -12,13 +12,15 @@ export function run(
   })
   mocha.useColors(true)
 
-  glob('**/**.test.js', { cwd: testsRoot }, (err, files) => {
+  glob('*/**.test.js', { cwd: testsRoot }, (err, files) => {
     if (err) {
       return cb(err)
     }
 
-    // Add files to the test suite
-    files.forEach(f => mocha.addFile(path.resolve(testsRoot, f)))
+    // add tests to mocha
+    files
+      .map(f => path.resolve(testsRoot, f))
+      .forEach(path => mocha.addFile(path))
 
     try {
       // Run the mocha test
