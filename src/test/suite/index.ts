@@ -1,5 +1,6 @@
+var glob = require('glob')
+
 import * as Mocha from 'mocha'
-import * as glob from 'glob'
 import * as path from 'path'
 
 export function run(
@@ -12,15 +13,13 @@ export function run(
   })
   mocha.useColors(true)
 
-  glob('*/**.test.js', { cwd: testsRoot }, (err, files) => {
+  glob('*/**.test.js', { cwd: testsRoot }, (err: Object | null, files: string[]) => {
     if (err) {
       return cb(err)
     }
 
     // add tests to mocha
-    files
-      .map(f => path.resolve(testsRoot, f))
-      .forEach(path => mocha.addFile(path))
+    files.map(f => path.resolve(testsRoot, f)).forEach(path => mocha.addFile(path))
 
     try {
       // Run the mocha test
