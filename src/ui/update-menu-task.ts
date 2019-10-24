@@ -28,8 +28,8 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
       ),
       new TreeTask(
         'Folder',
-        'Using Angular Cli?: ',
-        vscode.TreeItemCollapsibleState.Collapsed,
+        'Using Angular Cli?',
+        vscode.TreeItemCollapsibleState.Expanded,
         undefined,
         this.context.extensionPath + '/resources/angular-icon.svg',
         'update-cli'

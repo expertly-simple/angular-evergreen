@@ -23,7 +23,6 @@ import { CheckFrequencyHelper } from './helpers/check-frequency.helpers'
 import { UpdateMenuTask } from './ui/update-menu-task'
 import { HelpMenuTask } from './ui/help-menu-task'
 import { TerminalManager } from './commands/terminal-manager'
-import { AngularUpdater } from './updaters/angular-updater'
 
 var workspaceManager: WorkspaceManager
 var angularUpdate: AngularUpdate
@@ -34,7 +33,6 @@ const NOW_DATE = new Date()
 var isFirstRun: boolean
 var checkFrequencyHelper: CheckFrequencyHelper
 var terminalManager: TerminalManager
-var angularUpdater: AngularUpdater
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')
@@ -45,7 +43,6 @@ export function activate(context: vscode.ExtensionContext) {
   versionSkipper = new VersionSkipper(packageManager, workspaceManager)
   checkFrequencyHelper = new CheckFrequencyHelper(vscode, workspaceManager)
   terminalManager = new TerminalManager(vscode)
-  angularUpdater = new AngularUpdater(terminalManager)
 
   // load commands
   context.subscriptions.push(
@@ -70,7 +67,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.window.registerTreeDataProvider('help', new HelpMenuTask(context))
   )
 
-  /* isFirstRun = !workspaceManager.getUpdateFrequency()
+  isFirstRun = !workspaceManager.getUpdateFrequency()
   if (isFirstRun) {
     vscode.commands.executeCommand('ng-evergreen.startAngularEvergreen')
   } else if (workspaceManager.getUpdateFrequency() !== CheckFrequency.OnLoad) {
@@ -81,14 +78,10 @@ export function activate(context: vscode.ExtensionContext) {
     }
   } else if (workspaceManager.getUpdateFrequency() === CheckFrequency.OnLoad) {
     vscode.commands.executeCommand('ng-evergreen.checkForUpdates')
-  } */
+  }
 }
 
 async function runEvergreen(): Promise<void> {
-  if ((await shouldRunEvergreen()) === false) {
-    return
-  }
-
   if (isFirstRun) {
     const checkFrequencyInput = await checkFrequencyHelper.getCheckFrequencyPreference()
     if (Util.userCancelled(checkFrequencyInput)) {
@@ -104,16 +97,6 @@ async function runEvergreen(): Promise<void> {
   await checkForUpdates()
 }
 
-async function shouldRunEvergreen(): Promise<boolean> {
-  const runEvergreenVal = await vscode.window.showInformationMessage(
-    'Keep Angular evergreen?',
-    {},
-    'Check for updates periodically',
-    'Cancel'
-  )
-  return !Util.userCancelled(runEvergreenVal)
-}
-
 async function checkForUpdates(): Promise<void> {
   const upgradeChannel = getUpgradeChannel()
   const coreOutdated = await packageManager.checkForUpdate(
@@ -125,46 +108,17 @@ async function checkForUpdates(): Promise<void> {
     upgradeChannel
   )
   if (cliOutdated.needsUpdate || coreOutdated.needsUpdate) {
-    if (!versionSkipper.versionToSkipExists()) {
-      const shouldUpdate = await versionSkipper.getVersionToSkipPreference()
-      if (!!shouldUpdate && shouldUpdate.includes('Update Now')) {
-        await doAngularUpdate(coreOutdated, cliOutdated, upgradeChannel)
-      }
-    } else {
-      await doAngularUpdate(coreOutdated, cliOutdated, upgradeChannel)
-    }
   } else {
     vscode.window.showInformationMessage('Project is already Evergreen. 🌲 Good job!')
   }
 }
 
-async function doAngularUpdate(
-  coreOutdated: IVersionStatus,
-  cliOutdated: IVersionStatus,
-  upgradeChannel: UpgradeChannel
-): Promise<void> {
-  const versionToSkip = workspaceManager.getVersionToSkip()
-  const shouldSkipVersion = versionSkipper.skipVersionCheck(
-    upgradeChannel,
-    versionToSkip,
-    coreOutdated,
-    cliOutdated
-  )
-  if (shouldSkipVersion) {
-    vscode.window.showInformationMessage(
-      `Skipping update for Angular v${versionToSkip} (${upgradeChannel}).`
-    )
-  } else {
-    await angularUpdate.tryAngularUpdate(upgradeChannel)
-  }
-}
-
 async function callUpdateAngular() {
-  await angularUpdater.update(UpdateCommands.ngCoreCliUpdate)
+  await terminalManager.writeToTerminal(UpdateCommands.ngCoreCliUpdate)
 }
 
 async function callAngularAll() {
-  await angularUpdater.update(UpdateCommands.ngAllCmd)
+  await terminalManager.writeToTerminal(UpdateCommands.ngAllCmd)
 }
 
 async function navigateToUpdateIo() {
