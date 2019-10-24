@@ -1,13 +1,13 @@
-import * as packageManager from '../file/package-manager'
+import * as packageManager from '../updaters/package-manager'
 import * as vscode from 'vscode'
 
 import { getUpgradeChannel } from '../helpers/upgrade-channel.helpers'
 import { PackagesToCheck } from '../common/enums'
 import { read } from 'fs'
-import { PackageManager } from '../file/package-manager'
+import { PackageManager } from '../updaters/package-manager'
 import { TreeTask } from '../types/tree-task'
 
-export class SideMenuTaskProvider implements vscode.TreeDataProvider<TreeTask> {
+export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {
   readonly _packageManager: PackageManager
   constructor(
     private context: vscode.ExtensionContext,
@@ -37,23 +37,6 @@ export class SideMenuTaskProvider implements vscode.TreeDataProvider<TreeTask> {
             ? '/resources/ng-evergreen-logo-red.svg'
             : '/resources/ng-evergreen-logo.svg'),
         'evergreen-version'
-      ),
-      new TreeTask(
-        'Folder',
-        'How to Update',
-        vscode.TreeItemCollapsibleState.None,
-        undefined,
-        this.context.extensionPath + '/resources/angular-icon.svg'
-      ),
-      new TreeTask(
-        'Link',
-        'Visit blog.angular.io',
-        vscode.TreeItemCollapsibleState.None,
-        {
-          command: 'ng-evergreen.navigateToBlogIo',
-          title: 'Visit blog.angular.io',
-        },
-        this.context.extensionPath + '/resources/angular-icon.svg'
       ),
     ]
 

@@ -1,6 +1,6 @@
 import * as vscode from 'vscode'
 
-import { PackageManager, IVersionStatus } from '../file/package-manager'
+import { PackageManager, IVersionStatus } from '../updaters/package-manager'
 import { UpgradeChannel, UpdateCommands, PackagesToCheck } from '../common/enums'
 import { getUpgradeChannel } from './upgrade-channel.helpers'
 import { WorkspaceManager } from '../common/workspace-manager'
@@ -101,11 +101,7 @@ export class VersionSkipper {
     newCliVersion: string
   ) {
     const versionOutdatedMsg = `New update available! One or more of your Angular packages are behind the most recent ${channelText} release. Would you like to update?
-      \r\nAngular Core: ${
-        coreOutdated.currentVersion
-      } -> ${newCoreVersion}\r\nAngular CLI: ${
-      cliOutdated.currentVersion
-    } -> ${newCliVersion}`
+      \r\nAngular Core: ${coreOutdated.currentVersion} -> ${newCoreVersion}\r\nAngular CLI: ${cliOutdated.currentVersion} -> ${newCliVersion}`
 
     return await vscode.window.showInformationMessage(
       versionOutdatedMsg,

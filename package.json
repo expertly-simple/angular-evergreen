@@ -69,17 +69,28 @@
       {
         "command": "ng-evergreen.checkForUpdates",
         "title": "Check for Angular Updates",
-        "category": "Angular Evergreen"
+        "category": "Angular Evergreen",
+        "icon": "/resources/run.svg"
       },
       {
         "command": "ng-evergreen.navigateToUpdateIo",
         "title": "Visit update.angular.io",
-        "category": "Angular Evergreen Help"
+        "category": "Angular Evergreen Update"
       },
       {
         "command": "ng-evergreen.navigateToBlogIo",
         "title": "Visit blog.angular.io",
         "category": "Angular Evergreen Help"
+      },
+      {
+        "command": "ng-evergreen.updateAngular",
+        "title": "Update Angular?",
+        "category": "Angular Evergreen Update"
+      },
+      {
+        "command": "ng-evergreen.updateAll",
+        "title": "Update All Angular Packages?",
+        "category": "Angular Evergreen Update"
       }
     ],
     "viewsContainers": {
@@ -95,33 +106,33 @@
       "evergreen-container": [
         {
           "id": "versions",
-          "name": "Evergreen"
+          "name": "Current Versions",
+          "icon": "resources/ng-evergreen-logo-monochromatic.svg"
         },
         {
           "id": "update",
-          "name": "Update"
+          "name": "Update Angular",
+          "icon": "resources/ng-evergreen-logo-monochromatic.svg"
         },
         {
           "id": "help",
-          "name": "Need Help?"
+          "name": "Need Help?",
+          "icon": "resources/ng-evergreen-logo-monochromatic.svg"
         }
       ]
     },
     "menus": {
-      "view/item/context": [
+      "view/title": [
         {
           "command": "ng-evergreen.checkForUpdates",
-          "when": "view == versions && viewItem == evergreen-version",
-          "group": "inline"
-        },
-        {
-          "command": "ng-evergreen.startAngularEvergreen",
-          "when": "view == versions && viewItem == dependency",
-          "group": "inline"
-        },
+          "when": "view == versions",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
         {
           "command": "ng-evergreen.navigateToUpdateIo",
-          "when": "view == helpCmds && viewItem == dependency",
+          "when": "view == update && viewItem == dependency",
           "group": "inline"
         }
       ]

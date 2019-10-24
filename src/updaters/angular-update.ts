@@ -3,8 +3,9 @@ import { CMD } from '../commands/cmd'
 import { UpdateArgs, UpgradeChannel, UpdateCommands } from '../common/enums'
 import { isGitClean } from './git-manager'
 import { read } from 'fs'
+import { TerminalManager } from '../commands/terminal-manager'
 
-export class AngularUpdater {
+export class AngularUpdate {
   readonly _vscode: any
   readonly _workspace: string
   readonly _cmd: CMD
@@ -14,14 +15,12 @@ export class AngularUpdater {
     this._cmd = cmd
     this._vscode = vscode
     this._workspace = vscode.workspace.workspaceFolders![0]
-    this._renderer = (<any>this._vscode.window).createTerminal(
-      'Angular Evergreen 🌲'
-    )
+    this._renderer = (<any>this._vscode.window).createTerminal('Angular Evergreen 🌲')
   }
 
   async tryAngularUpdate(upgradeChannel: UpgradeChannel) {
-    let gitClean = await isGitClean()
-    if (gitClean) {
+    //let gitClean = await isGitClean()
+    if (true) {
       await this.ngUpdate(upgradeChannel)
     } else {
       this._vscode.window.showErrorMessage(
@@ -30,9 +29,11 @@ export class AngularUpdater {
     }
   }
 
+  async tryUpdateAngularCli() {}
+
   async ngUpdate(upgradeChannel: UpgradeChannel): Promise<boolean> {
     const cmdArgs = upgradeChannel === UpgradeChannel.Next ? UpdateArgs.next : ''
-    let coreCMD = `${UpdateCommands.ngCoreCmd} ${cmdArgs}`
+    let coreCMD = `${UpdateCommands.ngCoreCliUpdate} ${cmdArgs}`
     let updateCMD = `${UpdateCommands.ngAllCmd} ${cmdArgs}`
 
     this._renderer.terminal.show()
