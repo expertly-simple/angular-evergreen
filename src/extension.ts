@@ -126,7 +126,7 @@ async function navigateToUpdateIo() {
 }
 
 async function navigateToRequestForm() {
-  await open('https://expertlysimple.io/ghost/#/editor/page/5da68cc7af83bf0001648eb8')
+  await open('https://expertlysimple.io/expertly-simple-consulting-request/')
 }
 
 async function navigateToBlogIo() {
