@@ -50,3 +50,12 @@ jobs:
 
       - store_artifacts:
           path: ng-evergreen.vsix
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - test
+      - build:
+          requires:
+            - test
