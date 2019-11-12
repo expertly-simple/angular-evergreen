@@ -16,7 +16,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: yes | npm test || true
+      - run: npm test
 
   build:
     docker:
@@ -41,8 +41,6 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run: npm run vscode:prepublish
-
-      # - run: npm test
 
       - run: npm run package
 
