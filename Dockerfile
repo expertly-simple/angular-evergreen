@@ -19,4 +19,8 @@ ADD tslint.json .
 ADD webpack.config.js .
 
 RUN npm ci
+
+# RUN sudo chown root /home/circleci/.vscode-test/vscode-1.40.0/VSCode-linux-x64/chrome-sandbox
+# RUN chmod 4755 /home/circleci/.vscode-test/vscode-1.40.0/VSCode-linux-x64/chrome-sandbox
+
 RUN npm test
