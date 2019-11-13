@@ -1,14 +1,9 @@
-import * as chai from 'chai'
+import { expect } from 'chai'
 import * as sinon from 'sinon'
 
 import { WorkspaceManager } from '../../../src/common/workspace-manager'
 import { CheckFrequencyHelper } from '../../../src/helpers/check-frequency.helpers'
 import { VscodeMock } from '../../mocks/vscode.mock'
-
-import sinonChai = require('sinon-chai')
-const expect = chai.expect
-
-chai.use(sinonChai)
 
 describe('Check frequency', () => {
   it('test check frequency before update greater than one day', async () => {
