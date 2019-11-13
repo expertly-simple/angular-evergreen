@@ -146,7 +146,7 @@
     "compile": "webpack --mode none",
     "watch": "webpack --mode none --watch",
     "package": "vsce package",
-    "pretest": "tsc",
+    "pretest": "tsc -p src/test/tsconfig.test.json",
     "test": "ts-node ./src/test/runTest.ts",
     "test:docker": "docker image build . -t evergreen-test"
   },
