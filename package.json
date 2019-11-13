@@ -144,8 +144,8 @@
     "vscode:prepublish": "webpack --mode production",
     "compile": "webpack --mode none",
     "watch": "webpack --mode none --watch",
-    "test-compile": "tsc -p ./",
     "package": "vsce package",
+    "pretest": "tsc -p ./",
     "test": "npm run test-compile && node ./out/test/runTest.js"
   },
   "devDependencies": {
@@ -163,6 +163,7 @@
     "import-sort-parser-typescript": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
     "mocha": "^6.2.2",
+    "prettier": "^1.19.1",
     "prettier-tslint": "^0.4.2",
     "ts-loader": "^6.0.4",
     "ts-node": "^8.3.0",
