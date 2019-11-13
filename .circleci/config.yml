@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 jobs:
   test:
@@ -16,7 +16,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: yes | npm install || true
+      - run: npm ci
 
       - run: npm test
 
@@ -35,7 +35,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: yes | npm install || true
+      - run: npm ci
 
       - save_cache:
           paths:
@@ -51,6 +51,41 @@ jobs:
       - store_artifacts:
           path: ng-evergreen.vsix
 
+      - run:
+          name: Move compiled app to workspace
+          command: |
+            set -exu
+            mkdir -p /tmp/workspace/vsix
+            mv ng-evergreen.vsix /tmp/workspace/vsix/
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+            - vsix
+
+  deploy:
+    docker:
+      - image: circleci/node:lts
+    working_directory: ~/repo
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: npm ci
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: npx vsce publish -p $VSCE_TOKEN
+
 workflows:
   version: 2
   build-and-deploy:
@@ -59,3 +94,13 @@ workflows:
       - build:
           requires:
             - test
+      - hold:
+          type: approval
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+      - deploy:
+          requires:
+            - hold
