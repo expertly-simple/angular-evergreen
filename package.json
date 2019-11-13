@@ -71,7 +71,7 @@
         "command": "ng-evergreen.checkForUpdates",
         "title": "Check for Angular Updates",
         "category": "Angular Evergreen",
-        "icon": "/resources/run.svg"
+        "icon": "/resources/refresh.svg"
       },
       {
         "command": "ng-evergreen.navigateToUpdateIo",
