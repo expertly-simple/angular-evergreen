@@ -16,7 +16,7 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
       return this.getUpdateTree()
     }
 
-    let treeTasks: TreeTask[] = [
+    const treeTasks: TreeTask[] = [
       new TreeTask(
         'Link',
         'How to Update',

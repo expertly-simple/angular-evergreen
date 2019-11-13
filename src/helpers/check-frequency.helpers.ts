@@ -16,7 +16,7 @@ export class CheckFrequencyHelper {
   }
 
   checkFrequencyBeforeUpdate(): boolean {
-    var d = new Date()
+    let d = new Date()
 
     if (!this._workspaceManager.getLastUpdateCheckDate()) {
       return false

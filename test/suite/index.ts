@@ -1,4 +1,4 @@
-var glob = require('glob')
+let glob = require('glob')
 
 import * as path from 'path'
 

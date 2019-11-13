@@ -5,11 +5,11 @@ export async function isGitClean(): Promise<Boolean> {
   terminal.show()
   terminal.sendText('git status')
   let output = ''
-  let datawatcher = (<any>terminal).onDidWriteData((data: string) => {
+  const datawatcher = (terminal as any).onDidWriteData((data: string) => {
     output += data
   })
 
-  var promise = new Promise<Boolean>(function(resolve) {
+  const promise = new Promise<Boolean>(function(resolve) {
     setTimeout(() => {
       if (
         output.includes('Changes') ||

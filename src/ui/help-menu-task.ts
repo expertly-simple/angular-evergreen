@@ -10,7 +10,7 @@ export class HelpMenuTask implements vscode.TreeDataProvider<TreeTask> {
       return this.getVersionTree(currentVersion)
     } */
 
-    let treeTasks: TreeTask[] = [
+    const treeTasks: TreeTask[] = [
       new TreeTask(
         'Link',
         'Visit blog.angular.io',

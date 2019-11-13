@@ -24,15 +24,15 @@ import { VersionMenuTask } from './ui/version-menu-task'
 import { AngularUpdate } from './updaters/angular-update'
 import { IVersionStatus, PackageManager } from './updaters/package-manager'
 
-var workspaceManager: WorkspaceManager
-var angularUpdate: AngularUpdate
-var packageManager: PackageManager
-var cmd: CMD
-var versionSkipper: VersionSkipper
+let workspaceManager: WorkspaceManager
+let angularUpdate: AngularUpdate
+let packageManager: PackageManager
+let cmd: CMD
+let versionSkipper: VersionSkipper
 const NOW_DATE = new Date()
-var isFirstRun: boolean
-var checkFrequencyHelper: CheckFrequencyHelper
-var terminalManager: TerminalManager
+let isFirstRun: boolean
+let checkFrequencyHelper: CheckFrequencyHelper
+let terminalManager: TerminalManager
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')

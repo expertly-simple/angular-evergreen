@@ -18,7 +18,7 @@ export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {
   }
 
   public async getChildren(task?: TreeTask): Promise<TreeTask[]> {
-    let currentVersion = await this._packageManager.checkForUpdate(
+    const currentVersion = await this._packageManager.checkForUpdate(
       PackagesToCheck.cli,
       getUpgradeChannel()
     )
@@ -27,7 +27,7 @@ export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {
       return this.getVersionTree(currentVersion)
     }
 
-    let treeTasks: TreeTask[] = [
+    const treeTasks: TreeTask[] = [
       new TreeTask(
         'Folder',
         'Current: ' + currentVersion.currentVersion,

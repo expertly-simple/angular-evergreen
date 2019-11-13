@@ -1,4 +1,4 @@
-const CHECK_FREQUENCY_KEY: string = 'ng-evergreen.checkFrequency'
+const CHECK_FREQUENCY_KEY = 'ng-evergreen.checkFrequency'
 const VERSION_TO_SKIP_KEY = 'ng-evergreen.versionToSkip'
 const LASTUPDATE_KEY = 'lastUpdate'
 export class WorkspaceManager {

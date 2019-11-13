@@ -15,11 +15,11 @@ export class AngularUpdate {
     this._cmd = cmd
     this._vscode = vscode
     this._workspace = vscode.workspace.workspaceFolders![0]
-    this._renderer = (<any>this._vscode.window).createTerminal('Angular Evergreen 🌲')
+    this._renderer = (this._vscode.window as any).createTerminal('Angular Evergreen 🌲')
   }
 
   async tryAngularUpdate(upgradeChannel: UpgradeChannel) {
-    //let gitClean = await isGitClean()
+    // let gitClean = await isGitClean()
     if (true) {
       await this.ngUpdate(upgradeChannel)
     } else {
@@ -33,8 +33,8 @@ export class AngularUpdate {
 
   async ngUpdate(upgradeChannel: UpgradeChannel): Promise<boolean> {
     const cmdArgs = upgradeChannel === UpgradeChannel.Next ? UpdateArgs.next : ''
-    let coreCMD = `${UpdateCommands.ngCoreCliUpdate} ${cmdArgs}`
-    let updateCMD = `${UpdateCommands.ngAllCmd} ${cmdArgs}`
+    const coreCMD = `${UpdateCommands.ngCoreCliUpdate} ${cmdArgs}`
+    const updateCMD = `${UpdateCommands.ngAllCmd} ${cmdArgs}`
 
     this._renderer.terminal.show()
     this._renderer.write('\x1b[32m 🌲  Welcome to Angular Evergreen 🌲 \r\n\n')

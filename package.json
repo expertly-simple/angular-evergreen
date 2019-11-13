@@ -140,8 +140,8 @@
     }
   },
   "scripts": {
-    "standardize": "import-sort --write \"{src,tests}/**/*.ts\" && prettier-tslint fix \"{src,tests}/**/*.ts\"",
-    "standardize:ci": "import-sort -l \"{src,tests}/**/*.ts\" && prettier-tslint check \"{src,tests}/**/*.ts\"",
+    "standardize": "import-sort --write \"{src,test}/**/*.ts\" && prettier-tslint fix \"{src,test}/**/*.ts\"",
+    "standardize:ci": "import-sort -l \"{src,test}/**/*.ts\" && prettier-tslint check \"{src,test}/**/*.ts\"",
     "vscode:prepublish": "webpack --mode production",
     "compile": "webpack --mode none",
     "watch": "webpack --mode none --watch",

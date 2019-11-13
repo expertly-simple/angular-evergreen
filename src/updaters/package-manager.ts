@@ -107,9 +107,9 @@ export class PackageManager {
         nextVersion,
         upgradeChannel
       ),
-      currentVersion: currentVersion,
-      latestVersion: latestVersion,
-      nextVersion: nextVersion,
+      currentVersion,
+      latestVersion,
+      nextVersion,
     }
   }
 
