@@ -22,14 +22,14 @@ export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {
       getUpgradeChannel()
     );
 
-    if (task && task.label && task.label.includes("Angular Version")) {
+    if (task && task.label && task.label.includes("Current")) {
       return this.getVersionTree(currentVersion);
     }
 
     let treeTasks: TreeTask[] = [
       new TreeTask(
         "Folder",
-        "Angular Versions: " + currentVersion.currentVersion,
+        "Current: " + currentVersion.currentVersion,
         vscode.TreeItemCollapsibleState.Expanded,
         undefined,
         this.context.extensionPath +
