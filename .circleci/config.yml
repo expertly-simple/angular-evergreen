@@ -3,7 +3,7 @@ version: 2
 jobs:
   test:
     docker:
-      - image: circleci/node:12.4-browsers
+      - image: circleci/node:lts-browsers
 
     working_directory: ~/repo
 
