@@ -146,9 +146,10 @@
     "watch": "webpack --mode none --watch",
     "package": "vsce package",
     "pretest": "tsc -p ./",
-    "test": "npm run test-compile && node ./out/test/runTest.js"
+    "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^0.1.3",
     "@types/cron": "^1.7.1",
     "@types/execa": "^0.9.0",
     "@types/get-stream": "^3.0.2",
@@ -163,10 +164,12 @@
     "import-sort-parser-typescript": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
     "mocha": "^6.2.2",
+    "nyc": "^14.1.1",
     "prettier": "^1.19.1",
     "prettier-tslint": "^0.4.2",
+    "source-map-support": "^0.5.16",
     "ts-loader": "^6.0.4",
-    "ts-node": "^8.3.0",
+    "ts-node": "^8.5.0",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3",
     "vsce": "^1.69.0",
