@@ -145,8 +145,9 @@
     "compile": "webpack --mode none",
     "watch": "webpack --mode none --watch",
     "package": "vsce package",
-    "pretest": "tsc -p ./",
-    "test": "node ./out/test/runTest.js"
+    "pretest": "tsc",
+    "test": "ts-node ./src/test/runTest.ts",
+    "test:docker": "docker image build . -t evergreen-test"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^0.1.3",
