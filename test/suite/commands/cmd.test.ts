@@ -1,6 +1,6 @@
 import * as assert from 'assert'
 
-import { CMD } from '../../../commands/cmd'
+import { CMD } from '../../../src/commands/cmd'
 
 suite('CMD', () => {
   test('sanitizeStdOut', () => {

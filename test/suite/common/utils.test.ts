@@ -1,6 +1,6 @@
 import * as assert from 'assert'
 
-import { Util } from '../../../common/util'
+import { Util } from '../../../src/common/util'
 
 suite('Util', async () => {
   suite('userCancelled()', () => {

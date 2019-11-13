@@ -1,5 +1,10 @@
 out
 node_modules
-.vscode-test/
+.vscode-test
 *.vsix
 dist
+src/**/*.js
+test/**/*.js
+src/**/*.js.map
+test/**/*.js.map
+.env
