@@ -38,10 +38,4 @@
 
     "auto-close-tag.SublimeText3Mode": true,
     "html.autoClosingTags": false,
-
-    "prettier.printWidth": 90,
-    "prettier.semi": false,
-    "prettier.singleQuote": true,
-    "prettier.trailingComma": "es5",
-    "prettier.tslintIntegration": true,
 }

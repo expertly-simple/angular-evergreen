@@ -70,7 +70,7 @@
         "command": "ng-evergreen.checkForUpdates",
         "title": "Check for Angular Updates",
         "category": "Angular Evergreen",
-        "icon": "/resources/run.svg"
+        "icon": "/resources/refresh.svg"
       },
       {
         "command": "ng-evergreen.navigateToUpdateIo",
@@ -106,7 +106,7 @@
       "evergreen-container": [
         {
           "id": "versions",
-          "name": "Current Versions",
+          "name": "Angular Versions",
           "icon": "resources/ng-evergreen-logo-monochromatic.svg"
         },
         {

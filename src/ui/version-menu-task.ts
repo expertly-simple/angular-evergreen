@@ -29,7 +29,7 @@ export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {
     let treeTasks: TreeTask[] = [
       new TreeTask(
         'Folder',
-        'Current Angular Version: ' + currentVersion.currentVersion,
+        'Current: ' + currentVersion.currentVersion,
         vscode.TreeItemCollapsibleState.Expanded,
         undefined,
         this.context.extensionPath +
@@ -51,12 +51,12 @@ export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {
     return [
       new TreeTask(
         'Folder',
-        'Latest Version: ' + currentVersion.latestVersion,
+        'Latest: ' + currentVersion.latestVersion,
         vscode.TreeItemCollapsibleState.None
       ),
       new TreeTask(
         'Folder',
-        'Next Version: ' + currentVersion.nextVersion,
+        'Next: ' + currentVersion.nextVersion,
         vscode.TreeItemCollapsibleState.None
       ),
     ]
