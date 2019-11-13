@@ -1,5 +1,25 @@
 version: 2
+
 jobs:
+  test:
+    docker:
+      - image: circleci/node:lts-browsers
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: yes | npm install || true
+
+      - run: npm test
+
   build:
     docker:
       - image: circleci/node:lts
@@ -24,11 +44,18 @@ jobs:
 
       - run: npm run vscode:prepublish
 
-      # - run: npm test
-
       - run: npm run package
 
       - run: cp *.vsix ng-evergreen.vsix
 
       - store_artifacts:
           path: ng-evergreen.vsix
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - test
+      - build:
+          requires:
+            - test
