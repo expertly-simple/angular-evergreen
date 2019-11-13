@@ -1,11 +1,11 @@
 export class VscodeMock {
- workspace = {
+  workspace = {
     getConfiguration() {
       return {
         get() {
-          return 'Daily';
+          return 'Daily'
         },
       }
-    }
-  };
+    },
+  }
 }

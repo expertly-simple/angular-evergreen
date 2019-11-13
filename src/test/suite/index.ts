@@ -1,7 +1,8 @@
 var glob = require('glob')
 
-import * as Mocha from 'mocha'
 import * as path from 'path'
+
+import * as Mocha from 'mocha'
 
 export function run(
   testsRoot: string,

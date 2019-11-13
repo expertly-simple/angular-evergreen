@@ -1,13 +1,13 @@
-import * as vscode from 'vscode';
+import * as vscode from 'vscode'
 
 export async function isGitClean(): Promise<Boolean> {
-  const terminal = vscode.window.createTerminal(`Angular Evergreen`);
-  terminal.show();
-  terminal.sendText('git status');
-  let output = '';
+  const terminal = vscode.window.createTerminal(`Angular Evergreen`)
+  terminal.show()
+  terminal.sendText('git status')
+  let output = ''
   let datawatcher = (<any>terminal).onDidWriteData((data: string) => {
-    output += data;
-  });
+    output += data
+  })
 
   var promise = new Promise<Boolean>(function(resolve) {
     setTimeout(() => {
@@ -17,12 +17,12 @@ export async function isGitClean(): Promise<Boolean> {
         output.includes('ahead') ||
         output.includes('behind')
       ) {
-        resolve(false);
+        resolve(false)
       } else {
-        resolve(true);
+        resolve(true)
       }
-      terminal.dispose();
-    }, 1000);
-  });
-  return promise;
+      terminal.dispose()
+    }, 1000)
+  })
+  return promise
 }

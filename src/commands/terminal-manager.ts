@@ -1,4 +1,5 @@
 import { read } from 'fs'
+
 import { Terminal } from 'vscode'
 export class TerminalManager {
   readonly _vscode: any

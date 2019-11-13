@@ -1,4 +1,5 @@
 import * as vscode from 'vscode'
+
 import { UpgradeChannel } from '../common/enums'
 import { Util } from '../common/util'
 

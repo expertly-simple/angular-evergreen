@@ -1,9 +1,9 @@
-import { CMD } from '../commands/cmd'
-
-import { UpdateArgs, UpgradeChannel, UpdateCommands } from '../common/enums'
-import { isGitClean } from './git-manager'
 import { read } from 'fs'
+
+import { CMD } from '../commands/cmd'
 import { TerminalManager } from '../commands/terminal-manager'
+import { UpdateArgs, UpdateCommands, UpgradeChannel } from '../common/enums'
+import { isGitClean } from './git-manager'
 
 export class AngularUpdate {
   readonly _vscode: any

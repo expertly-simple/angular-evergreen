@@ -1,28 +1,28 @@
+import * as open from 'open'
 import * as vscode from 'vscode'
+
 import { Util } from '../src/common/util'
-import { PackageManager, IVersionStatus } from './updaters/package-manager'
+import { CMD } from './commands/cmd'
+import { TerminalManager } from './commands/terminal-manager'
 import {
   CheckFrequency,
-  UpgradeChannel,
-  UpdateCommands,
   PackagesToCheck,
+  UpdateCommands,
+  UpgradeChannel,
 } from './common/enums'
+import { WorkspaceManager } from './common/workspace-manager'
+import { CheckFrequencyHelper } from './helpers/check-frequency.helpers'
 import {
   getUpgradeChannel,
   getUpgradeChannelPreference,
   upgradeChannelExists,
 } from './helpers/upgrade-channel.helpers'
-
-import { VersionMenuTask } from './ui/version-menu-task'
-import * as open from 'open'
-import { AngularUpdate } from './updaters/angular-update'
-import { WorkspaceManager } from './common/workspace-manager'
-import { CMD } from './commands/cmd'
 import { VersionSkipper } from './helpers/version-to-skip.helpers'
-import { CheckFrequencyHelper } from './helpers/check-frequency.helpers'
-import { UpdateMenuTask } from './ui/update-menu-task'
 import { HelpMenuTask } from './ui/help-menu-task'
-import { TerminalManager } from './commands/terminal-manager'
+import { UpdateMenuTask } from './ui/update-menu-task'
+import { VersionMenuTask } from './ui/version-menu-task'
+import { AngularUpdate } from './updaters/angular-update'
+import { IVersionStatus, PackageManager } from './updaters/package-manager'
 
 var workspaceManager: WorkspaceManager
 var angularUpdate: AngularUpdate
