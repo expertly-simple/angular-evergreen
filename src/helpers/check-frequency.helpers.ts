@@ -1,6 +1,7 @@
+import { read } from 'fs'
+
 import { CheckFrequency } from '../common/enums'
 import { WorkspaceManager } from '../common/workspace-manager'
-import { read } from 'fs'
 
 export const CHECK_FREQUENCY_KEY = 'ng-evergreen.checkFrequency'
 
@@ -15,15 +16,15 @@ export class CheckFrequencyHelper {
   }
 
   checkFrequencyBeforeUpdate(): boolean {
-    var d = new Date()
+    const d = new Date()
 
     if (!this._workspaceManager.getLastUpdateCheckDate()) {
       return false
     }
-      return (
-        this._workspaceManager.getLastUpdateCheckDate() <
-        new Date(d.setDate(d.getDate() - 1))
-      )
+    return (
+      this._workspaceManager.getLastUpdateCheckDate() <
+      new Date(d.setDate(d.getDate() - 1))
+    )
   }
 
   async getCheckFrequencyPreference(): Promise<string | undefined> {

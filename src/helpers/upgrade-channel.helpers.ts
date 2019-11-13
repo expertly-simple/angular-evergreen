@@ -1,4 +1,5 @@
 import * as vscode from 'vscode'
+
 import { UpgradeChannel } from '../common/enums'
 import { Util } from '../common/util'
 
@@ -35,7 +36,7 @@ export function upgradeChannelExists(): boolean {
 }
 
 function toTitleCase(s: string): string {
-  let sArray = s.toLowerCase().split(' ')
+  const sArray = s.toLowerCase().split(' ')
   for (let i = 0; i < sArray.length; i++) {
     sArray[i] = sArray[i].charAt(0).toUpperCase() + sArray[i].slice(1)
   }

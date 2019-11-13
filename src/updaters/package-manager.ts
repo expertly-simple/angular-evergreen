@@ -1,9 +1,10 @@
+import * as fs from 'fs'
+
 import * as execa from 'execa'
 import * as vscode from 'vscode'
-import * as fs from 'fs'
-import { WorkspaceManager } from '../common/workspace-manager'
 
 import { UpgradeChannel } from '../common/enums'
+import { WorkspaceManager } from '../common/workspace-manager'
 
 export interface IVersionStatus {
   needsUpdate: boolean
@@ -57,7 +58,9 @@ export class PackageManager {
   }
 
   async getCurrentVersion(packageName: string) {
-    if (!this._pkgDependencies) { await this.getDependencies() }
+    if (!this._pkgDependencies) {
+      await this.getDependencies()
+    }
     // Most @angular packages live in dependencies, so check there first.
     let version = this._pkgDependencies[packageName]
 
@@ -104,9 +107,9 @@ export class PackageManager {
         nextVersion,
         upgradeChannel
       ),
-      currentVersion: currentVersion,
-      latestVersion: latestVersion,
-      nextVersion: nextVersion,
+      currentVersion,
+      latestVersion,
+      nextVersion,
     }
   }
 

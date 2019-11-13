@@ -1,7 +1,9 @@
 {
   "name": "ng-evergreen",
   "displayName": "Angular Evergreen",
+  "version": "0.8.0",
   "publisher": "expertly-simple",
+  "license": "ISC",
   "description": "Keep your project's version of Angular and related packages evergreen with periodic update checks and upgrade your Angular CLI projects with ease.",
   "icon": "ng-evergreen-logo.png",
   "keywords": [
@@ -15,9 +17,8 @@
     "color": "#2d7254",
     "theme": "dark"
   },
-  "version": "0.7.0",
   "engines": {
-    "vscode": "^1.34.0"
+    "vscode": "^1.40.0"
   },
   "categories": [
     "Other"
@@ -139,32 +140,54 @@
     }
   },
   "scripts": {
+    "standardize": "import-sort --write \"{src,test}/**/*.ts\" && prettier-tslint fix \"{src,test}/**/*.ts\"",
+    "standardize:ci": "import-sort -l \"{src,test}/**/*.ts\" && prettier-tslint check \"{src,test}/**/*.ts\"",
     "vscode:prepublish": "webpack --mode production",
     "compile": "webpack --mode none",
     "watch": "webpack --mode none --watch",
-    "test-compile": "tsc -p ./",
     "package": "vsce package",
-    "test": "npm run test-compile && node ./out/test/runTest.js"
+    "pretest": "tsc -p . && tsc -p test/tsconfig.test.json",
+    "test": "ts-node test/runTest.ts",
+    "test:mocha": "mocha --delay",
+    "test:docker": "docker image build . -t evergreen-test"
   },
   "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^0.1.3",
+    "@types/chai": "^4.2.5",
     "@types/cron": "^1.7.1",
     "@types/execa": "^0.9.0",
     "@types/get-stream": "^3.0.2",
     "@types/glob": "^7.1.1",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.6.4",
-    "@types/vscode": "^1.34.0",
+    "@types/mock-fs": "^4.10.0",
+    "@types/node": "^12.12.7",
+    "@types/sinon": "^7.5.0",
+    "@types/sinon-chai": "^3.2.3",
+    "@types/vscode": "^1.40.0",
+    "chai": "^4.2.0",
     "dev-norms": "^1.7.0",
-    "glob": "^7.1.4",
+    "glob": "^7.1.6",
+    "import-sort": "^6.0.0",
+    "import-sort-cli": "^6.0.0",
+    "import-sort-parser-typescript": "^6.0.0",
+    "import-sort-style-module": "^6.0.0",
     "mocha": "^6.2.2",
-    "ts-loader": "^6.0.4",
-    "ts-node": "^8.3.0",
-    "tslint": "^5.18.0",
-    "typescript": "^3.5.3",
-    "vsce": "^1.65.0",
-    "vscode-test": "^1.2.0",
-    "webpack": "^4.35.3",
-    "webpack-cli": "^3.3.6"
+    "mocha-reporter": "^0.1.1",
+    "mock-fs": "^4.10.3",
+    "nyc": "^14.1.1",
+    "prettier": "^1.19.1",
+    "prettier-tslint": "^0.4.2",
+    "sinon": "^7.5.0",
+    "sinon-chai": "^3.3.0",
+    "source-map-support": "^0.5.16",
+    "ts-loader": "^6.2.1",
+    "ts-node": "^8.5.0",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.2",
+    "vsce": "^1.69.0",
+    "vscode-test": "^1.2.3",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
   },
   "dependencies": {
     "execa": "^2.0.3",
@@ -174,6 +197,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/duluca/angular-evergreen.git"
+    "url": "https://github.com/expertly-simple/angular-evergreen.git"
+  },
+  "importSort": {
+    ".ts, .tsx": {
+      "parser": "typescript",
+      "style": "module",
+      "options": {}
+    }
   }
 }

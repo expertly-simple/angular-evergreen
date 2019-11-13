@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "declaration": false,
+    "strict": false,
+    "sourceMap": true,
+    "noImplicitAny": false,
+    "types": ["node", "mocha", "chai", "sinon", "sinon-chai"]
+  }
+}

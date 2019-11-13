@@ -1,47 +1,43 @@
 {
-    "files.exclude": {
-        "out": false // set this to true to hide the "out" folder with the compiled JS files
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/*.js": {
+      "when": "$(basename).ts"
     },
-    "search.exclude": {
-        "out": true // set this to false to include "out" folder in search results
-    },
-    // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
-    "typescript.tsc.autoDetect": "off",
+    "**/*.js.map": {
+      "when": "$(basename)"
+    }
+  },
 
-    "debug.openExplorerOnEnd": true,
+  "debug.openExplorerOnEnd": true,
 
-    "editor.tabSize": 2,
-    "editor.rulers": [90],
-    "editor.autoIndent": true,
-    "editor.cursorBlinking": "solid",
-    "editor.formatOnType": false,
-    "editor.formatOnPaste": true,
-    "editor.formatOnSave": true,
-    "editor.minimap.enabled": false,
-    "editor.codeActionsOnSave": {
-        "source.organizeImports": false
-    },
+  "editor.tabSize": 2,
+  "editor.rulers": [90],
+  "editor.autoIndent": true,
+  "editor.cursorBlinking": "solid",
+  "editor.formatOnType": false,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.minimap.enabled": false,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": false
+  },
 
-    "explorer.openEditors.visible": 0,
+  "explorer.openEditors.visible": 0,
 
-    "files.trimTrailingWhitespace": true,
-    "files.autoSave": "onFocusChange",
+  "files.trimTrailingWhitespace": true,
+  "files.autoSave": "onFocusChange",
 
-    "git.confirmSync": false,
-    "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
 
-    "npm.enableScriptExplorer": true,
+  "npm.enableScriptExplorer": true,
 
-    "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.tsdk": "node_modules/typescript/lib",
 
-    "workbench.iconTheme": "material-icon-theme",
+  "workbench.iconTheme": "material-icon-theme",
 
-    "auto-close-tag.SublimeText3Mode": true,
-    "html.autoClosingTags": false,
-
-    "prettier.printWidth": 90,
-    "prettier.semi": false,
-    "prettier.singleQuote": true,
-    "prettier.trailingComma": "es5",
-    "prettier.tslintIntegration": true,
+  "auto-close-tag.SublimeText3Mode": true,
+  "html.autoClosingTags": false
 }

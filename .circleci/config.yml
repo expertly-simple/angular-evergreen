@@ -1,7 +1,8 @@
-version: 2
-
+version: 2.1
+orbs:
+  coveralls: coveralls/coveralls@1.0.4
 jobs:
-  test:
+  build:
     docker:
       - image: circleci/node:lts-browsers
 
@@ -16,31 +17,34 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: yes | npm install || true
+      # check npm dependencies for security risks - run 'npm audit' to fix
+      - run: npx audit-ci --low --report-type full
 
-      - run: npm test
-
-  build:
-    docker:
-      - image: circleci/node:lts
-
-    working_directory: ~/repo
-
-    steps:
-      - checkout
-
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-      - run: yes | npm install || true
+      - run: npm ci
 
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
+
+      # ensure code formatting standards are adhered to - run 'npm run standardize' to fix
+      - run: npm run standardize:ci
+
+      - run: npm run pretest
+      - run: npm run test:mocha
+
+      # - store_test_results:
+      #     path: ./test_results
+
+      # # run code coverage and store coverage report
+      # - run: npm run test:nyc
+      # - store_artifacts:
+      #     path: ./coverage
+
+      # # upload coverage report to coveralls for readme badge support
+      # # requires config.yml version 2.1 and orbs: coveralls: coveralls/coveralls@1.0.4
+      # # requires coveralls account and token specific to repo to be stored in CircleCI
+      # - coveralls/upload
 
       - run: npm run vscode:prepublish
 
@@ -51,11 +55,48 @@ jobs:
       - store_artifacts:
           path: ng-evergreen.vsix
 
+      - run:
+          name: Move compiled app to workspace
+          command: |
+            set -exu
+            mkdir -p /tmp/workspace/vsix
+            mv ng-evergreen.vsix /tmp/workspace/vsix/
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+            - vsix
+
+  deploy:
+    docker:
+      - image: circleci/node:lts
+    working_directory: ~/repo
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: npm ci
+      - run: npx vsce publish -p $VSCE_TOKEN
+
 workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - test
-      - build:
+      - build
+      - hold:
+          type: approval
           requires:
-            - test
+            - build
+          filters:
+            branches:
+              only: master
+      - deploy:
+          requires:
+            - hold

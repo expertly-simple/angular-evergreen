@@ -1,10 +1,11 @@
+import { read } from 'fs'
+
 import * as vscode from 'vscode'
 
-import { PackageManager, IVersionStatus } from '../updaters/package-manager'
-import { UpgradeChannel, UpdateCommands, PackagesToCheck } from '../common/enums'
-import { getUpgradeChannel } from './upgrade-channel.helpers'
+import { PackagesToCheck, UpdateCommands, UpgradeChannel } from '../common/enums'
 import { WorkspaceManager } from '../common/workspace-manager'
-import { read } from 'fs'
+import { IVersionStatus, PackageManager } from '../updaters/package-manager'
+import { getUpgradeChannel } from './upgrade-channel.helpers'
 
 export class VersionSkipper {
   readonly _packageManager: PackageManager

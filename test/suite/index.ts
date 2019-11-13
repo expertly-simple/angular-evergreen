@@ -1,7 +1,12 @@
-var glob = require('glob')
+const glob = require('glob')
 
-import * as Mocha from 'mocha'
 import * as path from 'path'
+
+import * as chai from 'chai'
+import * as Mocha from 'mocha'
+
+import sinonChai = require('sinon-chai')
+chai.use(sinonChai)
 
 export function run(
   testsRoot: string,
@@ -9,17 +14,19 @@ export function run(
 ): void {
   // Create the mocha test
   const mocha = new Mocha({
-    ui: 'tdd',
+    ui: 'bdd',
   })
   mocha.useColors(true)
 
-  glob('*/**.test.js', { cwd: testsRoot }, (err: Object | null, files: string[]) => {
+  glob('*/**.test.js', { cwd: testsRoot }, (err: object | null, files: string[]) => {
     if (err) {
       return cb(err)
     }
 
     // add tests to mocha
-    files.map(f => path.resolve(testsRoot, f)).forEach(path => mocha.addFile(path))
+    files
+      .map(f => path.resolve(testsRoot, f))
+      .forEach(childPath => mocha.addFile(childPath))
 
     try {
       // Run the mocha test

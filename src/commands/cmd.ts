@@ -6,7 +6,7 @@ export class CMD {
   async runScript(script: string, renderer?: any, cwd?: string) {
     this.writeToTerminal(renderer, `Executing: ${script}`)
     const scriptStdout = await execa.command(script, {
-      cwd: cwd,
+      cwd,
       windowsVerbatimArguments: true,
     })
     return scriptStdout.stdout

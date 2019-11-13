@@ -1,5 +1,7 @@
 import { read } from 'fs'
+
 import { Terminal } from 'vscode'
+
 export class TerminalManager {
   readonly _vscode: any
   readonly _terminal: Terminal
@@ -14,11 +16,11 @@ export class TerminalManager {
       this._terminal.sendText(message)
 
       let output = ''
-      let datawatcher = (<any>this._terminal).onDidWriteData((data: string) => {
+      const datawatcher = (this._terminal as any).onDidWriteData((data: string) => {
         output += data
       })
 
-      var promise = new Promise<Boolean>(function(resolve) {
+      const promise = new Promise<Boolean>(function(resolve) {
         setTimeout(() => {
           if (
             output.includes('error') ||

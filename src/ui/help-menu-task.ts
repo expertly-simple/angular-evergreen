@@ -1,5 +1,6 @@
-import * as vscode from "vscode";
-import { TreeTask } from "../types/tree-task";
+import * as vscode from 'vscode'
+
+import { TreeTask } from '../types/tree-task'
 
 export class HelpMenuTask implements vscode.TreeDataProvider<TreeTask> {
   constructor(private context: vscode.ExtensionContext) {}
@@ -9,33 +10,33 @@ export class HelpMenuTask implements vscode.TreeDataProvider<TreeTask> {
       return this.getVersionTree(currentVersion)
     } */
 
-    let treeTasks: TreeTask[] = [
+    const treeTasks: TreeTask[] = [
       new TreeTask(
-        "Link",
-        "Visit blog.angular.io",
+        'Link',
+        'Visit blog.angular.io',
         vscode.TreeItemCollapsibleState.None,
         {
-          command: "ng-evergreen.navigateToBlogIo",
-          title: "Visit blog.angular.io"
+          command: 'ng-evergreen.navigateToBlogIo',
+          title: 'Visit blog.angular.io',
         },
-        this.context.extensionPath + "/resources/web.svg"
+        this.context.extensionPath + '/resources/web.svg'
       ),
       new TreeTask(
-        "Link",
-        "Request Consulting",
+        'Link',
+        'Request Consulting',
         vscode.TreeItemCollapsibleState.None,
         {
-          command: "ng-evergreen.navigateToConsultingForm",
-          title: "Request Consulting"
+          command: 'ng-evergreen.navigateToConsultingForm',
+          title: 'Request Consulting',
         },
-        this.context.extensionPath + "/resources/web.svg"
-      )
-    ];
+        this.context.extensionPath + '/resources/web.svg'
+      ),
+    ]
 
-    return treeTasks;
+    return treeTasks
   }
 
   getTreeItem(task: TreeTask): vscode.TreeItem {
-    return task;
+    return task
   }
 }

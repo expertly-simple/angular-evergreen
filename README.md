@@ -26,7 +26,7 @@ Keep your project's version of Angular and related packages evergreen with perio
 - Support non-@angular/cli Angular projects
 - Assist users clean git branch before update
 
-_Have a feature request or submit a PR?_ Submit an issue/PR on GitHub [here](https://github.com/duluca/angular-evergreen/issues).
+_Have a feature request or submit a PR?_ Submit an issue/PR on GitHub [here](https://github.com/expertly-simple/angular-evergreen/issues).
 
 ## Requirements
 
