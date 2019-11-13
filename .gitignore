@@ -8,3 +8,6 @@ test/**/*.js
 src/**/*.js.map
 test/**/*.js.map
 .env
+.nyc_output
+coverage
+*.d.ts

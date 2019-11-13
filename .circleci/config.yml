@@ -30,7 +30,8 @@ jobs:
       # ensure code formatting standards are adhered to - run 'npm run standardize' to fix
       - run: npm run standardize:ci
 
-      - run: npm test
+      - run: npm run pretest
+      - run: npm run test:mocha
 
       # - store_test_results:
       #     path: ./test_results

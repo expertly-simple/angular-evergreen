@@ -1,5 +1,5 @@
-export class VscodeMock {
-  workspace = {
+export const VscodeMock = {
+  workspace: {
     getConfiguration() {
       return {
         get() {
@@ -7,5 +7,5 @@ export class VscodeMock {
         },
       }
     },
-  }
+  },
 }

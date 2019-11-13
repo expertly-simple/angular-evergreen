@@ -5,6 +5,6 @@
     "strict": false,
     "sourceMap": true,
     "noImplicitAny": false,
-    "types": ["node", "mocha", "assert"]
+    "types": ["node", "mocha", "chai", "sinon", "sinon-chai"]
   }
 }

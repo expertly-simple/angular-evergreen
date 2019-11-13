@@ -1,27 +1,43 @@
-// test('test check frequency before update greater than one day', async () => {
-//   var now = new Date()
+import * as chai from 'chai'
+import * as sinon from 'sinon'
 
-//   const workspaceMgr = new WorkspaceManager(VscodeMock, {})
-//   const checkFrequencyHelper = new CheckFrequencyHelper(VscodeMock, workspaceMgr)
-//   spyOn(VscodeMock.workspace, 'getConfiguration')
-//   spyOn(workspaceMgr, 'getLastUpdateCheckDate').and.returnValue(
-//     new Date(now.setDate(now.getDate() - 1))
-//   )
+import { WorkspaceManager } from '../../../src/common/workspace-manager'
+import { CheckFrequencyHelper } from '../../../src/helpers/check-frequency.helpers'
+import { VscodeMock } from '../../mocks/vscode.mock'
 
-//   const result = checkFrequencyHelper.checkFrequencyBeforeUpdate()
+import sinonChai = require('sinon-chai')
+const expect = chai.expect
 
-//   expect(result).toBeTruthy()
-// })
+chai.use(sinonChai)
 
-// test('test check frequency before update less than day', async () => {
-//   var now = new Date()
-//   const workspaceMgr = new WorkspaceManager(VscodeMock, {})
-//   const checkFrequencyHelper = new CheckFrequencyHelper(VscodeMock, workspaceMgr)
-//   spyOn(workspaceMgr, 'getLastUpdateCheckDate').and.returnValue(
-//     new Date(now.setHours(now.getHours() - 23.99))
-//   )
+describe('Check frequency', () => {
+  it('test check frequency before update greater than one day', async () => {
+    const now = new Date()
 
-//   const result = checkFrequencyHelper.checkFrequencyBeforeUpdate()
-//   console.log(result)
-//   expect(result).toBeFalsy()
-// })
+    const workspaceMgr = new WorkspaceManager(VscodeMock, {})
+    const checkFrequencyHelper = new CheckFrequencyHelper(VscodeMock, workspaceMgr)
+
+    const getConfigurationSpy = sinon.spy(VscodeMock.workspace, 'getConfiguration')
+    const yesterdayFake = sinon.fake.returns(new Date(now.setDate(now.getDate() - 1)))
+    sinon.replace(workspaceMgr, 'getLastUpdateCheckDate', yesterdayFake)
+
+    const result = checkFrequencyHelper.checkFrequencyBeforeUpdate()
+
+    expect(getConfigurationSpy.calledOnce)
+    expect(result).to.equal(true)
+  })
+
+  it('test check frequency before update less than day', async () => {
+    const now = new Date()
+    const workspaceMgr = new WorkspaceManager(VscodeMock, {})
+    const checkFrequencyHelper = new CheckFrequencyHelper(VscodeMock, workspaceMgr)
+    const almostYesterdayFake = sinon.fake.returns(
+      new Date(now.setHours(now.getHours() - 23.99))
+    )
+    sinon.replace(workspaceMgr, 'getLastUpdateCheckDate', almostYesterdayFake)
+
+    const result = checkFrequencyHelper.checkFrequencyBeforeUpdate()
+
+    expect(result).to.equal(false)
+  })
+})

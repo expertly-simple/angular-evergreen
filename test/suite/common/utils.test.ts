@@ -1,18 +1,18 @@
-import * as assert from 'assert'
+import { expect } from 'chai'
 
 import { Util } from '../../../src/common/util'
 
-suite('Util', async () => {
-  suite('userCancelled()', () => {
-    test('returns true when passed "Cancel"', () => {
+describe('Util', async () => {
+  describe('userCancelled()', () => {
+    it('returns true when passed "Cancel"', () => {
       const result = Util.userCancelled('Cancel')
 
-      assert.equal(result, true)
+      expect(result).to.equal(true)
     })
-    test('returns false when not "Cancel" is passed in', () => {
-      const isFalse = Util.userCancelled('aldfjalsfj')
+    it('returns false when not "Cancel" is passed in', () => {
+      const result = Util.userCancelled('aldfjalsfj')
 
-      assert.equal(isFalse, false)
+      expect(result).to.equal(false)
     })
   })
 })
