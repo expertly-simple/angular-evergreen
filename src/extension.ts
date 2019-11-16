@@ -22,14 +22,13 @@ import { HelpMenuTask } from './ui/help-menu-task'
 import { UpdateMenuTask } from './ui/update-menu-task'
 import { VersionMenuTask } from './ui/version-menu-task'
 import { AngularUpdate } from './updaters/angular-update'
-import { IVersionStatus, PackageManager } from './updaters/package-manager'
+import { PackageManager } from './updaters/package-manager'
 
 let workspaceManager: WorkspaceManager
 let angularUpdate: AngularUpdate
 let packageManager: PackageManager
 let cmd: CMD
 let versionSkipper: VersionSkipper
-const NOW_DATE = new Date()
 let isFirstRun: boolean
 let checkFrequencyHelper: CheckFrequencyHelper
 let terminalManager: TerminalManager
@@ -82,6 +81,9 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 async function runEvergreen(): Promise<void> {
+  // check for updates. Expensive.
+  checkForUpdates()
+
   if (isFirstRun) {
     const checkFrequencyInput = await checkFrequencyHelper.getCheckFrequencyPreference()
     if (Util.userCancelled(checkFrequencyInput)) {
@@ -94,19 +96,15 @@ async function runEvergreen(): Promise<void> {
   }
 
   workspaceManager.setLastUpdateCheckDate(new Date())
-  await checkForUpdates()
 }
 
 async function checkForUpdates(): Promise<void> {
   const upgradeChannel = getUpgradeChannel()
-  const coreOutdated = await packageManager.checkForUpdate(
-    PackagesToCheck.core,
-    upgradeChannel
-  )
-  const cliOutdated = await packageManager.checkForUpdate(
-    PackagesToCheck.cli,
-    upgradeChannel
-  )
+  const [coreOutdated, cliOutdated] = await Promise.all([
+    packageManager.checkForUpdate(PackagesToCheck.core, upgradeChannel),
+    packageManager.checkForUpdate(PackagesToCheck.cli, upgradeChannel),
+  ])
+
   if (cliOutdated.needsUpdate || coreOutdated.needsUpdate) {
   } else {
     vscode.window.showInformationMessage('Project is already Evergreen. 🌲 Good job!')

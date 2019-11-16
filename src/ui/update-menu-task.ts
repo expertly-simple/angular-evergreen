@@ -1,12 +1,7 @@
 import { read } from 'fs'
 
 import * as vscode from 'vscode'
-
-import { PackagesToCheck } from '../common/enums'
-import { getUpgradeChannel } from '../helpers/upgrade-channel.helpers'
 import { TreeTask } from '../types/tree-task'
-import * as packageManager from '../updaters/package-manager'
-import { PackageManager } from '../updaters/package-manager'
 
 export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
   constructor(private context: vscode.ExtensionContext) {}
@@ -17,16 +12,6 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
     }
 
     const treeTasks: TreeTask[] = [
-      new TreeTask(
-        'Link',
-        'How to Update',
-        vscode.TreeItemCollapsibleState.None,
-        {
-          command: 'ng-evergreen.navigateToUpdateIo',
-          title: 'Visit update.angular.io',
-        },
-        this.context.extensionPath + '/resources/web.svg'
-      ),
       new TreeTask(
         'Folder',
         'Using Angular CLI?',

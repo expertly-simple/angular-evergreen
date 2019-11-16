@@ -51,13 +51,13 @@ export class PackageManager {
     return JSON.parse(filedata.toString())
   }
 
-  async getDependencies() {
+  private async getDependencies() {
     const pkgData = await this.getPackageJsonFile()
     this._pkgDependencies = pkgData.dependencies
     this._pkgDevDepencies = pkgData.devDependencies
   }
 
-  async getCurrentVersion(packageName: string) {
+  private async getCurrentVersion(packageName: string) {
     if (!this._pkgDependencies) {
       await this.getDependencies()
     }
@@ -76,7 +76,7 @@ export class PackageManager {
     return version
   }
 
-  async getNpmVersion(packageName: string, distTag = '') {
+  private async getNpmVersion(packageName: string, distTag = '') {
     const script = `npm view ${packageName}${distTag} version`
     let stdout = ''
     try {
