@@ -1,5 +1,3 @@
-import { read } from 'fs'
-
 import * as vscode from 'vscode'
 import { TreeTask } from '../types/tree-task'
 
