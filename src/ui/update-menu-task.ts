@@ -1,4 +1,5 @@
 import * as vscode from 'vscode'
+
 import { TreeTask } from '../types/tree-task'
 
 export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
