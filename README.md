@@ -18,12 +18,7 @@ Keep your project's version of Angular and related packages evergreen with perio
 
 ## Upcoming Features
 
-- Fix `typescript` version, after a `--force` install (textual guidance in 0.7)
-- Execute `ng build` and `ng test` after upgrade
 - Ability to rollback upgrades (partial rollback in 0.7)
-- Check for updates to packages not covered by `ng update` i.e. `@angular/flex-layout`
-- Allow customizing schedule interval
-- Support non-@angular/cli Angular projects
 - Assist users clean git branch before update
 
 _Have a feature request or submit a PR?_ Submit an issue/PR on GitHub [here](https://github.com/expertly-simple/angular-evergreen/issues).

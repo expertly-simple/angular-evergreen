@@ -1,40 +1,45 @@
-import { read } from 'fs'
-
 import * as vscode from 'vscode'
 
 import { PackagesToCheck } from '../common/enums'
+import { VersionManager } from '../common/version-manager'
 import { getUpgradeChannel } from '../helpers/upgrade-channel.helpers'
 import { TreeTask } from '../types/tree-task'
-import * as packageManager from '../updaters/package-manager'
-import { PackageManager } from '../updaters/package-manager'
+import { IVersionStatus } from '../updaters/package-manager'
+
+interface ICurrentVersions {
+  cliVersion: IVersionStatus
+  coreVersion: IVersionStatus
+}
 
 export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {
-  readonly _packageManager: PackageManager
+  readonly _versionManager: VersionManager
+  public versions: ICurrentVersions
   constructor(
     private context: vscode.ExtensionContext,
-    private packageManager: PackageManager
+    private versionManager: VersionManager
   ) {
-    this._packageManager = packageManager
+    this._versionManager = versionManager
+    this._versionManager.on('VersionCheckComplete', () => {
+      this.versions = {
+        coreVersion: this._versionManager.coreVersion,
+        cliVersion: this._versionManager.cliVersion,
+      }
+    })
   }
 
   public async getChildren(task?: TreeTask): Promise<TreeTask[]> {
-    const currentVersion = await this._packageManager.checkForUpdate(
-      PackagesToCheck.cli,
-      getUpgradeChannel()
-    )
-
     if (task && task.label && task.label.includes('Current')) {
-      return this.getVersionTree(currentVersion)
+      return this.getVersionTree(this.versions.cliVersion)
     }
 
     const treeTasks: TreeTask[] = [
       new TreeTask(
         'Folder',
-        'Current: ' + currentVersion.currentVersion,
+        'Current: ' + this.versions.cliVersion.currentVersion,
         vscode.TreeItemCollapsibleState.Expanded,
         undefined,
         this.context.extensionPath +
-          (currentVersion.needsUpdate
+          (this.versions.cliVersion.needsUpdate
             ? '/resources/ng-evergreen-logo-red.svg'
             : '/resources/ng-evergreen-logo.svg'),
         'evergreen-version'
@@ -48,7 +53,7 @@ export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {
     return task
   }
 
-  private getVersionTree(currentVersion: packageManager.IVersionStatus) {
+  private getVersionTree(currentVersion: IVersionStatus) {
     return [
       new TreeTask(
         'Folder',

@@ -10,6 +10,7 @@ import {
   UpdateCommands,
   UpgradeChannel,
 } from './common/enums'
+import { VersionManager } from './common/version-manager'
 import { WorkspaceManager } from './common/workspace-manager'
 import { CheckFrequencyHelper } from './helpers/check-frequency.helpers'
 import {
@@ -29,25 +30,35 @@ let angularUpdate: AngularUpdate
 let packageManager: PackageManager
 let cmd: CMD
 let versionSkipper: VersionSkipper
-const NOW_DATE = new Date()
 let isFirstRun: boolean
 let checkFrequencyHelper: CheckFrequencyHelper
 let terminalManager: TerminalManager
+let versionManager: VersionManager
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')
   workspaceManager = new WorkspaceManager(vscode, context)
   packageManager = new PackageManager(vscode, workspaceManager)
+  versionManager = new VersionManager(packageManager, workspaceManager)
   cmd = new CMD()
   angularUpdate = new AngularUpdate(vscode, cmd)
   versionSkipper = new VersionSkipper(packageManager, workspaceManager)
   checkFrequencyHelper = new CheckFrequencyHelper(vscode, workspaceManager)
   terminalManager = new TerminalManager(vscode)
 
+  versionManager.on('IsEvergreen', status => {
+    if (status) {
+      vscode.window.showInformationMessage('Project is already Evergreen. 🌲 Good job!')
+    }
+  })
+
   // load commands
   context.subscriptions.push(
     vscode.commands.registerCommand('ng-evergreen.startAngularEvergreen', runEvergreen),
-    vscode.commands.registerCommand('ng-evergreen.checkForUpdates', checkForUpdates),
+    vscode.commands.registerCommand(
+      'ng-evergreen.checkForUpdates',
+      versionManager.checkForUpdates
+    ),
     vscode.commands.registerCommand(
       'ng-evergreen.navigateToUpdateIo',
       navigateToUpdateIo
@@ -61,7 +72,7 @@ export function activate(context: vscode.ExtensionContext) {
     ),
     vscode.window.registerTreeDataProvider(
       'versions',
-      new VersionMenuTask(context, packageManager)
+      new VersionMenuTask(context, versionManager)
     ),
     vscode.window.registerTreeDataProvider('update', new UpdateMenuTask(context)),
     vscode.window.registerTreeDataProvider('help', new HelpMenuTask(context))
@@ -74,15 +85,19 @@ export function activate(context: vscode.ExtensionContext) {
     // update existing peeps to Daily.
     workspaceManager.setUpdateFrequency('Daily')
     if (checkFrequencyHelper.checkFrequencyBeforeUpdate()) {
-      vscode.commands.executeCommand('ng-evergreen.checkForUpdates')
+      // check for updates. Expensive.
+      await versionManager.checkForUpdates()
     }
   } else if (workspaceManager.getUpdateFrequency() === CheckFrequency.OnLoad) {
-    vscode.commands.executeCommand('ng-evergreen.checkForUpdates')
+    // check for updates. Expensive.
+    await versionManager.checkForUpdates()
   }
 }
 
 async function runEvergreen(): Promise<void> {
   if (isFirstRun) {
+    // check for updates. Expensive.
+    await versionManager.checkForUpdates()
     const checkFrequencyInput = await checkFrequencyHelper.getCheckFrequencyPreference()
     if (Util.userCancelled(checkFrequencyInput)) {
       return
@@ -91,25 +106,6 @@ async function runEvergreen(): Promise<void> {
 
   if (!upgradeChannelExists()) {
     const upgradeChannelInput = await getUpgradeChannelPreference()
-  }
-
-  workspaceManager.setLastUpdateCheckDate(new Date())
-  await checkForUpdates()
-}
-
-async function checkForUpdates(): Promise<void> {
-  const upgradeChannel = getUpgradeChannel()
-  const coreOutdated = await packageManager.checkForUpdate(
-    PackagesToCheck.core,
-    upgradeChannel
-  )
-  const cliOutdated = await packageManager.checkForUpdate(
-    PackagesToCheck.cli,
-    upgradeChannel
-  )
-  if (cliOutdated.needsUpdate || coreOutdated.needsUpdate) {
-  } else {
-    vscode.window.showInformationMessage('Project is already Evergreen. 🌲 Good job!')
   }
 }
 

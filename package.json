@@ -1,7 +1,7 @@
 {
   "name": "ng-evergreen",
   "displayName": "Angular Evergreen",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "publisher": "expertly-simple",
   "license": "ISC",
   "description": "Keep your project's version of Angular and related packages evergreen with periodic update checks and upgrade your Angular CLI projects with ease.",

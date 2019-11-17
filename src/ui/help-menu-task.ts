@@ -6,11 +6,21 @@ export class HelpMenuTask implements vscode.TreeDataProvider<TreeTask> {
   constructor(private context: vscode.ExtensionContext) {}
 
   public async getChildren(task?: TreeTask): Promise<TreeTask[]> {
-    /* if (task && task.label && task.label.includes('Angular Version')) {
+    /* if (task && task.label && task.label.includes('Help'')) {
       return this.getVersionTree(currentVersion)
-    } */
+    }  */
 
     const treeTasks: TreeTask[] = [
+      new TreeTask(
+        'Link',
+        'How to Update',
+        vscode.TreeItemCollapsibleState.None,
+        {
+          command: 'ng-evergreen.navigateToUpdateIo',
+          title: 'Visit update.angular.io',
+        },
+        this.context.extensionPath + '/resources/web.svg'
+      ),
       new TreeTask(
         'Link',
         'Visit blog.angular.io',
