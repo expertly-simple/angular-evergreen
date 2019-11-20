@@ -48,7 +48,7 @@ export async function activate(context: vscode.ExtensionContext) {
   terminalManager = new TerminalManager(vscode)
 
   versionManager.on('IsEvergreen', status => {
-    if (status) {
+    if (!status) {
       vscode.window.showInformationMessage('Project is already Evergreen. 🌲 Good job!')
     }
   })
@@ -97,27 +97,12 @@ export async function activate(context: vscode.ExtensionContext) {
   if (isFirstRun) {
     vscode.commands.executeCommand('ng-evergreen.startAngularEvergreen')
   } else if (workspaceManager.getUpdateFrequency() !== CheckFrequency.OnLoad) {
-    // update existing peeps to Daily.
-    workspaceManager.setUpdateFrequency('Daily')
-    if (checkFrequencyHelper.checkFrequencyBeforeUpdate()) {
-      // check for updates. Expensive.
-      await versionManager.checkForUpdates()
-    }
-  } else if (workspaceManager.getUpdateFrequency() === CheckFrequency.OnLoad) {
-    // check for updates. Expensive.
     await versionManager.checkForUpdates()
   }
 }
 
 async function runEvergreen(): Promise<void> {
-  if (isFirstRun) {
-    // check for updates. Expensive.
-    await versionManager.checkForUpdates()
-    const checkFrequencyInput = await checkFrequencyHelper.getCheckFrequencyPreference()
-    if (Util.userCancelled(checkFrequencyInput)) {
-      return
-    }
-  }
+  await versionManager.checkForUpdates()
 
   if (!upgradeChannelExists()) {
     const upgradeChannelInput = await getUpgradeChannelPreference()
