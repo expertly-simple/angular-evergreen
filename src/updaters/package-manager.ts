@@ -58,9 +58,7 @@ export class PackageManager {
   }
 
   private async getCurrentVersion(packageName: string) {
-    if (!this._pkgDependencies) {
-      await this.getDependencies()
-    }
+    await this.getDependencies()
     // Most @angular packages live in dependencies, so check there first.
     let version = this._pkgDependencies[packageName]
 
