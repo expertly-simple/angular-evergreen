@@ -6,6 +6,11 @@ import { getUpgradeChannel } from '../helpers/upgrade-channel.helpers'
 import { TreeTask } from '../types/tree-task'
 import { IVersionStatus } from '../updaters/package-manager'
 
+interface ICurrentVersions {
+  cliVersion: IVersionStatus
+  coreVersion: IVersionStatus
+}
+
 export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {
   readonly _versionManager: VersionManager
   public versions: ICurrentVersions
@@ -24,6 +29,7 @@ export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {
         coreVersion: this._versionManager.coreVersion,
         cliVersion: this._versionManager.cliVersion,
       }
+
       this.getChildren()
     })
   }

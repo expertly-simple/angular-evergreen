@@ -75,7 +75,6 @@ export async function activate(context: vscode.ExtensionContext) {
       'ng-evergreen.navigateToConsultingForm',
       navigateToRequestForm
     ),
-
     vscode.window.registerTreeDataProvider('update', new UpdateMenuTask(context)),
     vscode.window.registerTreeDataProvider('help', new HelpMenuTask(context))
   )
