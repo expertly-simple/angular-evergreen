@@ -1,7 +1,7 @@
 import * as vscode from 'vscode'
 
 import { PackagesToCheck } from '../common/enums'
-import { VersionManager, ICurrentVersions } from '../common/version-manager'
+import { ICurrentVersions, VersionManager } from '../common/version-manager'
 import { getUpgradeChannel } from '../helpers/upgrade-channel.helpers'
 import { TreeTask } from '../types/tree-task'
 import { IVersionStatus } from '../updaters/package-manager'
