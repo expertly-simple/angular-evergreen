@@ -70,6 +70,11 @@
       {
         "command": "ng-evergreen.checkForUpdates",
         "title": "Check for Angular Updates",
+        "category": "Angular Evergreen"
+      },
+      {
+        "command": "ng-evergreen.checkForUpdatesTree",
+        "title": "Check for Angular Updates",
         "category": "Angular Evergreen",
         "icon": "/resources/refresh.svg"
       },
@@ -125,7 +130,7 @@
     "menus": {
       "view/title": [
         {
-          "command": "ng-evergreen.checkForUpdates",
+          "command": "ng-evergreen.checkForUpdatesTree",
           "when": "view == versions",
           "group": "navigation"
         }

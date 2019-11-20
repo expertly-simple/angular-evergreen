@@ -5,10 +5,21 @@ import { IVersionStatus, PackageManager } from '../updaters/package-manager'
 import { CheckFrequency, PackagesToCheck, UpdateCommands, UpgradeChannel } from './enums'
 import { WorkspaceManager } from './workspace-manager'
 
+export interface ICurrentVersions {
+  cliVersion: IVersionStatus
+  coreVersion: IVersionStatus
+}
+
+export class CurrentVersions implements ICurrentVersions {
+  public cliVersion: IVersionStatus
+  public coreVersion: IVersionStatus
+  constructor() {}
+}
+
 export class VersionManager extends EventEmitter {
   private readonly _packageMgr: PackageManager
   private readonly _workspaceMgr: WorkspaceManager
-  private versions: IVersionStatus[]
+  private versions: ICurrentVersions = new CurrentVersions()
 
   constructor(
     private packageMgr: PackageManager,
@@ -20,27 +31,28 @@ export class VersionManager extends EventEmitter {
   }
 
   get cliVersion(): IVersionStatus {
-    return this.versions[1]
+    return this.versions.cliVersion
   }
 
   get coreVersion(): IVersionStatus {
-    return this.versions[0]
+    return this.versions.coreVersion
   }
 
   async checkForUpdates(): Promise<void> {
     const upgradeChannel = getUpgradeChannel()
-    const [coreOutdated, cliOutdated] = await Promise.all([
+    const [coreStatus, cliStatus] = await Promise.all([
       this._packageMgr.checkForUpdate(PackagesToCheck.core, upgradeChannel),
       this._packageMgr.checkForUpdate(PackagesToCheck.cli, upgradeChannel),
     ])
 
     this.emit('IsEvergreen', (status: boolean) => {
-      status = Boolean(!cliOutdated.needsUpdate || !coreOutdated.needsUpdate)
+      status = Boolean(!cliStatus.needsUpdate || !coreStatus.needsUpdate)
       return status
     })
 
     this._workspaceMgr.setLastUpdateCheckDate(new Date())
-    this.versions = [coreOutdated, cliOutdated]
+    this.versions.cliVersion = cliStatus
+    this.versions.coreVersion = coreStatus
 
     this.emit('VersionCheckComplete', (state: string) => 'complete')
   }

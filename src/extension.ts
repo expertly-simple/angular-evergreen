@@ -34,6 +34,7 @@ let isFirstRun: boolean
 let checkFrequencyHelper: CheckFrequencyHelper
 let terminalManager: TerminalManager
 let versionManager: VersionManager
+let versionTreeTask: VersionMenuTask
 
 export async function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')
@@ -60,6 +61,10 @@ export async function activate(context: vscode.ExtensionContext) {
       versionManager.checkForUpdates
     ),
     vscode.commands.registerCommand(
+      'ng-evergreen.checkForUpdatesTree',
+      checkForUpdatesTree
+    ),
+    vscode.commands.registerCommand(
       'ng-evergreen.navigateToUpdateIo',
       navigateToUpdateIo
     ),
@@ -70,13 +75,24 @@ export async function activate(context: vscode.ExtensionContext) {
       'ng-evergreen.navigateToConsultingForm',
       navigateToRequestForm
     ),
-    vscode.window.registerTreeDataProvider(
-      'versions',
-      new VersionMenuTask(context, versionManager)
-    ),
+
     vscode.window.registerTreeDataProvider('update', new UpdateMenuTask(context)),
     vscode.window.registerTreeDataProvider('help', new HelpMenuTask(context))
   )
+
+  // this makes the version tree task event driven for performance.
+  versionManager.on('VersionCheckComplete', () => {
+    const versions = {
+      coreVersion: versionManager.coreVersion,
+      cliVersion: versionManager.cliVersion,
+    }
+
+    versionTreeTask = new VersionMenuTask(context, versionManager, versions)
+
+    context.subscriptions.push(
+      vscode.window.registerTreeDataProvider('versions', versionTreeTask)
+    )
+  })
 
   isFirstRun = !workspaceManager.getUpdateFrequency()
   if (isFirstRun) {
@@ -127,4 +143,11 @@ async function navigateToRequestForm() {
 
 async function navigateToBlogIo() {
   await open('https://blog.angular.io/')
+}
+
+async function checkForUpdatesTree() {
+  await versionManager.checkForUpdates()
+  if (versionTreeTask) {
+    await versionTreeTask.getChildren()
+  }
 }
