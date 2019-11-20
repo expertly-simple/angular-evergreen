@@ -48,7 +48,7 @@ export async function activate(context: vscode.ExtensionContext) {
   terminalManager = new TerminalManager(vscode)
 
   versionManager.on('IsEvergreen', status => {
-    if (!status) {
+    if (status === true) {
       vscode.window.showInformationMessage('Project is already Evergreen. 🌲 Good job!')
     }
   })
