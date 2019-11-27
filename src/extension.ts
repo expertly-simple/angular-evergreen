@@ -1,37 +1,21 @@
 import * as open from 'open'
 import * as vscode from 'vscode'
 
-import { Util } from '../src/common/util'
-import { CMD } from './commands/cmd'
 import { TerminalManager } from './commands/terminal-manager'
-import {
-  CheckFrequency,
-  PackagesToCheck,
-  UpdateCommands,
-  UpgradeChannel,
-} from './common/enums'
+import { CheckFrequency, UpdateCommands } from './common/enums'
 import { VersionManager } from './common/version-manager'
 import { WorkspaceManager } from './common/workspace-manager'
-import { CheckFrequencyHelper } from './helpers/check-frequency.helpers'
-import {
-  getUpgradeChannel,
-  getUpgradeChannelPreference,
-  upgradeChannelExists,
-} from './helpers/upgrade-channel.helpers'
-import { VersionSkipper } from './helpers/version-to-skip.helpers'
 import { HelpMenuTask } from './ui/help-menu-task'
 import { UpdateMenuTask } from './ui/update-menu-task'
 import { VersionMenuTask } from './ui/version-menu-task'
-import { AngularUpdate } from './updaters/angular-update'
-import { IVersionStatus, PackageManager } from './updaters/package-manager'
+import { PackageManager } from './updaters/package-manager'
 
 let workspaceManager: WorkspaceManager
-let angularUpdate: AngularUpdate
+
 let packageManager: PackageManager
-let cmd: CMD
-let versionSkipper: VersionSkipper
+
 let isFirstRun: boolean
-let checkFrequencyHelper: CheckFrequencyHelper
+
 let terminalManager: TerminalManager
 let versionManager: VersionManager
 let versionTreeTask: VersionMenuTask
@@ -41,10 +25,10 @@ export async function activate(context: vscode.ExtensionContext) {
   workspaceManager = new WorkspaceManager(vscode, context)
   packageManager = new PackageManager(vscode, workspaceManager)
   versionManager = new VersionManager(packageManager, workspaceManager)
-  cmd = new CMD()
-  angularUpdate = new AngularUpdate(vscode, cmd)
-  versionSkipper = new VersionSkipper(packageManager, workspaceManager)
-  checkFrequencyHelper = new CheckFrequencyHelper(vscode, workspaceManager)
+  // cmd = new CMD()
+  // angularUpdate = new AngularUpdate(vscode, cmd)
+  // versionSkipper = new VersionSkipper(packageManager, workspaceManager)
+  // checkFrequencyHelper = new CheckFrequencyHelper(vscode, workspaceManager)
   terminalManager = new TerminalManager(vscode)
 
   versionManager.on('IsEvergreen', status => {
@@ -104,9 +88,9 @@ export async function activate(context: vscode.ExtensionContext) {
 async function runEvergreen(): Promise<void> {
   await versionManager.checkForUpdates()
 
-  if (!upgradeChannelExists()) {
-    const upgradeChannelInput = await getUpgradeChannelPreference()
-  }
+  // if (!upgradeChannelExists()) {
+  //   const upgradeChannelInput = await getUpgradeChannelPreference()
+  // }
 }
 
 async function callUpdateAngular() {

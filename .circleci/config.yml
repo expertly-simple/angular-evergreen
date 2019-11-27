@@ -28,7 +28,8 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # ensure code formatting standards are adhered to - run 'npm run standardize' to fix
-      - run: npm run standardize:ci
+      - run: npm run style
+      - run: npm run lint
 
       - run: npm run pretest
       - run: npm run test:mocha

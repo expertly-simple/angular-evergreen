@@ -2,6 +2,7 @@ import * as path from 'path'
 
 import { runTests } from 'vscode-test'
 
+// tslint:disable-next-line: max-line-length
 // https://github.com/microsoft/vscode-test/blob/bcd614f7a13f3422b530f5f07034d9a7b5f3979c/sample/test/runTest.ts
 
 async function go() {
