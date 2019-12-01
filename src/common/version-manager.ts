@@ -41,7 +41,7 @@ export class VersionManager extends EventEmitter {
       this.packageManager.checkForUpdate(PackagesToCheck.cli, upgradeChannel),
     ])
 
-    this.emit('IsEvergreen', Boolean(!cliStatus.needsUpdate || !coreStatus.needsUpdate))
+    this.emit('IsEvergreen', Boolean(!cliStatus.needsUpdate))
 
     this.workspaceManager.setLastUpdateCheckDate(new Date())
     this.versions.cliVersion = cliStatus

@@ -11,25 +11,20 @@ import { VersionMenuTask } from './ui/version-menu-task'
 import { PackageManager } from './updaters/package-manager'
 
 let workspaceManager: WorkspaceManager
-
 let packageManager: PackageManager
-
-let isFirstRun: boolean
-
 let terminalManager: TerminalManager
 let versionManager: VersionManager
+
+let isFirstRun: boolean
 let versionTreeTask: VersionMenuTask
 
 export async function activate(context: vscode.ExtensionContext) {
   console.log('Angular Evergreen is now active!')
+
   workspaceManager = new WorkspaceManager(vscode, context)
   packageManager = new PackageManager(vscode, workspaceManager)
-  versionManager = new VersionManager(packageManager, workspaceManager)
-  // cmd = new CMD()
-  // angularUpdate = new AngularUpdate(vscode, cmd)
-  // versionSkipper = new VersionSkipper(packageManager, workspaceManager)
-  // checkFrequencyHelper = new CheckFrequencyHelper(vscode, workspaceManager)
   terminalManager = new TerminalManager(vscode)
+  versionManager = new VersionManager(packageManager, workspaceManager)
 
   versionManager.on('IsEvergreen', status => {
     if (status === true) {
