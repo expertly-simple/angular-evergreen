@@ -1,15 +1,15 @@
 import * as vscode from 'vscode'
 
-export async function isGitClean(): Promise<Boolean> {
+export async function isGitClean(): Promise<boolean> {
   const terminal = vscode.window.createTerminal(`Angular Evergreen`)
   terminal.show()
   terminal.sendText('git status')
   let output = ''
-  const datawatcher = (terminal as any).onDidWriteData((data: string) => {
+  ;(terminal as any).onDidWriteData((data: string) => {
     output += data
   })
 
-  const promise = new Promise<Boolean>(function(resolve) {
+  const promise = new Promise<boolean>(resolve => {
     setTimeout(() => {
       if (
         output.includes('Changes') ||

@@ -10,22 +10,20 @@ interface ICurrentVersions {
 }
 
 export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {
-  readonly _versionManager: VersionManager
   public versions: ICurrentVersions
   constructor(
     private context: vscode.ExtensionContext,
-    private versionManager: VersionManager,
+    private readonly versionManager: VersionManager,
     private currentVersions: ICurrentVersions
   ) {
-    this._versionManager = versionManager
     this.versions = {
       coreVersion: currentVersions.coreVersion,
       cliVersion: currentVersions.cliVersion,
     }
-    this._versionManager.on('VersionCheckComplete', () => {
+    this.versionManager.on('VersionCheckComplete', () => {
       this.versions = {
-        coreVersion: this._versionManager.coreVersion,
-        cliVersion: this._versionManager.cliVersion,
+        coreVersion: this.versionManager.coreVersion,
+        cliVersion: this.versionManager.cliVersion,
       }
 
       this.getChildren()
@@ -37,8 +35,8 @@ export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {
       return this.getVersionTree(this.versions.cliVersion)
     }
 
-    const currentCliVersion = this._versionManager.cliVersion
-      ? this._versionManager.cliVersion.currentVersion
+    const currentCliVersion = this.versionManager.cliVersion
+      ? this.versionManager.cliVersion.currentVersion
       : this.versions.cliVersion.currentVersion
 
     const treeTasks: TreeTask[] = [

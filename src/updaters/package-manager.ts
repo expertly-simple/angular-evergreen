@@ -14,30 +14,32 @@ export interface IVersionStatus {
 }
 
 export class PackageManager {
-  readonly _workspacePath: any
-  readonly _workspaceManager: WorkspaceManager
-  readonly _workspace: string
-  readonly _vscode: any
-  private _pkgDependencies: any
-  private _pkgDevDepencies: any
+  readonly workspacePath: any
+  readonly workspaceManager: WorkspaceManager
+  readonly workspace: string
+  readonly vscodeInstance: any
+  private pkgDependencies: any
+  private pkgDevDepencies: any
 
-  constructor(vscode: any, workspaceManager: WorkspaceManager) {
-    this._workspace = vscode.workspace.workspaceFolders![0]
-    this._vscode = vscode
-    this._workspaceManager = workspaceManager
-    this._workspacePath = this._workspaceManager.getWorkspace()
+  constructor(vscodeInstance: any, workspaceManager: WorkspaceManager) {
+    if (vscode.workspace.workspaceFolders) {
+      this.workspace = vscodeInstance.workspace.workspaceFolders[0]
+    }
+    this.vscodeInstance = vscodeInstance
+    this.workspaceManager = workspaceManager
+    this.workspacePath = this.workspaceManager.getWorkspace()
   }
 
   async getPackageJsonFile() {
     // Sanity check that a workspace is loaded
-    if (!this._workspacePath) {
+    if (!this.workspacePath) {
       console.error('No workspace found.')
       return null
     }
 
     // Check that package.json exists
     const packjsonFile = await vscode.workspace.findFiles(
-      new vscode.RelativePattern(this._workspacePath, 'package.json')
+      new vscode.RelativePattern(this.workspacePath, 'package.json')
     )
     if (!packjsonFile || packjsonFile.length <= 0) {
       vscode.window.showErrorMessage('File package.json not found')
@@ -53,18 +55,18 @@ export class PackageManager {
 
   private async getDependencies() {
     const pkgData = await this.getPackageJsonFile()
-    this._pkgDependencies = pkgData.dependencies
-    this._pkgDevDepencies = pkgData.devDependencies
+    this.pkgDependencies = pkgData.dependencies
+    this.pkgDevDepencies = pkgData.devDependencies
   }
 
   private async getCurrentVersion(packageName: string) {
     await this.getDependencies()
     // Most @angular packages live in dependencies, so check there first.
-    let version = this._pkgDependencies[packageName]
+    let version = this.pkgDependencies[packageName]
 
     // If not found, check in devDependencies
     if (!version) {
-      version = this._pkgDevDepencies[packageName]
+      version = this.pkgDevDepencies[packageName]
     }
 
     if (!version) {
@@ -79,7 +81,7 @@ export class PackageManager {
     let stdout = ''
     try {
       const scriptStdout = await execa.command(script, {
-        cwd: this._workspacePath.uri.fsPath,
+        cwd: this.workspacePath.uri.fsPath,
       })
       stdout = scriptStdout.stdout
     } catch (error) {
