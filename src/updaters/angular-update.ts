@@ -17,14 +17,7 @@ export class AngularUpdate {
   }
 
   async tryAngularUpdate(upgradeChannel: UpgradeChannel) {
-    // let gitClean = await isGitClean()
-    if (true) {
-      await this.ngUpdate(upgradeChannel)
-    } else {
-      this.vscode.window.showErrorMessage(
-        "Can't update: You should ensure git branch is clean & up-to-date."
-      )
-    }
+    await this.ngUpdate(upgradeChannel)
   }
 
   async tryUpdateAngularCli() {}
@@ -35,7 +28,7 @@ export class AngularUpdate {
     const updateCMD = `${UpdateCommands.ngAllCmd} ${cmdArgs}`
 
     this.renderer.terminal.show()
-    this.renderer.write('\x1b[32m 🌲  Welcome to Angular Evergreen 🌲 \r\n\n')
+    this.renderer.write('\x1b[32m 🌲 Welcome to Angular Evergreen 🌲 \r\n\n')
 
     try {
       await this.cmd.runScript(UpdateCommands.npmInstall, this.renderer)

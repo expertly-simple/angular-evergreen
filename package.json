@@ -4,7 +4,7 @@
   "version": "0.8.3",
   "publisher": "expertly-simple",
   "license": "ISC",
-  "description": "Keep your project's version of Angular and related packages evergreen with periodic update checks and upgrade your Angular CLI projects with ease.",
+  "description": "Quickly compare latest and next releases of Angular to your project's version. Leverage helpers to upgrade your Angular CLI projects with ease.",
   "icon": "ng-evergreen-logo.png",
   "keywords": [
     "angular",

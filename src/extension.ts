@@ -82,10 +82,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
 async function runEvergreen(): Promise<void> {
   await versionManager.checkForUpdates()
-
-  // if (!upgradeChannelExists()) {
-  //   const upgradeChannelInput = await getUpgradeChannelPreference()
-  // }
 }
 
 async function callUpdateAngular() {

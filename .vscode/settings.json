@@ -14,7 +14,7 @@
 
   "editor.tabSize": 2,
   "editor.rulers": [90],
-  "editor.autoIndent": true,
+  "editor.autoIndent": "full",
   "editor.cursorBlinking": "solid",
   "editor.formatOnType": false,
   "editor.formatOnPaste": false,
@@ -40,5 +40,21 @@
   "workbench.iconTheme": "material-icon-theme",
 
   "auto-close-tag.SublimeText3Mode": true,
-  "html.autoClosingTags": false
+  "html.autoClosingTags": false,
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#3b976f",
+    "activityBar.activeBorder": "#d2bae4",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#d2bae4",
+    "activityBarBadge.foreground": "#15202b",
+    "titleBar.activeBackground": "#2d7254",
+    "titleBar.inactiveBackground": "#2d725499",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveForeground": "#e7e7e799",
+    "statusBar.background": "#2d7254",
+    "statusBarItem.hoverBackground": "#3b976f",
+    "statusBar.foreground": "#e7e7e7"
+  },
+  "peacock.color": "#2d7254"
 }
