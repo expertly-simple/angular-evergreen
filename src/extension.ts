@@ -50,6 +50,7 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('ng-evergreen.navigateToBlogIo', navigateToBlogIo),
     vscode.commands.registerCommand('ng-evergreen.updateAngular', callUpdateAngular),
     vscode.commands.registerCommand('ng-evergreen.updateAll', callAngularAll),
+    vscode.commands.registerCommand('ng-evergreen.updateAllForce', callAngularAllForce),
     vscode.commands.registerCommand(
       'ng-evergreen.updateAngularNext',
       callUpdateAngularNext
@@ -115,6 +116,10 @@ async function callUpdateAngular() {
 
 async function callAngularAll() {
   await terminalManager.writeToTerminal(UpdateCommands.ngAllCmd)
+}
+
+async function callAngularAllForce() {
+  await terminalManager.writeToTerminal(`${UpdateCommands.ngAllCmd} ${UpdateArgs.force}`)
 }
 
 async function callUpdateAngularNext() {

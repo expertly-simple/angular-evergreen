@@ -56,7 +56,8 @@
         }
       }
     },
-    "commands": [{
+    "commands": [
+      {
         "command": "ng-evergreen.startAngularEvergreen",
         "title": "Start Angular Evergreen",
         "category": "Angular Evergreen"
@@ -98,6 +99,11 @@
         "category": "Angular Evergreen Update"
       },
       {
+        "command": "ng-evergreen.updateAllForce",
+        "title": "Force Update All Angular Packages?",
+        "category": "Angular Evergreen Update"
+      },
+      {
         "command": "ng-evergreen.updateAngularNext",
         "title": "Update Angular Next CLI and Core?",
         "category": "Angular Evergreen Update"
@@ -134,14 +140,17 @@
       }
     ],
     "viewsContainers": {
-      "activitybar": [{
-        "id": "evergreen-container",
-        "title": "Angular Evergreen",
-        "icon": "resources/ng-evergreen-logo-monochromatic.svg"
-      }]
+      "activitybar": [
+        {
+          "id": "evergreen-container",
+          "title": "Angular Evergreen",
+          "icon": "resources/ng-evergreen-logo-monochromatic.svg"
+        }
+      ]
     },
     "views": {
-      "evergreen-container": [{
+      "evergreen-container": [
+        {
           "id": "versions",
           "name": "Versions",
           "icon": "resources/ng-evergreen-logo-monochromatic.svg"
@@ -159,16 +168,20 @@
       ]
     },
     "menus": {
-      "view/title": [{
-        "command": "ng-evergreen.checkForUpdatesTree",
-        "when": "view == versions",
-        "group": "navigation"
-      }],
-      "view/item/context": [{
-        "command": "ng-evergreen.navigateToUpdateIo",
-        "when": "view == update && viewItem == dependency",
-        "group": "inline"
-      }]
+      "view/title": [
+        {
+          "command": "ng-evergreen.checkForUpdatesTree",
+          "when": "view == versions",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "ng-evergreen.navigateToUpdateIo",
+          "when": "view == update && viewItem == dependency",
+          "group": "inline"
+        }
+      ]
     }
   },
   "scripts": {
