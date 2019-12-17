@@ -1,10 +1,10 @@
 {
   "name": "ng-evergreen",
   "displayName": "Angular Evergreen",
-  "version": "0.8.3",
+  "version": "0.9.0",
   "publisher": "expertly-simple",
   "license": "ISC",
-  "description": "Keep your project's version of Angular and related packages evergreen with periodic update checks and upgrade your Angular CLI projects with ease.",
+  "description": "Quickly compare latest and next releases of Angular to your project's version. Leverage helpers to upgrade your Angular CLI projects with ease.",
   "icon": "ng-evergreen-logo.png",
   "keywords": [
     "angular",
@@ -18,7 +18,7 @@
     "theme": "dark"
   },
   "engines": {
-    "vscode": "^1.40.0"
+    "vscode": "^1.41.0"
   },
   "categories": [
     "Other"
@@ -74,7 +74,7 @@
       },
       {
         "command": "ng-evergreen.checkForUpdatesTree",
-        "title": "Check for Angular Updates",
+        "title": "Recheck for Angular Updates",
         "category": "Angular Evergreen",
         "icon": "/resources/refresh.svg"
       },
@@ -90,13 +90,53 @@
       },
       {
         "command": "ng-evergreen.updateAngular",
-        "title": "Update Angular?",
+        "title": "Update Angular CLI and Core?",
         "category": "Angular Evergreen Update"
       },
       {
         "command": "ng-evergreen.updateAll",
         "title": "Update All Angular Packages?",
         "category": "Angular Evergreen Update"
+      },
+      {
+        "command": "ng-evergreen.updateAllForce",
+        "title": "Force Update All Angular Packages?",
+        "category": "Angular Evergreen Update"
+      },
+      {
+        "command": "ng-evergreen.updateAngularNext",
+        "title": "Update Angular Next CLI and Core?",
+        "category": "Angular Evergreen Update"
+      },
+      {
+        "command": "ng-evergreen.updateAllNext",
+        "title": "Update All Next Angular Packages?",
+        "category": "Angular Evergreen Update"
+      },
+      {
+        "command": "ng-evergreen.updateAllNextForce",
+        "title": "Force Update All Next Angular Packages?",
+        "category": "Angular Evergreen Update"
+      },
+      {
+        "command": "ng-evergreen.viewAvailableUpdates",
+        "title": "View Available Angular Package Updates?",
+        "category": "Angular Evergreen Update"
+      },
+      {
+        "command": "ng-evergreen.viewAvailableUpdatesNext",
+        "title": "View Available Angular Next Package Updates?",
+        "category": "Angular Evergreen Update"
+      },
+      {
+        "command": "ng-evergreen.runPostUpdateCheckup",
+        "title": "Run Angular Post Update Checkups",
+        "category": "Angular Post Update"
+      },
+      {
+        "command": "ng-evergreen.configureAngularVsCode",
+        "title": "Configure VS Code for Angular Development",
+        "category": "Angular Configuration"
       }
     ],
     "viewsContainers": {
@@ -112,12 +152,12 @@
       "evergreen-container": [
         {
           "id": "versions",
-          "name": "Current Versions",
+          "name": "Versions",
           "icon": "resources/ng-evergreen-logo-monochromatic.svg"
         },
         {
           "id": "update",
-          "name": "Update Angular",
+          "name": "Quick Commands",
           "icon": "resources/ng-evergreen-logo-monochromatic.svg"
         },
         {
@@ -160,17 +200,17 @@
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^0.1.3",
-    "@types/chai": "^4.2.5",
+    "@types/chai": "^4.2.7",
     "@types/cron": "^1.7.1",
-    "@types/execa": "^0.9.0",
+    "@types/execa": "^2.0.0",
     "@types/get-stream": "^3.0.2",
     "@types/glob": "^7.1.1",
     "@types/mocha": "^5.2.7",
     "@types/mock-fs": "^4.10.0",
-    "@types/node": "^12.12.7",
-    "@types/sinon": "^7.5.0",
+    "@types/node": "^12.12.18",
+    "@types/sinon": "^7.5.1",
     "@types/sinon-chai": "^3.2.3",
-    "@types/vscode": "^1.40.0",
+    "@types/vscode": "^1.41.0",
     "chai": "^4.2.0",
     "dev-norms": "^1.7.0",
     "glob": "^7.1.6",
@@ -180,29 +220,29 @@
     "import-sort-style-module": "^6.0.0",
     "mocha": "^6.2.2",
     "mocha-reporter": "^0.1.1",
-    "mock-fs": "^4.10.3",
+    "mock-fs": "^4.10.4",
     "nyc": "^14.1.1",
     "prettier": "^1.19.1",
     "sinon": "^7.5.0",
     "sinon-chai": "^3.3.0",
     "source-map-support": "^0.5.16",
     "ts-loader": "^6.2.1",
-    "ts-node": "^8.5.0",
+    "ts-node": "^8.5.4",
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
-    "tslint-etc": "^1.9.2",
+    "tslint-etc": "^1.10.0",
     "tslint-plugin-prettier": "^2.0.1",
-    "typescript": "^3.7.2",
-    "vsce": "^1.69.0",
-    "vscode-test": "^1.2.3",
-    "webpack": "^4.41.2",
+    "typescript": "^3.7.3",
+    "vsce": "^1.71.0",
+    "vscode-test": "^1.3.0",
+    "webpack": "^4.41.3",
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
-    "execa": "^2.0.3",
+    "execa": "^3.4.0",
     "get-latest-version": "^1.0.1",
     "get-stream": "^5.1.0",
-    "open": "^6.4.0"
+    "open": "^7.0.0"
   },
   "repository": {
     "type": "git",
