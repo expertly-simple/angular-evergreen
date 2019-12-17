@@ -1,7 +1,7 @@
 {
   "name": "ng-evergreen",
   "displayName": "Angular Evergreen",
-  "version": "0.8.3",
+  "version": "0.9.0",
   "publisher": "expertly-simple",
   "license": "ISC",
   "description": "Quickly compare latest and next releases of Angular to your project's version. Leverage helpers to upgrade your Angular CLI projects with ease.",
@@ -56,8 +56,7 @@
         }
       }
     },
-    "commands": [
-      {
+    "commands": [{
         "command": "ng-evergreen.startAngularEvergreen",
         "title": "Start Angular Evergreen",
         "category": "Angular Evergreen"
@@ -74,7 +73,7 @@
       },
       {
         "command": "ng-evergreen.checkForUpdatesTree",
-        "title": "Check for Angular Updates",
+        "title": "Recheck for Angular Updates",
         "category": "Angular Evergreen",
         "icon": "/resources/refresh.svg"
       },
@@ -90,34 +89,66 @@
       },
       {
         "command": "ng-evergreen.updateAngular",
-        "title": "Update Angular?",
+        "title": "Update Angular CLI and Core?",
         "category": "Angular Evergreen Update"
       },
       {
         "command": "ng-evergreen.updateAll",
         "title": "Update All Angular Packages?",
         "category": "Angular Evergreen Update"
+      },
+      {
+        "command": "ng-evergreen.updateAngularNext",
+        "title": "Update Angular Next CLI and Core?",
+        "category": "Angular Evergreen Update"
+      },
+      {
+        "command": "ng-evergreen.updateAllNext",
+        "title": "Update All Next Angular Packages?",
+        "category": "Angular Evergreen Update"
+      },
+      {
+        "command": "ng-evergreen.updateAllNextForce",
+        "title": "Force Update All Next Angular Packages?",
+        "category": "Angular Evergreen Update"
+      },
+      {
+        "command": "ng-evergreen.viewAvailableUpdates",
+        "title": "View Available Angular Package Updates?",
+        "category": "Angular Evergreen Update"
+      },
+      {
+        "command": "ng-evergreen.viewAvailableUpdatesNext",
+        "title": "View Available Angular Next Package Updates?",
+        "category": "Angular Evergreen Update"
+      },
+      {
+        "command": "ng-evergreen.runPostUpdateCheckup",
+        "title": "Run Angular Post Update Checkups",
+        "category": "Angular Post Update"
+      },
+      {
+        "command": "ng-evergreen.configureAngularVsCode",
+        "title": "Configure VS Code for Angular Development",
+        "category": "Angular Configuration"
       }
     ],
     "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "evergreen-container",
-          "title": "Angular Evergreen",
-          "icon": "resources/ng-evergreen-logo-monochromatic.svg"
-        }
-      ]
+      "activitybar": [{
+        "id": "evergreen-container",
+        "title": "Angular Evergreen",
+        "icon": "resources/ng-evergreen-logo-monochromatic.svg"
+      }]
     },
     "views": {
-      "evergreen-container": [
-        {
+      "evergreen-container": [{
           "id": "versions",
-          "name": "Current Versions",
+          "name": "Versions",
           "icon": "resources/ng-evergreen-logo-monochromatic.svg"
         },
         {
           "id": "update",
-          "name": "Update Angular",
+          "name": "Quick Commands",
           "icon": "resources/ng-evergreen-logo-monochromatic.svg"
         },
         {
@@ -128,20 +159,16 @@
       ]
     },
     "menus": {
-      "view/title": [
-        {
-          "command": "ng-evergreen.checkForUpdatesTree",
-          "when": "view == versions",
-          "group": "navigation"
-        }
-      ],
-      "view/item/context": [
-        {
-          "command": "ng-evergreen.navigateToUpdateIo",
-          "when": "view == update && viewItem == dependency",
-          "group": "inline"
-        }
-      ]
+      "view/title": [{
+        "command": "ng-evergreen.checkForUpdatesTree",
+        "when": "view == versions",
+        "group": "navigation"
+      }],
+      "view/item/context": [{
+        "command": "ng-evergreen.navigateToUpdateIo",
+        "when": "view == update && viewItem == dependency",
+        "group": "inline"
+      }]
     }
   },
   "scripts": {

@@ -31,12 +31,25 @@ Projects setup with `@angular/cli` package.
 
 ```
 {
-  "ng-evergreen.checkFrequency": "On Load" | "Hourly" | "Daily" | "Weekly" | "Bi-Weekly",
   "ng-evergreen.upgradeChannel": "Latest" | "Next"
 }
 ```
 
 ## Release Notes
+
+### 0.9
+
+- Re-organized UI
+- Added more convenience commands
+- Implemented ability to view available packages
+- Fixed bug where terminal would always open on launch
+
+### 0.8
+
+- Improved update check speed
+- Implemented sidebar UI
+- Removed check frequency to always check on load
+- Improved stability
 
 ### 0.7.0
 
@@ -63,3 +76,7 @@ Initial beta release with git clean check, scheduled and manually triggered basi
 - [@brendoncaulkins](http://github.com/brendoncaulkins)
 - [@alexhoffman617](http://github.com/alexhoffman617)
 - [@bjsawyer](https://github.com/bjsawyer)
+
+## Attributions
+
+See the file named THIRDPARTY for attributions.

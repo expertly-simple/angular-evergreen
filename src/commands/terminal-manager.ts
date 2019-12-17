@@ -1,15 +1,21 @@
 import { Terminal } from 'vscode'
 
 export class TerminalManager {
-  readonly vscode: any
-  terminal: Terminal
+  private readonly vscode: any
+  private terminal: Terminal
+
   constructor(vscode: any) {
     this.vscode = vscode
   }
 
+  getTerminal() {
+    this.showTerminal()
+    return this.terminal
+  }
+
   showTerminal() {
     if (!this.terminal) {
-      this.terminal = this.vscode.window.createTerminal()
+      this.terminal = this.vscode.window.createTerminal('Angular Evergreen 🌲')
     }
     this.terminal.show()
   }
