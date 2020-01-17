@@ -12,7 +12,7 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
 
     const treeTasks: TreeTask[] = [
       new TreeTask(
-        'Folder',
+        'Link',
         'Configure VS Code for Angular',
         vscode.TreeItemCollapsibleState.None,
         {
@@ -20,15 +20,14 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
           title: 'Configure VS Code for Angular',
         },
         this.context.extensionPath + '/resources/settings-plus.svg',
-        'configure-angular'
+        'script'
       ),
       new TreeTask(
         'Folder',
         'Update with Angular CLI',
         vscode.TreeItemCollapsibleState.Expanded,
         undefined,
-        this.context.extensionPath + '/resources/angular-icon.svg',
-        'update-cli'
+        this.context.extensionPath + '/resources/angular-icon.svg'
       ),
       new TreeTask(
         'Folder',
@@ -39,7 +38,7 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
           title: 'Run post update checkup',
         },
         this.context.extensionPath + '/resources/checklist.svg',
-        'post-update'
+        'script'
       ),
     ]
 
@@ -60,7 +59,8 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
           command: 'ng-evergreen.updateAngular',
           title: 'Update Angular',
         },
-        this.context.extensionPath + '/resources/run.svg'
+        this.context.extensionPath + '/resources/tools.svg',
+        'script'
       ),
       new TreeTask(
         'Link',
@@ -70,7 +70,8 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
           command: 'ng-evergreen.updateAll',
           title: 'Update Angular All',
         },
-        this.context.extensionPath + '/resources/run.svg'
+        this.context.extensionPath + '/resources/tools.svg',
+        'script'
       ),
       new TreeTask(
         'Link',
@@ -80,7 +81,8 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
           command: 'ng-evergreen.updateAllForce',
           title: 'Force Update Angular All',
         },
-        this.context.extensionPath + '/resources/run.svg'
+        this.context.extensionPath + '/resources/glasses.svg',
+        'script'
       ),
       new TreeTask(
         'Link',
@@ -90,7 +92,8 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
           command: 'ng-evergreen.updateAngularNext',
           title: 'Update Angular Next',
         },
-        this.context.extensionPath + '/resources/run.svg'
+        this.context.extensionPath + '/resources/flask.svg',
+        'script'
       ),
       new TreeTask(
         'Link',
@@ -100,7 +103,8 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
           command: 'ng-evergreen.updateAllNext',
           title: 'Update Angular Next All',
         },
-        this.context.extensionPath + '/resources/run.svg'
+        this.context.extensionPath + '/resources/flask.svg',
+        'script'
       ),
       new TreeTask(
         'Link',
@@ -110,7 +114,8 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
           command: 'ng-evergreen.updateAllNextForce',
           title: 'Force Update Angular Next All',
         },
-        this.context.extensionPath + '/resources/run.svg'
+        this.context.extensionPath + '/resources/glasses.svg',
+        'script'
       ),
     ]
   }

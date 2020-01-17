@@ -1,7 +1,7 @@
 {
   "name": "ng-evergreen",
   "displayName": "Angular Evergreen",
-  "version": "0.9.0",
+  "version": "0.9.5",
   "publisher": "expertly-simple",
   "license": "ISC",
   "description": "Quickly compare latest and next releases of Angular to your project's version. Leverage helpers to upgrade your Angular CLI projects with ease.",
@@ -91,37 +91,44 @@
       {
         "command": "ng-evergreen.updateAngular",
         "title": "Update Angular CLI and Core?",
-        "category": "Angular Evergreen Update"
+        "category": "Angular Evergreen Update",
+        "icon": "/resources/run.svg"
       },
       {
         "command": "ng-evergreen.updateAll",
         "title": "Update All Angular Packages?",
-        "category": "Angular Evergreen Update"
+        "category": "Angular Evergreen Update",
+        "icon": "/resources/run.svg"
       },
       {
         "command": "ng-evergreen.updateAllForce",
         "title": "Force Update All Angular Packages?",
-        "category": "Angular Evergreen Update"
+        "category": "Angular Evergreen Update",
+        "icon": "/resources/run.svg"
       },
       {
         "command": "ng-evergreen.updateAngularNext",
         "title": "Update Angular Next CLI and Core?",
-        "category": "Angular Evergreen Update"
+        "category": "Angular Evergreen Update",
+        "icon": "/resources/run.svg"
       },
       {
         "command": "ng-evergreen.updateAllNext",
         "title": "Update All Next Angular Packages?",
-        "category": "Angular Evergreen Update"
+        "category": "Angular Evergreen Update",
+        "icon": "/resources/run.svg"
       },
       {
         "command": "ng-evergreen.updateAllNextForce",
         "title": "Force Update All Next Angular Packages?",
-        "category": "Angular Evergreen Update"
+        "category": "Angular Evergreen Update",
+        "icon": "/resources/run.svg"
       },
       {
         "command": "ng-evergreen.viewAvailableUpdates",
         "title": "View Available Angular Package Updates?",
-        "category": "Angular Evergreen Update"
+        "category": "Angular Evergreen Update",
+        "icon": "/resources/run.svg"
       },
       {
         "command": "ng-evergreen.viewAvailableUpdatesNext",
@@ -136,7 +143,11 @@
       {
         "command": "ng-evergreen.configureAngularVsCode",
         "title": "Configure VS Code for Angular Development",
-        "category": "Angular Configuration"
+        "category": "Angular Configuration",
+        "icon": {
+          "light": "resources/light/continue.svg",
+          "dark": "resources/dark/continue.svg"
+        }
       }
     ],
     "viewsContainers": {
@@ -173,12 +184,11 @@
           "command": "ng-evergreen.checkForUpdatesTree",
           "when": "view == versions",
           "group": "navigation"
-        }
-      ],
-      "view/item/context": [
+        }],
+        "view/item/context": [
         {
-          "command": "ng-evergreen.navigateToUpdateIo",
-          "when": "view == update && viewItem == dependency",
+          "command": "ng-evergreen.configureAngularVsCode",
+          "when": "view == update && viewItem == script",
           "group": "inline"
         }
       ]
