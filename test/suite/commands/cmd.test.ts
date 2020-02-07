@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 
-import { sanitizeStdOut } from '../../../src/commands/cmd'
+import { sanitizeStdOut } from '../../../src/helpers/scriptRunner'
 
 describe('CMD', () => {
   it('sanitizeStdOut', () => {

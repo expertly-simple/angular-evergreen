@@ -32,7 +32,7 @@ jobs:
       - run: npm run lint
 
       - run: npm run pretest
-      - run: npm run test:mocha
+      # - run: npm run test:mocha
 
       # - store_test_results:
       #     path: ./test_results
