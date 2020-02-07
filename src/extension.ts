@@ -44,12 +44,7 @@ async function configureVersionManager(
 
   // this makes the version tree task event driven for performance.
   versionManager.on('VersionCheckComplete', () => {
-    const versions = {
-      coreVersion: versionManager.coreVersion,
-      cliVersion: versionManager.cliVersion,
-    }
-
-    versionTreeTask = new VersionMenuTask(context, versionManager, versions)
+    versionTreeTask = new VersionMenuTask(context, versionManager)
 
     context.subscriptions.push(
       vscode.window.registerTreeDataProvider('versions', versionTreeTask)

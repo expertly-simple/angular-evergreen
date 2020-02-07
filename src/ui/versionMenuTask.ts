@@ -15,12 +15,11 @@ export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {
   public versions: ICurrentVersions
   constructor(
     private context: vscode.ExtensionContext,
-    private readonly versionManager: VersionManager,
-    private currentVersions: ICurrentVersions
+    private readonly versionManager: VersionManager
   ) {
     this.versions = {
-      coreVersion: currentVersions.coreVersion,
-      cliVersion: currentVersions.cliVersion,
+      coreVersion: versionManager.coreVersion,
+      cliVersion: versionManager.cliVersion,
     }
     this.versionManager.on('VersionCheckComplete', () => {
       this.versions = {
@@ -87,13 +86,15 @@ export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {
         this.context,
         `Latest: ${currentVersion.latestVersion}`,
         EvergreenCommand.viewUpdates,
-        Icon.clipboard
+        Icon.none,
+        'latest'
       ),
       getScriptTask(
         this.context,
         `Next: ${currentVersion.nextVersion}`,
         EvergreenCommand.viewUpdatesNext,
-        Icon.clipboard
+        Icon.flask,
+        'next'
       ),
     ]
   }
