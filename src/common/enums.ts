@@ -26,6 +26,7 @@ export enum UpdateArgs {
 }
 
 export enum Icon {
+  none,
   checklist = 'checklist',
   clipboard = 'clipboard',
   continue = 'continue',

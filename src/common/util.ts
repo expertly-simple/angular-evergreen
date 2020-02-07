@@ -10,6 +10,10 @@ export class Util {
 }
 
 export function getIconConfig(context: vscode.ExtensionContext, icon: Icon) {
+  if (Icon.none) {
+    return undefined
+  }
+
   return {
     light: `${context.extensionPath}/resources/light/${icon}.svg`,
     dark: `${context.extensionPath}/resources/dark/${icon}.svg`,
@@ -21,7 +25,7 @@ export function getLink(
   title: string,
   command: EvergreenCommand
 ) {
-  return getScriptTask(context, title, command, Icon.web, false)
+  return getScriptTask(context, title, command, Icon.web)
 }
 
 export function getScriptTask(
@@ -29,18 +33,15 @@ export function getScriptTask(
   title: string,
   command: EvergreenCommand,
   icon: Icon,
-  isScript = true
+  suffix?: string
 ) {
   return new TreeTask(
     'Link',
     title,
     vscode.TreeItemCollapsibleState.None,
-    {
-      command: command.toString(),
-      title: 'Angular Evergreen',
-    },
+    suffix ? undefined : { command: command.toString(), title },
     getIconConfig(context, icon),
-    isScript ? 'script' : undefined
+    suffix ? `script-${suffix}` : undefined
   )
 }
 

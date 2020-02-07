@@ -58,6 +58,7 @@ Projects setup with `@angular/cli` package.
 - Improved UX to make it clear user is about to run a command
 - Improved icon contrast
 - Added npm check updates command
+- Check if git status clean before running certain quick commands
 
 ### 0.9
 

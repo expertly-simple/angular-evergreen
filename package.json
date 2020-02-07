@@ -56,7 +56,8 @@
         }
       }
     },
-    "commands": [{
+    "commands": [
+      {
         "command": "ng-evergreen.startAngularEvergreen",
         "title": "Start Angular Evergreen",
         "category": "Angular Evergreen"
@@ -149,8 +150,17 @@
         "title": "View Available Angular Package Updates?",
         "category": "Angular Evergreen Update",
         "icon": {
-          "light": "/resources/light/continue.svg",
-          "dark": "/resources/dark/continue.svg"
+          "light": "/resources/light/clipboard.svg",
+          "dark": "/resources/dark/clipboard.svg"
+        }
+      },
+      {
+        "command": "ng-evergreen.viewAvailableUpdatesNext",
+        "title": "View Available Angular Next Package Updates?",
+        "category": "Angular Evergreen Update",
+        "icon": {
+          "light": "/resources/light/clipboard.svg",
+          "dark": "/resources/dark/clipboard.svg"
         }
       },
       {
@@ -172,14 +182,13 @@
         }
       },
       {
-        "command": "ng-evergreen.viewAvailableUpdatesNext",
-        "title": "View Available Angular Next Package Updates?",
-        "category": "Angular Evergreen Update"
-      },
-      {
         "command": "ng-evergreen.runPostUpdateCheckup",
         "title": "Run Angular Post Update Checkups",
-        "category": "Angular Post Update"
+        "category": "Angular Post Update",
+        "icon": {
+          "light": "resources/light/continue.svg",
+          "dark": "resources/dark/continue.svg"
+        }
       },
       {
         "command": "ng-evergreen.configureAngularVsCode",
@@ -192,14 +201,17 @@
       }
     ],
     "viewsContainers": {
-      "activitybar": [{
-        "id": "evergreen-container",
-        "title": "Angular Evergreen",
-        "icon": "resources/dark/ng-evergreen-logo-mono.svg"
-      }]
+      "activitybar": [
+        {
+          "id": "evergreen-container",
+          "title": "Angular Evergreen",
+          "icon": "resources/dark/ng-evergreen-logo-mono.svg"
+        }
+      ]
     },
     "views": {
-      "evergreen-container": [{
+      "evergreen-container": [
+        {
           "id": "versions",
           "name": "Versions"
         },
@@ -214,16 +226,75 @@
       ]
     },
     "menus": {
-      "view/title": [{
-        "command": "ng-evergreen.checkForUpdatesTree",
-        "when": "view == versions",
-        "group": "navigation"
-      }],
-      "view/item/context": [{
-        "command": "ng-evergreen.configureAngularVsCode",
-        "when": "view == update && viewItem == script",
-        "group": "inline"
-      }]
+      "view/title": [
+        {
+          "command": "ng-evergreen.checkForUpdatesTree",
+          "when": "view == versions",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "ng-evergreen.viewAvailableUpdates",
+          "when": "view == versions && viewItem == script-latest",
+          "group": "inline"
+        },
+        {
+          "command": "ng-evergreen.viewAvailableUpdatesNext",
+          "when": "view == versions && viewItem == script-next",
+          "group": "inline"
+        },
+        {
+          "command": "ng-evergreen.configureAngularVsCode",
+          "when": "view == update && viewItem == script-config-ng",
+          "group": "inline"
+        },
+        {
+          "command": "ng-evergreen.updateAngular",
+          "when": "view == update && viewItem == script-1",
+          "group": "inline"
+        },
+        {
+          "command": "ng-evergreen.updateAll",
+          "when": "view == update && viewItem == script-2",
+          "group": "inline"
+        },
+        {
+          "command": "ng-evergreen.updateAllForce",
+          "when": "view == update && viewItem == script-3",
+          "group": "inline"
+        },
+        {
+          "command": "ng-evergreen.updateAngularNext",
+          "when": "view == update && viewItem == script-4",
+          "group": "inline"
+        },
+        {
+          "command": "ng-evergreen.updateAllNext",
+          "when": "view == update && viewItem == script-5",
+          "group": "inline"
+        },
+        {
+          "command": "ng-evergreen.updateAllNextForce",
+          "when": "view == update && viewItem == script-6",
+          "group": "inline"
+        },
+        {
+          "command": "ng-evergreen.checkNpmUpdates",
+          "when": "view == update && viewItem == script-ncu",
+          "group": "inline"
+        },
+        {
+          "command": "ng-evergreen.applyNpmUpdates",
+          "when": "view == update && viewItem == script-ncu-apply",
+          "group": "inline"
+        },
+        {
+          "command": "ng-evergreen.runPostUpdateCheckup",
+          "when": "view == update && viewItem == script-post-upd",
+          "group": "inline"
+        }
+      ]
     }
   },
   "scripts": {
