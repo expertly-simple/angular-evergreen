@@ -2,7 +2,7 @@
 
 Keep your project's version of Angular and related packages evergreen, keep your settings in sync, and upgrade your Angular CLI projects with ease.
 
-![](ng-evergreen-do-update-sm.gif)
+![](ng-evergreen-1.gif)
 
 ## Features
 

@@ -56,7 +56,8 @@
         }
       }
     },
-    "commands": [{
+    "commands": [
+      {
         "command": "ng-evergreen.startAngularEvergreen",
         "title": "Start Angular Evergreen",
         "category": "Angular Evergreen"
@@ -192,14 +193,17 @@
       }
     ],
     "viewsContainers": {
-      "activitybar": [{
-        "id": "evergreen-container",
-        "title": "Angular Evergreen",
-        "icon": "resources/dark/ng-evergreen-logo-mono.svg"
-      }]
+      "activitybar": [
+        {
+          "id": "evergreen-container",
+          "title": "Angular Evergreen",
+          "icon": "resources/dark/ng-evergreen-logo-mono.svg"
+        }
+      ]
     },
     "views": {
-      "evergreen-container": [{
+      "evergreen-container": [
+        {
           "id": "versions",
           "name": "Versions"
         },
@@ -214,16 +218,20 @@
       ]
     },
     "menus": {
-      "view/title": [{
-        "command": "ng-evergreen.checkForUpdatesTree",
-        "when": "view == versions",
-        "group": "navigation"
-      }],
-      "view/item/context": [{
-        "command": "ng-evergreen.configureAngularVsCode",
-        "when": "view == update && viewItem == script",
-        "group": "inline"
-      }]
+      "view/title": [
+        {
+          "command": "ng-evergreen.checkForUpdatesTree",
+          "when": "view == versions",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "ng-evergreen.configureAngularVsCode",
+          "when": "view == update && viewItem == script",
+          "group": "inline"
+        }
+      ]
     }
   },
   "scripts": {
