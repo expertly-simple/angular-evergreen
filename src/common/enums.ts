@@ -24,3 +24,41 @@ export enum UpdateArgs {
   next = '--next',
   force = '--force',
 }
+
+export enum Icon {
+  checklist = 'checklist',
+  clipboard = 'clipboard',
+  continue = 'continue',
+  debug = 'debug',
+  flask = 'flask',
+  glasses = 'glasses',
+  evergreen = 'ng-evergreen-logo-mono',
+  refresh = 'refresh',
+  script = 'script',
+  settingsPlus = 'settings-plus',
+  settings = 'settings',
+  tools = 'tools',
+  web = 'web',
+}
+
+export enum EvergreenCommand {
+  startEvergreen = 'ng-evergreen.startAngularEvergreen',
+  stopEvergreen = 'ng-evergreen.stopAngularEvergreen',
+  checkForUpdates = 'ng-evergreen.checkForUpdates',
+  checkForUpdatesTree = 'ng-evergreen.checkForUpdatesTree',
+  navToUpdateIo = 'ng-evergreen.navigateToUpdateIo',
+  navToBlogIo = 'ng-evergreen.navigateToBlogIo',
+  updateNg = 'ng-evergreen.updateAngular',
+  updateNgAll = 'ng-evergreen.updateAll',
+  updateNgAllForce = 'ng-evergreen.updateAllForce',
+  updateNgNext = 'ng-evergreen.updateAngularNext',
+  updateNgNextAll = 'ng-evergreen.updateAllNext',
+  updateNgNextAllForce = 'ng-evergreen.updateAllNextForce',
+  viewUpdates = 'ng-evergreen.viewAvailableUpdates',
+  ncu = 'ng-evergreen.checkNpmUpdates',
+  ncuUpgrade = 'ng-evergreen.applyNpmUpdates',
+  viewUpdatesNext = 'ng-evergreen.viewAvailableUpdatesNext',
+  postUpdateCheckup = 'ng-evergreen.runPostUpdateCheckup',
+  configNgVsCode = 'ng-evergreen.configureAngularVsCode',
+  requestConsulting = 'ng-evergreen.navigateToConsultingForm',
+}
