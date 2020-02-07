@@ -1,6 +1,7 @@
 import { expect } from 'chai'
 
-import { Util } from '../../../src/common/util'
+import { Icon } from '../../../src/common/enums'
+import { Util, getIconConfig } from '../../../src/common/util'
 
 describe('Util', async () => {
   describe('userCancelled()', () => {
@@ -13,6 +14,16 @@ describe('Util', async () => {
       const result = Util.userCancelled('aldfjalsfj')
 
       expect(result).to.equal(false)
+    })
+  })
+})
+
+describe('Icon', async () => {
+  describe('getIconConfig()', () => {
+    it('returns undefined when passed Icon.none', () => {
+      const result = getIconConfig(null, Icon.none)
+
+      expect(result).to.be.an('undefined')
     })
   })
 })

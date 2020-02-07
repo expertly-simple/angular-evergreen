@@ -8,7 +8,7 @@ import { runTests } from 'vscode-test'
 async function go() {
   try {
     const extensionDevelopmentPath = path.resolve(__dirname, '../../../')
-    const extensionTestsPath = path.resolve(__dirname, './suite')
+    const extensionTestsPath = path.resolve(__dirname, './suite/index')
 
     /**
      * Basic usage
