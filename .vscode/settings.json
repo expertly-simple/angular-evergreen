@@ -43,6 +43,7 @@
   "html.autoClosingTags": false,
   "workbench.colorCustomizations": {
     "activityBar.background": "#3b976f",
+    "activityBar.activeBackground": "#3b976f",
     "activityBar.activeBorder": "#d2bae4",
     "activityBar.foreground": "#e7e7e7",
     "activityBar.inactiveForeground": "#e7e7e799",
