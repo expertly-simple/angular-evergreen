@@ -1,7 +1,7 @@
 {
   "name": "ng-evergreen",
   "displayName": "Angular Evergreen",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "expertly-simple",
   "license": "ISC",
   "description": "Quickly compare latest and next releases of Angular to your project's version. Leverage helpers to upgrade your Angular CLI projects with ease.",
@@ -56,8 +56,7 @@
         }
       }
     },
-    "commands": [
-      {
+    "commands": [{
         "command": "ng-evergreen.startAngularEvergreen",
         "title": "Start Angular Evergreen",
         "category": "Angular Evergreen"
@@ -201,17 +200,14 @@
       }
     ],
     "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "evergreen-container",
-          "title": "Angular Evergreen",
-          "icon": "resources/dark/ng-evergreen-logo-mono.svg"
-        }
-      ]
+      "activitybar": [{
+        "id": "evergreen-container",
+        "title": "Angular Evergreen",
+        "icon": "resources/dark/ng-evergreen-logo-mono.svg"
+      }]
     },
     "views": {
-      "evergreen-container": [
-        {
+      "evergreen-container": [{
           "id": "versions",
           "name": "Versions"
         },
@@ -226,15 +222,12 @@
       ]
     },
     "menus": {
-      "view/title": [
-        {
-          "command": "ng-evergreen.checkForUpdatesTree",
-          "when": "view == versions",
-          "group": "navigation"
-        }
-      ],
-      "view/item/context": [
-        {
+      "view/title": [{
+        "command": "ng-evergreen.checkForUpdatesTree",
+        "when": "view == versions",
+        "group": "navigation"
+      }],
+      "view/item/context": [{
           "command": "ng-evergreen.viewAvailableUpdates",
           "when": "view == versions && viewItem == script-latest",
           "group": "inline"
