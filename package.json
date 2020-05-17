@@ -331,7 +331,7 @@
     "import-sort-cli": "^6.0.0",
     "import-sort-parser-typescript": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
-    "mocha": "^7.0.1",
+    "mocha": "^7.1.2",
     "mocha-reporter": "^0.1.1",
     "mock-fs": "^4.10.4",
     "nyc": "^15.0.0",
