@@ -99,6 +99,7 @@ Initial beta release with git clean check, scheduled and manually triggered basi
 - [@brendoncaulkins](http://github.com/brendoncaulkins)
 - [@alexhoffman617](http://github.com/alexhoffman617)
 - [@bjsawyer](https://github.com/bjsawyer)
+- [@bampakoa](https://github.com/bampakoa)
 
 ## Attributions
 
