@@ -22,7 +22,7 @@
   "editor.minimap.enabled": false,
   "editor.codeActionsOnSave": {
     "source.organizeImports": false,
-    "source.fixAll.tslint": true,
+    "source.fixAll.tslint": true
   },
 
   "explorer.openEditors.visible": 0,
@@ -32,8 +32,6 @@
 
   "git.confirmSync": false,
   "git.enableSmartCommit": true,
-
-  "npm.enableScriptExplorer": true,
 
   "typescript.tsdk": "node_modules/typescript/lib",
 
@@ -55,9 +53,7 @@
     "titleBar.inactiveForeground": "#e7e7e799",
     "statusBar.background": "#2d7254",
     "statusBarItem.hoverBackground": "#3b976f",
-    "statusBar.foreground": "#e7e7e7",
-    "statusBar.border": "#2d7254",
-    "titleBar.border": "#2d7254"
+    "statusBar.foreground": "#e7e7e7"
   },
   "peacock.color": "#2d7254"
 }
