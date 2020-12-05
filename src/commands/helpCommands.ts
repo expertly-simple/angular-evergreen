@@ -11,3 +11,7 @@ export async function navigateToRequestForm() {
 export async function navigateToBlogIo() {
   await open('https://blog.angular.io/')
 }
+
+export async function navigateToIssues() {
+  await open('https://github.com/expertly-simple/angular-evergreen/issues/new')
+}
