@@ -4,6 +4,7 @@ import { EvergreenCommand } from '../common/enums'
 import { VersionManagerInstance } from '../helpers/versionManager'
 import {
   navigateToBlogIo,
+  navigateToIssues,
   navigateToRequestForm,
   navigateToUpdateIo,
 } from './helpCommands'
@@ -90,4 +91,5 @@ export const VsCodeCommands = [
     EvergreenCommand.ncuUpgrade.toString(),
     applyNpmUpdates
   ),
+  vscode.commands.registerCommand(EvergreenCommand.reportIssue, navigateToIssues),
 ]

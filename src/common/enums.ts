@@ -62,4 +62,5 @@ export enum EvergreenCommand {
   postUpdateCheckup = 'ng-evergreen.runPostUpdateCheckup',
   configNgVsCode = 'ng-evergreen.configureAngularVsCode',
   requestConsulting = 'ng-evergreen.navigateToConsultingForm',
+  reportIssue = 'ng-evergreen.navigateToIssues',
 }

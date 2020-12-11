@@ -12,6 +12,7 @@ export class HelpMenuTask implements vscode.TreeDataProvider<TreeTask> {
       getLink(this.context, 'How to Update', EvergreenCommand.navToUpdateIo),
       getLink(this.context, 'Visit blog.angular.io', EvergreenCommand.navToBlogIo),
       getLink(this.context, 'Request Consulting', EvergreenCommand.requestConsulting),
+      getLink(this.context, 'Report an Issue', EvergreenCommand.reportIssue),
     ]
 
     return treeTasks
