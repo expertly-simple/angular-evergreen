@@ -3,6 +3,15 @@ import { Terminal, window } from 'vscode'
 export class TerminalManager {
   private terminal: Terminal
 
+  constructor() {
+    window.onDidCloseTerminal(t => {
+      if (t === this.terminal) {
+        this.terminal = undefined
+        this.terminal.dispose()
+      }
+    })
+  }
+
   getTerminal() {
     this.showTerminal()
     return this.terminal
