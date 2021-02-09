@@ -309,7 +309,10 @@
     "pretest": "tsc -p . && tsc -p test/tsconfig.test.json",
     "test": "ts-node test/runTest.ts",
     "test:mocha": "mocha --delay",
-    "test:docker": "docker image build . -t evergreen-test"
+    "test:docker": "docker image build . -t evergreen-test",
+    "release": "standard-version",
+    "release:patch": "standard-version --release-as patch",
+    "release:major": "standard-version --release-as major"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
@@ -355,7 +358,8 @@
     "execa": "^4.0.0",
     "get-latest-version": "^1.0.1",
     "get-stream": "^5.1.0",
-    "open": "^7.0.2"
+    "open": "^7.0.2",
+    "standard-version": "^9.1.0"
   },
   "repository": {
     "type": "git",
