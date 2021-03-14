@@ -27,9 +27,11 @@ Angular Evergreen makes it easier to configure, update, and test your Angular CL
     - VsCode extensions, settings, and launch for debugging
 
 - Keep Angular Evergreen
-  ![](ng-evergreen-versions.png)
   - See the `latest` and `next` versions of Angular in your IDE
-  - Run `ng update` to see which packages needs to be updated
+
+  ![](ng-evergreen-versions.png)
+
+  - Right click directly in your `angular.json` file to see which packages need to be updated
 - Run Post-Update Checkup
   - With one-click, run your unit tests, and build your Angular project in `prod` mode to ensure that your update went smoothly
 

@@ -147,21 +147,13 @@
       },
       {
         "command": "ng-evergreen.viewAvailableUpdates",
-        "title": "View Available Angular Package Updates?",
-        "category": "Angular Evergreen Update",
-        "icon": {
-          "light": "/resources/light/clipboard.svg",
-          "dark": "/resources/dark/clipboard.svg"
-        }
+        "title": "Check For Updates",
+        "category": "Angular Evergreen Update"
       },
       {
         "command": "ng-evergreen.viewAvailableUpdatesNext",
-        "title": "View Available Angular Next Package Updates?",
-        "category": "Angular Evergreen Update",
-        "icon": {
-          "light": "/resources/light/clipboard.svg",
-          "dark": "/resources/dark/clipboard.svg"
-        }
+        "title": "Check For Updates (next)",
+        "category": "Angular Evergreen Update"
       },
       {
         "command": "ng-evergreen.checkNpmUpdates",
@@ -235,16 +227,6 @@
       ],
       "view/item/context": [
         {
-          "command": "ng-evergreen.viewAvailableUpdates",
-          "when": "view == versions && viewItem == script-latest",
-          "group": "inline"
-        },
-        {
-          "command": "ng-evergreen.viewAvailableUpdatesNext",
-          "when": "view == versions && viewItem == script-next",
-          "group": "inline"
-        },
-        {
           "command": "ng-evergreen.configureAngularVsCode",
           "when": "view == update && viewItem == script-config-ng",
           "group": "inline"
@@ -293,6 +275,16 @@
           "command": "ng-evergreen.runPostUpdateCheckup",
           "when": "view == update && viewItem == script-post-upd",
           "group": "inline"
+        }
+      ],
+      "explorer/context": [
+        {
+          "when": "resourceFilename == angular.json",
+          "command": "ng-evergreen.viewAvailableUpdates"
+        },
+        {
+          "when": "resourceFilename == angular.json",
+          "command": "ng-evergreen.viewAvailableUpdatesNext"
         }
       ]
     }
