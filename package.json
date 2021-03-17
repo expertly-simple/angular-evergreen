@@ -1,7 +1,7 @@
 {
   "name": "ng-evergreen",
   "displayName": "Angular Evergreen",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "publisher": "expertly-simple",
   "license": "ISC",
   "description": "Quickly compare latest and next releases of Angular to your project's version. Leverage helpers to upgrade your Angular CLI projects with ease.",
