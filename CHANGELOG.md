@@ -4,14 +4,9 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### 2.0.1 (2021-03-17)
 
+### Security Updates
 
-### ⚠ BREAKING CHANGES
-
-* invoke `ng update` in angular.json context menu
-
-### Features
-
-* invoke `ng update` in angular.json context menu ([df877b5](https://github.com/expertly-simple/angular-evergreen/commit/df877b54bfd38bd0a1d0d22dd3c57836d2ad1fb7)), closes [#96](https://github.com/expertly-simple/angular-evergreen/issues/96)
+* Applied security patches to dependencies
 
 ## 2.0.0 (2021-03-17)
 
