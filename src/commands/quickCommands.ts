@@ -16,8 +16,8 @@ export function runPostUpdateCheckup() {
   terminal.sendText(`npm i -g rimraf`)
   terminal.sendText(`rimraf node_modules`)
   terminal.sendText(`npm install`)
-  terminal.sendText(`npx ng test --watch=false`)
-  terminal.sendText(`npx ng build --prod`)
+  terminal.sendText(`ng test --watch=false`)
+  terminal.sendText(`ng build --prod`)
 }
 
 export async function configureAngularVsCode() {
