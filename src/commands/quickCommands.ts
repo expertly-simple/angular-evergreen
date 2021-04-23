@@ -29,7 +29,7 @@ export async function configureAngularVsCode() {
       'Applying common Angular settings for VS Code... Review changes before committing your code.'
     )
     terminal.sendText(`npm i -g mrm-task-angular-vscode`)
-    terminal.sendText(`npx mrm angular-vscode`)
+    terminal.sendText(`npx mrm@2.3.0 angular-vscode`)
   } else {
     window.showErrorMessage(COMMIT_BEFORE_RUNNING)
   }
