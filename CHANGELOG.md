@@ -4,26 +4,26 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [2.1.1](https://github.com/expertly-simple/angular-evergreen/compare/v2.0.2...v2.1.1) (2021-04-23)
 
-## [2.1.0](https://github.com/expertly-simple/angular-evergreen/compare/v2.0.2...v2.1.0) (2021-04-23)
+### Features
 
-### [2.0.2](https://github.com/expertly-simple/angular-evergreen/compare/v2.0.1...v2.0.2) (2021-04-23)
+- remove commands with the deprecated `--all` option
+- add new **List Packages to Update** command to list all Angular packages that need to be updated
 
 ### 2.0.1 (2021-03-17)
 
 ### Security Updates
 
-* Applied security patches to dependencies
+- Applied security patches to dependencies
 
 ## 2.0.0 (2021-03-17)
 
-
 ### ⚠ BREAKING CHANGES
 
-* invoke `ng update` in angular.json context menu
+- invoke `ng update` in angular.json context menu
 
 ### Features
 
-* invoke `ng update` in angular.json context menu ([df877b5](https://github.com/expertly-simple/angular-evergreen/commit/df877b54bfd38bd0a1d0d22dd3c57836d2ad1fb7)), closes [#96](https://github.com/expertly-simple/angular-evergreen/issues/96)
+- invoke `ng update` in angular.json context menu ([df877b5](https://github.com/expertly-simple/angular-evergreen/commit/df877b54bfd38bd0a1d0d22dd3c57836d2ad1fb7)), closes [#96](https://github.com/expertly-simple/angular-evergreen/issues/96)
 
 ## 1.0.0
 
