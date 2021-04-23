@@ -56,14 +56,14 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
         'Update Angular CLI & Core --force',
         EvergreenCommand.updateNgAllForce,
         Icon.glasses,
-        '2'
+        '3'
       ),
       getScriptTask(
         this.context,
         'List Packages to Update',
         EvergreenCommand.updateNgAll,
         Icon.tools,
-        '3'
+        '2'
       ),
       getScriptTask(
         this.context,
@@ -77,14 +77,14 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
         'Update Angular CLI & Core --next --force',
         EvergreenCommand.updateNgNextAllForce,
         Icon.flask,
-        '5'
+        '6'
       ),
       getScriptTask(
         this.context,
         'List Packages to Update --next',
         EvergreenCommand.updateNgNextAll,
         Icon.flask,
-        '6'
+        '5'
       ),
     ]
   }
