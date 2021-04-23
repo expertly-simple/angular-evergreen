@@ -12,7 +12,9 @@ export async function callAngularAll() {
 }
 
 export async function callAngularAllForce() {
-  await TerminalInstance.writeToTerminal(`${UpdateCommands.ngAllCmd} ${UpdateArgs.force}`)
+  await TerminalInstance.writeToTerminal(
+    `${UpdateCommands.ngCoreCliUpdate} ${UpdateArgs.force}`
+  )
 }
 
 export async function callUpdateAngularNext() {
@@ -27,7 +29,7 @@ export async function callAngularAllNext() {
 
 export async function callAngularAllNextForce() {
   await TerminalInstance.writeToTerminal(
-    `${UpdateCommands.ngAllCmd} ${UpdateArgs.next} ${UpdateArgs.force}`
+    `${UpdateCommands.ngCoreCliUpdate} ${UpdateArgs.next} ${UpdateArgs.force}`
   )
 }
 
