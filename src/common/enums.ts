@@ -17,7 +17,7 @@ export enum UpdateCommands {
   npmInstall = 'npm install',
   ngUpdate = 'npx ng update',
   ngCoreCliUpdate = 'npx ng update @angular/core @angular/cli',
-  ngAllCmd = 'npx ng update --all',
+  ngAllCmd = 'npx ng update',
 }
 
 export enum UpdateArgs {
