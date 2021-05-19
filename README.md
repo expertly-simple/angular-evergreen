@@ -41,7 +41,10 @@ Angular Evergreen makes it easier to configure, update, and test your Angular CL
 
 - Support for multi-root projects and non-standard folder structures
 
-_Have a feature request or submit a PR?_ Submit an issue/PR on GitHub [here](https://github.com/expertly-simple/angular-evergreen/issues/new).
+## Contributing
+
+Contributions, issues and feature requests are welcome!
+Feel free to check our [contribution guide](https://github.com/expertly-simple/angular-evergreen/blob/contribution-guide/CONTRIBUTING.md).
 
 ## Requirements
 
