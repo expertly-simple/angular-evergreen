@@ -44,7 +44,7 @@ Angular Evergreen makes it easier to configure, update, and test your Angular CL
 ## Contributing
 
 Contributions, issues and feature requests are welcome!
-Feel free to check our [contribution guide](https://github.com/expertly-simple/angular-evergreen/blob/contribution-guide/CONTRIBUTING.md).
+Feel free to check our [contribution guide](https://github.com/expertly-simple/angular-evergreen/blob/master/CONTRIBUTING.md).
 
 ## Requirements
 
