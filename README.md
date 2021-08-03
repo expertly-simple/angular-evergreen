@@ -1,4 +1,4 @@
-# ![](ng-evergreen-logo-32.png) Angular Evergreen [![CircleCI](https://circleci.com/gh/expertly-simple/angular-evergreen.png)](https://circleci.com/gh/expertly-simple/angular-evergreen/tree/master)
+# ![](ng-evergreen-logo-32.png) Angular Evergreen [![CircleCI](https://circleci.com/gh/expertly-simple/angular-evergreen.png)](https://circleci.com/gh/expertly-simple/angular-evergreen/tree/main)
 
 Keep your project's version of Angular and related packages evergreen, keep your settings in sync, and upgrade your Angular CLI projects with ease.
 
@@ -44,7 +44,7 @@ Angular Evergreen makes it easier to configure, update, and test your Angular CL
 ## Contributing
 
 Contributions, issues and feature requests are welcome!
-Feel free to check our [contribution guide](https://github.com/expertly-simple/angular-evergreen/blob/master/CONTRIBUTING.md).
+Feel free to check our [contribution guide](https://github.com/expertly-simple/angular-evergreen/blob/main/CONTRIBUTING.md).
 
 ## Requirements
 
