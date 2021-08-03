@@ -1,3 +1,4 @@
+import { execSync } from 'child_process'
 import * as fs from 'fs'
 
 import * as execa from 'execa'
@@ -18,6 +19,7 @@ export class PackageManager {
   readonly workspace: string
   readonly workspaceManager: WorkspaceManager
   readonly vscodeInstance: any
+  executable: 'npx' | 'yarn'
   private pkgDependencies: any
   private pkgDevDepencies: any
 
@@ -28,6 +30,12 @@ export class PackageManager {
     this.vscodeInstance = vscodeInstance
     this.workspaceManager = workspaceManagerInstance
     this.workspacePath = WorkspaceManagerInstance.getWorkspace()
+
+    if (this.supports('npm')) {
+      this.executable = 'npx'
+    } else if (this.supports('yarn')) {
+      this.executable = 'yarn'
+    }
   }
 
   async getPackageJsonFile() {
@@ -124,6 +132,16 @@ export class PackageManager {
         return currentVersion !== latestVersion
       case UpgradeChannel.Next:
         return currentVersion !== nextVersion
+    }
+  }
+
+  private supports(name: string): boolean {
+    try {
+      execSync(`${name} --version`, { stdio: 'ignore' })
+
+      return true
+    } catch {
+      return false
     }
   }
 }
