@@ -18,7 +18,7 @@ export async function activate(context: vscode.ExtensionContext) {
   await configureVersionManager(context, VersionManagerInstance)
 
   // load commands
-  VsCodeCommands.forEach(command => context.subscriptions.push(command))
+  VsCodeCommands.forEach((command) => context.subscriptions.push(command))
 
   context.subscriptions.push(
     vscode.commands.registerCommand(
@@ -34,7 +34,7 @@ async function configureVersionManager(
   context: vscode.ExtensionContext,
   versionManager: VersionManager
 ) {
-  versionManager.on('IsEvergreen', status => {
+  versionManager.on('IsEvergreen', (status) => {
     vscode.window.showInformationMessage(
       status
         ? 'Project is already Evergreen. 🌲 Good job!'

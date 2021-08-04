@@ -8,12 +8,14 @@ export class UpdateMenuTask implements vscode.TreeDataProvider<TreeTask> {
   constructor(private context: vscode.ExtensionContext) {}
 
   public async getChildren(task?: TreeTask): Promise<TreeTask[]> {
-    if (task && task.label && task.label.includes('Update with Angular CLI')) {
-      return this.getUpdateTree()
-    }
+    if (typeof task?.label === 'string') {
+      if (task?.label?.includes('Update with Angular CLI')) {
+        return this.getUpdateTree()
+      }
 
-    if (task && task.label && task.label.includes('Update npm Packages')) {
-      return this.getNpmTree()
+      if (task?.label?.includes('Update npm Packages')) {
+        return this.getNpmTree()
+      }
     }
 
     const treeTasks: TreeTask[] = [

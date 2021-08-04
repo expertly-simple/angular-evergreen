@@ -32,12 +32,14 @@ export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {
   }
 
   public async getChildren(task?: TreeTask): Promise<TreeTask[]> {
-    if (task && task.label && task.label.includes('Current CLI')) {
-      return this.getVersionTree(this.versions.cliVersion)
-    }
+    if (typeof task?.label === 'string') {
+      if (task?.label?.includes('Current CLI')) {
+        return this.getVersionTree(this.versions.cliVersion)
+      }
 
-    if (task && task.label && task.label.includes('Current Core')) {
-      return this.getVersionTree(this.versions.coreVersion)
+      if (task?.label?.includes('Current Core')) {
+        return this.getVersionTree(this.versions.coreVersion)
+      }
     }
 
     const currentCliVersion = this.versionManager.cliVersion

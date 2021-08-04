@@ -16,7 +16,6 @@ export function run(
   const mocha = new Mocha({
     ui: 'bdd',
   })
-  mocha.useColors(true)
 
   glob('*/**.test.js', { cwd: testsRoot }, (err: object | null, files: string[]) => {
     if (err) {
@@ -25,12 +24,12 @@ export function run(
 
     // add tests to mocha
     files
-      .map(f => path.resolve(testsRoot, f))
-      .forEach(childPath => mocha.addFile(childPath))
+      .map((f) => path.resolve(testsRoot, f))
+      .forEach((childPath) => mocha.addFile(childPath))
 
     try {
       // Run the mocha test
-      mocha.run(failures => {
+      mocha.run((failures) => {
         cb(null, failures)
       })
     } catch (err) {

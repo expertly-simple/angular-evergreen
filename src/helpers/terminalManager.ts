@@ -4,7 +4,7 @@ export class TerminalManager {
   private terminal: Terminal
 
   constructor() {
-    window.onDidCloseTerminal(t => {
+    window.onDidCloseTerminal((t) => {
       if (t === this.terminal) {
         this.terminal = undefined
         this.terminal.dispose()
