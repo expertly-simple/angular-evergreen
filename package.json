@@ -18,7 +18,8 @@
     "theme": "dark"
   },
   "engines": {
-    "vscode": "^1.58.0"
+    "vscode": "^1.58.0",
+    "node": "14"
   },
   "categories": [
     "Other"
@@ -300,6 +301,7 @@
     "package": "vsce package",
     "pretest": "tsc -p . && tsc -p test/tsconfig.test.json",
     "test": "ts-node test/runTest.ts",
+    "pretest:mocha": "pretest",
     "test:mocha": "mocha --delay",
     "test:docker": "docker image build . -t evergreen-test",
     "release": "standard-version --release-as minor",
@@ -311,7 +313,6 @@
     "@types/chai": "^4.2.21",
     "@types/cron": "^1.7.3",
     "@types/execa": "^2.0.0",
-    "@types/get-stream": "^3.0.2",
     "@types/glob": "^7.1.4",
     "@types/mocha": "^9.0.0",
     "@types/mock-fs": "^4.13.1",
@@ -334,6 +335,7 @@
     "sinon": "^11.1.2",
     "sinon-chai": "^3.7.0",
     "source-map-support": "^0.5.19",
+    "standard-version": "^9.3.1",
     "ts-loader": "^9.2.5",
     "ts-node": "^10.1.0",
     "tslint": "^6.0.0",
@@ -348,10 +350,7 @@
   },
   "dependencies": {
     "execa": "^5.1.1",
-    "get-latest-version": "^2.0.0",
-    "get-stream": "^6.0.1",
-    "open": "^8.2.1",
-    "standard-version": "^9.3.1"
+    "open": "^8.2.1"
   },
   "repository": {
     "type": "git",
