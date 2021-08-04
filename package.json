@@ -25,7 +25,7 @@
     "Other"
   ],
   "activationEvents": [
-    "workspaceContains:**/**/angular.json"
+    "workspaceContains:**/angular.json"
   ],
   "main": "./dist/extension",
   "contributes": {

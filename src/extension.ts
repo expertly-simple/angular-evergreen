@@ -37,8 +37,8 @@ async function configureVersionManager(
   versionManager.on('IsEvergreen', (status) => {
     vscode.window.showInformationMessage(
       status
-        ? 'Project is already Evergreen. 🌲 Good job!'
-        : 'Angular is out-of-date! Run 🌲 Quick Command > Update Angular to upgrade.'
+        ? 'Project is Evergreen 🌲 Good job!'
+        : 'Angular is out-of-date 😔 Run Quick Command > Update Angular to upgrade.'
     )
   })
 

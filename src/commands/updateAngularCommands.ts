@@ -41,18 +41,14 @@ export async function callAngularAllNextForce() {
 }
 
 export async function viewAvailableUpdates() {
-  window.showInformationMessage(
-    'See the terminal for available updates! Run 🌲 Quick Command > Update Angular to upgrade.'
-  )
+  window.showInformationMessage('See the terminal for available updates')
   await TerminalInstance.writeToTerminal(
     `${PackageManagerInstance.executable} ${UpdateCommands.ngUpdate}`
   )
 }
 
 export async function viewAvailableUpdatesNext() {
-  window.showInformationMessage(
-    'See the terminal for available updates! Run 🌲 Quick Command > Update Angular --next to upgrade.'
-  )
+  window.showInformationMessage('See the terminal for available updates')
   await TerminalInstance.writeToTerminal(
     `${PackageManagerInstance.executable} ${UpdateCommands.ngUpdate} ${UpdateArgs.next}`
   )

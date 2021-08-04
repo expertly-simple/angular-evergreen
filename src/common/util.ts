@@ -48,13 +48,16 @@ export function getScriptTask(
 export function getFolder(
   context: vscode.ExtensionContext,
   title: string,
-  icon: 'angular-icon' | 'n' | 'ng-evergreen-logo-red' | 'ng-evergreen-logo'
+  icon: 'angular-icon' | 'n' | 'ng-evergreen-logo-red' | 'ng-evergreen-logo' | Icon,
+  collapsibleState = vscode.TreeItemCollapsibleState.Expanded
 ) {
   return new TreeTask(
     'Folder',
     title,
-    vscode.TreeItemCollapsibleState.Expanded,
+    collapsibleState,
     undefined,
-    `${context.extensionPath}/resources/${icon}.svg`
+    icon in Icon
+      ? getIconConfig(context, icon as Icon)
+      : `${context.extensionPath}/resources/${icon}.svg`
   )
 }
