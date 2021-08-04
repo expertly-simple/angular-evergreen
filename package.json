@@ -18,7 +18,7 @@
     "theme": "dark"
   },
   "engines": {
-    "vscode": "^1.58",
+    "vscode": "^1.58.1",
     "node": "14"
   },
   "categories": [
