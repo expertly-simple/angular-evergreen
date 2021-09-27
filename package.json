@@ -349,7 +349,7 @@
   "dependencies": {
     "execa": "^4.0.0",
     "get-latest-version": "^1.0.1",
-    "get-stream": "^5.1.0",
+    "get-stream": "^5.2.0",
     "open": "^7.0.2",
     "standard-version": "^9.1.0"
   },
