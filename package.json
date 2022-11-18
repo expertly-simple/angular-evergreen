@@ -344,7 +344,7 @@
     "vsce": "^1.88.0",
     "vscode-test": "^1.3.0",
     "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "webpack-cli": "^3.3.12"
   },
   "dependencies": {
     "execa": "^4.0.0",
