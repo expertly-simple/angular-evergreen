@@ -10,12 +10,12 @@ const GIT_ERROR = "Couldn't determine Git status. Can't run this command."
 export async function isGitClean(): Promise<boolean> {
   const fsPath = WorkspaceManagerInstance.getWorkspace().uri.fsPath
 
-  const promise = new Promise<boolean>(resolve => {
+  const promise = new Promise<boolean>((resolve) => {
     execa.command('git status', { cwd: fsPath }).then(
-      output => {
+      (output) => {
         resolve(output.stdout.indexOf('clean') > 0)
       },
-      rejected => {
+      (rejected) => {
         window.showErrorMessage(GIT_ERROR)
         resolve(false)
       }

@@ -33,7 +33,7 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 3. In your forked repository, make your changes in a new git branch:
 
    ```shell
-   git checkout -b my-fix-branch master
+   git checkout -b my-fix-branch main
    ```
 
 4. Create your patch.
@@ -55,7 +55,7 @@ Before you submit your Pull Request (PR) consider the following guidelines:
    git push origin my-fix-branch
    ```
 
-8. In GitHub, send a pull request to `angular-evergreen:master`.
+8. In GitHub, send a pull request to `angular-evergreen:main`.
 
 ## <a name="rules"></a> Coding Rules
 

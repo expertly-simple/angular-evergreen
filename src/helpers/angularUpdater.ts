@@ -33,10 +33,7 @@ export class AngularUpdate {
       await runScript(coreCMD, this.renderer)
       await runScript('git commit -a -m "Updated Angular CLI & Core"', this.renderer)
       await runScript(updateCMD, this.renderer)
-      echoToTerminal(
-        this.renderer,
-        'Update completed! Project is Evergreen 🌲 Be sure to run your tests and build for prod!'
-      )
+      echoToTerminal(this.renderer, 'Update completed! Project is Evergreen 🌲')
       return true
     } catch (error) {
       echoToTerminal(this.renderer, sanitizeStdOut(error.message))

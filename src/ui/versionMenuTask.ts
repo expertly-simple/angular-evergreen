@@ -11,6 +11,9 @@ interface ICurrentVersions {
   coreVersion: IVersionStatus
 }
 
+const currentCli = 'Current CLI'
+const currentCore = 'Current Core'
+
 export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {
   public versions: ICurrentVersions
   constructor(
@@ -32,12 +35,13 @@ export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {
   }
 
   public async getChildren(task?: TreeTask): Promise<TreeTask[]> {
-    if (task && task.label && task.label.includes('Current CLI')) {
-      return this.getVersionTree(this.versions.cliVersion)
-    }
-
-    if (task && task.label && task.label.includes('Current Core')) {
-      return this.getVersionTree(this.versions.coreVersion)
+    if (typeof task?.label === 'string') {
+      if (task.label.includes(currentCli)) {
+        return this.getVersionTree(this.versions.cliVersion)
+      }
+      if (task.label.includes(currentCore)) {
+        return this.getVersionTree(this.versions.coreVersion)
+      }
     }
 
     const currentCliVersion = this.versionManager.cliVersion
@@ -51,7 +55,7 @@ export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {
     const treeTasks: TreeTask[] = [
       new TreeTask(
         'Folder',
-        `Current CLI: ${currentCliVersion}`,
+        `${currentCli}: ${currentCliVersion}`,
         vscode.TreeItemCollapsibleState.Expanded,
         undefined,
         this.getRedLogoIfNeedsUpdate(this.versions.cliVersion),
@@ -59,7 +63,7 @@ export class VersionMenuTask implements vscode.TreeDataProvider<TreeTask> {
       ),
       new TreeTask(
         'Folder',
-        `Current Core: ${currentCoreVersion}`,
+        `${currentCore}: ${currentCoreVersion}`,
         vscode.TreeItemCollapsibleState.Expanded,
         undefined,
         this.getRedLogoIfNeedsUpdate(this.versions.coreVersion),
