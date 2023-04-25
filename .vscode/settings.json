@@ -53,7 +53,11 @@
     "titleBar.inactiveForeground": "#e7e7e799",
     "statusBar.background": "#2d7254",
     "statusBarItem.hoverBackground": "#3b976f",
-    "statusBar.foreground": "#e7e7e7"
+    "statusBar.foreground": "#e7e7e7",
+    "commandCenter.border": "#e7e7e799",
+    "sash.hoverBorder": "#3b976f",
+    "statusBarItem.remoteBackground": "#2d7254",
+    "statusBarItem.remoteForeground": "#e7e7e7"
   },
   "peacock.color": "#2d7254"
 }
