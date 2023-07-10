@@ -39,7 +39,8 @@ export class PackageManager {
 
     // Check that package.json exists
     const packjsonFile = await vscode.workspace.findFiles(
-      new vscode.RelativePattern(this.workspacePath, 'package.json')
+      '**/package.json', // ** means search all folders
+      '**​/node_modules/**' // exclude the node_modules folder
     )
     if (!packjsonFile || packjsonFile.length <= 0) {
       vscode.window.showErrorMessage('File package.json not found')
